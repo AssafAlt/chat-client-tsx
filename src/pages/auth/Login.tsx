@@ -9,10 +9,24 @@ import {
   Container,
   Button,
 } from "@mantine/core";
-
+import { useForm } from "@mantine/form";
 import classes from "./AuthStyles.module.css";
+import { LoginForm } from "../../models/AuthForms";
+import { useAuth } from "../../hooks/useAuth";
 
 const Login = () => {
+  const { login } = useAuth();
+  const form = useForm<LoginForm>({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+
+    validate: {
+      username: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+    },
+  });
+
   return (
     <Container size={420} my={40}>
       <Title ta="center" className={classes.title}>
@@ -26,23 +40,27 @@ const Login = () => {
       </Text>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <TextInput
-          label="Username"
-          ta="left"
-          placeholder="you@mantine.dev"
-          required
-        />
-        <PasswordInput
-          label="Password"
-          placeholder="Your password"
-          ta="left"
-          required
-          mt="md"
-        />
+        <form onSubmit={form.onSubmit((values: LoginForm) => login(values))}>
+          <TextInput
+            label="Username"
+            ta="left"
+            placeholder="you@mantine.dev"
+            required
+            {...form.getInputProps("username")}
+          />
+          <PasswordInput
+            label="Password"
+            placeholder="Your password"
+            ta="left"
+            required
+            mt="md"
+            {...form.getInputProps("password")}
+          />
 
-        <Button fullWidth mt="xl">
-          Sign in
-        </Button>
+          <Button fullWidth mt="xl" type="submit">
+            Sign in
+          </Button>
+        </form>
       </Paper>
     </Container>
   );
