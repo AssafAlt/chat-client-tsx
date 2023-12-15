@@ -3,21 +3,30 @@ import { LoginResponse } from "../models/UserResponses";
 
 // Define the SignUp Actions
 type AuthAction =
+  | { type: "START" }
   | { type: "LOGIN_SUCCESS"; payload: LoginResponse }
+  | { type: "LOGIN_FAILED"; payload: string }
+  | { type: "REGISTER_SUCCESS"; payload: string }
+  | { type: "REGISTER_FAILED"; payload: string }
   | { type: "LOGOUT" };
-/* | { type: "START" }
-  | { type: "SIGNUP_SUCCESS"; payload: string }
-  | { type: "SIGNUP_FAILURE"; payload: string }*/
 
 interface AuthState {
   nickname: string;
   profileImg: string;
+  loading: boolean;
+  success: boolean;
+  message: string;
+  isFirstLogin: boolean;
 }
 
 // Create the initial state
 const initialState: AuthState = {
   nickname: "",
   profileImg: "",
+  loading: false,
+  success: false,
+  message: "",
+  isFirstLogin: false,
 };
 
 // Create the SignUpContext
@@ -32,15 +41,47 @@ const AuthContext = createContext<
 // Create the SignUp reducer
 const authReducer = (state: AuthState, action: AuthAction): AuthState => {
   switch (action.type) {
+    case "START":
+      return {
+        ...state,
+        loading: true,
+      };
+    case "REGISTER_SUCCESS":
+      return {
+        ...state,
+        loading: false,
+        success: true,
+        message: action.payload,
+      };
+    case "REGISTER_FAILED":
+      return {
+        ...state,
+        loading: false,
+        success: false,
+        message: action.payload,
+      };
     case "LOGIN_SUCCESS":
       return {
         profileImg: action.payload.imagePath,
         nickname: action.payload.userNickname,
+        loading: false,
+        success: true,
+        message: "",
+        isFirstLogin: action.payload.firstLogin,
+      };
+    case "LOGIN_FAILED":
+      return {
+        ...state,
+        loading: false,
+        success: false,
+        message: action.payload,
       };
 
     case "LOGOUT":
       return {
         ...state,
+        nickname: "",
+        profileImg: "",
       };
 
     default:

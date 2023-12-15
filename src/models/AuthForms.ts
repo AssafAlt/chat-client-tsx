@@ -3,5 +3,6 @@ export interface LoginForm {
   password: string;
 }
 export interface RegisterForm extends LoginForm {
-  profileImg: string;
+  confirmPassword: string;
+  nickname: string;
 }

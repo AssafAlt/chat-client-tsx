@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { LoginForm, RegisterForm } from "../models/AuthForms";
 
 const api = axios.create({
@@ -7,17 +7,24 @@ const api = axios.create({
 });
 
 export const loginAPI = async (payload: LoginForm) => {
-  const res = await api.post("/login", payload);
+  try {
+    const res = await api.post("/login", payload);
 
-  if (!res) {
-    throw new Error("User not found!");
-  } else {
-    return res.data;
+    if (!res) {
+      throw new Error("User not found!");
+    }
+
+    return res;
+  } catch (error) {
+    console.error("Error during loginAPI:", error);
+    throw new Error("Login failed");
   }
 };
 export const registerAPI = async (payload: RegisterForm) => {
-  const res = await api.post<string>("/register", payload);
+  const res = await api.post("/register", payload);
   if (!res) {
     throw new Error("Error creating user!");
+  } else {
+    return res.data;
   }
 };

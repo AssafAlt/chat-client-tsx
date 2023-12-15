@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   TextInput,
   PasswordInput,
@@ -15,7 +15,8 @@ import { LoginForm } from "../../models/AuthForms";
 import { useAuth } from "../../hooks/useAuth";
 
 const Login = () => {
-  const { login } = useAuth();
+  const { login, state } = useAuth();
+  const navigate = useNavigate();
   const form = useForm<LoginForm>({
     initialValues: {
       username: "",
@@ -27,6 +28,12 @@ const Login = () => {
     },
   });
 
+  const onSubmit = async (values: LoginForm) => {
+    await login(values);
+    if (state.success) {
+      navigate("/home");
+    }
+  };
   return (
     <Container size={420} my={40}>
       <Title ta="center" className={classes.title}>
@@ -40,7 +47,7 @@ const Login = () => {
       </Text>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <form onSubmit={form.onSubmit((values: LoginForm) => login(values))}>
+        <form onSubmit={form.onSubmit((values: LoginForm) => onSubmit(values))}>
           <TextInput
             label="Username"
             ta="left"

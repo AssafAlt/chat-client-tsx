@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   TextInput,
@@ -10,23 +11,29 @@ import {
   Button,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-
+import { useAuth } from "../../hooks/useAuth";
+import { RegisterForm, RegisterFormWithImage } from "../../models/AuthForms";
 import classes from "./AuthStyles.module.css";
+import { ProfileImageClo } from "../../models/ProfileImageClo";
+
 interface IForm {
   username: string;
   password: string;
   confirmPassword: string;
   nickname: string;
-  profileImg: string;
+  profileImg: File | undefined;
 }
+/*interface RegisterFormWithImage {
+  userDetails: RegisterForm;
+  image: ProfileImageClo;
+}*/
 const Register = () => {
-  const form = useForm<IForm>({
+  const form = useForm<RegisterForm>({
     initialValues: {
       username: "",
       password: "",
       confirmPassword: "",
       nickname: "",
-      profileImg: "",
     },
 
     validate: {
@@ -40,8 +47,11 @@ const Register = () => {
     },
   });
 
-  const onSubmit = (values: IForm) => {
+  const { register } = useAuth();
+
+  const onSubmit = async (values: RegisterForm) => {
     console.log(values);
+    await register(values);
   };
   return (
     <Container size={420} my={10}>
@@ -56,7 +66,11 @@ const Register = () => {
       </Text>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <form onSubmit={form.onSubmit((values: IForm) => onSubmit(values))}>
+        <form
+          onSubmit={form.onSubmit(
+            async (values: RegisterForm) => await onSubmit(values)
+          )}
+        >
           <TextInput
             label="Username"
             ta="left"
