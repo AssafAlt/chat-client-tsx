@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
+
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
 
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
+
           <Route
             path="/home"
             element={

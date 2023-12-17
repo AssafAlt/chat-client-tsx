@@ -74,7 +74,7 @@ const Register = () => {
           <TextInput
             label="Username"
             ta="left"
-            placeholder="you@mantine.dev"
+            placeholder="user@email.com"
             required
             {...form.getInputProps("username")}
           />

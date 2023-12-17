@@ -13,9 +13,12 @@ import { useForm } from "@mantine/form";
 import classes from "./AuthStyles.module.css";
 import { LoginForm } from "../../models/AuthForms";
 import { useAuth } from "../../hooks/useAuth";
+import { useAuthContext } from "../../context/AuthContext";
+import { useEffect } from "react";
 
 const Login = () => {
-  const { login, state } = useAuth();
+  const { login } = useAuth();
+  const { state } = useAuthContext();
   const navigate = useNavigate();
   const form = useForm<LoginForm>({
     initialValues: {
@@ -30,10 +33,12 @@ const Login = () => {
 
   const onSubmit = async (values: LoginForm) => {
     await login(values);
+  };
+  useEffect(() => {
     if (state.success) {
       navigate("/home");
     }
-  };
+  }, [state.success]);
   return (
     <Container size={420} my={40}>
       <Title ta="center" className={classes.title}>
@@ -51,7 +56,7 @@ const Login = () => {
           <TextInput
             label="Username"
             ta="left"
-            placeholder="you@mantine.dev"
+            placeholder="user@email.com"
             required
             {...form.getInputProps("username")}
           />
