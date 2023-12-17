@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   TextInput,
   PasswordInput,
@@ -13,13 +13,10 @@ import { useForm } from "@mantine/form";
 import classes from "./AuthStyles.module.css";
 import { LoginForm } from "../../models/AuthForms";
 import { useAuth } from "../../hooks/useAuth";
-import { useAuthContext } from "../../context/AuthContext";
-import { useEffect } from "react";
 
 const Login = () => {
   const { login } = useAuth();
-  const { state } = useAuthContext();
-  const navigate = useNavigate();
+
   const form = useForm<LoginForm>({
     initialValues: {
       username: "",
@@ -34,11 +31,7 @@ const Login = () => {
   const onSubmit = async (values: LoginForm) => {
     await login(values);
   };
-  useEffect(() => {
-    if (state.success) {
-      navigate("/home");
-    }
-  }, [state.success]);
+
   return (
     <Container size={420} my={40}>
       <Title ta="center" className={classes.title}>

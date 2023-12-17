@@ -8,13 +8,11 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const token = Cookies.get("JWT_TOKEN");
+  const token = Cookies.get("jwt_token");
 
   if (!token) {
-    window.alert(token);
     return <Navigate to="/" />;
   } else {
-    window.alert(token);
     return <>{children}</>;
   }
 };

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   TextInput,
@@ -11,22 +10,11 @@ import {
   Button,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useAuth } from "../../hooks/useAuth";
-import { RegisterForm, RegisterFormWithImage } from "../../models/AuthForms";
-import classes from "./AuthStyles.module.css";
-import { ProfileImageClo } from "../../models/ProfileImageClo";
 
-interface IForm {
-  username: string;
-  password: string;
-  confirmPassword: string;
-  nickname: string;
-  profileImg: File | undefined;
-}
-/*interface RegisterFormWithImage {
-  userDetails: RegisterForm;
-  image: ProfileImageClo;
-}*/
+import { useAuth } from "../../hooks/useAuth";
+import { RegisterForm } from "../../models/AuthForms";
+import classes from "./AuthStyles.module.css";
+
 const Register = () => {
   const form = useForm<RegisterForm>({
     initialValues: {
@@ -50,7 +38,6 @@ const Register = () => {
   const { register } = useAuth();
 
   const onSubmit = async (values: RegisterForm) => {
-    console.log(values);
     await register(values);
   };
   return (
