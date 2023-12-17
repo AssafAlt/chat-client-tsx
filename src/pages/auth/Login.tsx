@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   TextInput,
   PasswordInput,
@@ -13,10 +13,11 @@ import { useForm } from "@mantine/form";
 import classes from "./AuthStyles.module.css";
 import { LoginForm } from "../../models/AuthForms";
 import { useAuth } from "../../hooks/useAuth";
+import { notifications } from "@mantine/notifications";
 
 const Login = () => {
   const { login } = useAuth();
-
+  const navigate = useNavigate();
   const form = useForm<LoginForm>({
     initialValues: {
       username: "",
@@ -29,7 +30,21 @@ const Login = () => {
   });
 
   const onSubmit = async (values: LoginForm) => {
-    await login(values);
+    try {
+      await login(values);
+      notifications.show({
+        title: "Welcome Back to Capitan's Chat App",
+        message: "Navigating to Home page",
+        autoClose: 2000,
+      });
+      navigate("/home");
+    } catch (error) {
+      notifications.show({
+        title: "Login failed!",
+        message: "Please check your credentials or try again later",
+        color: "red",
+      });
+    }
   };
 
   return (

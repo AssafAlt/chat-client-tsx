@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   TextInput,
   PasswordInput,
@@ -15,7 +15,11 @@ import { useAuth } from "../../hooks/useAuth";
 import { RegisterForm } from "../../models/AuthForms";
 import classes from "./AuthStyles.module.css";
 
+import { notifications } from "@mantine/notifications";
+
 const Register = () => {
+  const navigate = useNavigate();
+
   const form = useForm<RegisterForm>({
     initialValues: {
       username: "",
@@ -38,7 +42,20 @@ const Register = () => {
   const { register } = useAuth();
 
   const onSubmit = async (values: RegisterForm) => {
-    await register(values);
+    try {
+      await register(values);
+      notifications.show({
+        title: "Welcome to Capitan's Chat App",
+        message: "Navigating to sign in",
+      });
+      navigate("/");
+    } catch (error) {
+      notifications.show({
+        title: "Register failed!",
+        message: "Please try again later",
+        color: "red",
+      });
+    }
   };
   return (
     <Container size={420} my={10}>
