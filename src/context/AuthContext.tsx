@@ -1,6 +1,10 @@
 import React, { createContext, useReducer, useContext, Dispatch } from "react";
+import Cookies from "js-cookie";
 import { LoginResponse } from "../models/UserResponses";
-
+const currentUserJson = localStorage.getItem("currentUser");
+const currentUser: LoginResponse | null = currentUserJson
+  ? JSON.parse(currentUserJson)
+  : null;
 // Define the SignUp Actions
 type AuthAction =
   | { type: "START" }
@@ -11,8 +15,8 @@ type AuthAction =
   | { type: "LOGOUT" };
 
 interface AuthState {
-  nickname: string;
-  profileImg: string;
+  nickname: string | null;
+  profileImg: string | null;
   loading: boolean;
   success: boolean;
   message: string;
@@ -21,12 +25,12 @@ interface AuthState {
 
 // Create the initial state
 const initialState: AuthState = {
-  nickname: "",
-  profileImg: "",
+  nickname: currentUser ? currentUser.userNickname : null,
+  profileImg: currentUser ? currentUser.imagePath : null,
   loading: false,
   success: false,
   message: "",
-  isFirstLogin: false,
+  isFirstLogin: currentUser ? currentUser.firstLogin : false,
 };
 
 // Create the SignUpContext
@@ -61,6 +65,7 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
         message: action.payload,
       };
     case "LOGIN_SUCCESS":
+      localStorage.setItem("currentUser", JSON.stringify(action.payload));
       return {
         profileImg: action.payload.imagePath,
         nickname: action.payload.userNickname,
@@ -78,10 +83,13 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
       };
 
     case "LOGOUT":
+      localStorage.removeItem("currentUser");
+      Cookies.remove("jwt_token");
       return {
         ...state,
-        nickname: "",
-        profileImg: "",
+        isFirstLogin: false,
+        nickname: null,
+        profileImg: null,
       };
 
     default:

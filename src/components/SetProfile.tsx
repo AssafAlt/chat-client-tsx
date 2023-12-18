@@ -8,7 +8,7 @@ interface SetProfileProps {
 const SetProfile = (props: SetProfileProps) => {
   return (
     <Paper radius="md" withBorder p="lg" bg="var(--mantine-color-body)">
-      <Avatar src={props.imageSrc} size={120} radius={120} mx="auto" />
+      <Avatar src={props.imageSrc} size={200} radius={120} mx="auto" />
       <Text ta="center" fz="lg" fw={500} mt="md">
         {props.text}
       </Text>
