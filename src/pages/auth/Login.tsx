@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   TextInput,
   PasswordInput,
@@ -8,43 +8,102 @@ import {
   Text,
   Container,
   Button,
+  Center,
+  Loader,
+  LoadingOverlay,
 } from "@mantine/core";
-
+import { useForm } from "@mantine/form";
 import classes from "./AuthStyles.module.css";
+import { LoginForm } from "../../models/AuthForms";
+import { useAuth } from "../../hooks/useAuth";
+import { notifications } from "@mantine/notifications";
+
+import { useToggle } from "@mantine/hooks";
 
 const Login = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const [isLoading, toggleIsLoading] = useToggle([false, true]);
+  const form = useForm<LoginForm>({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+
+    validate: {
+      username: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+    },
+  });
+
+  const onSubmit = async (values: LoginForm) => {
+    toggleIsLoading();
+    try {
+      await login(values);
+      notifications.show({
+        title: "Welcome Back to Capitan's Chat App",
+        message: "Navigating to Home page",
+        autoClose: 2000,
+      });
+
+      navigate("/home");
+    } catch (error) {
+      notifications.show({
+        title: "Login failed!",
+        message: "Please check your credentials or try again later",
+        color: "red",
+      });
+    } finally {
+      toggleIsLoading();
+    }
+  };
+
   return (
-    <Container size={420} my={40}>
-      <Title ta="center" className={classes.title}>
-        Login page
-      </Title>
-      <Text c="dimmed" size="sm" ta="center" mt={5}>
-        Do not have an account yet?{" "}
-        <Anchor size="sm" component={Link} to="/register">
-          Create account
-        </Anchor>
-      </Text>
-
-      <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <TextInput
-          label="Username"
-          ta="left"
-          placeholder="you@mantine.dev"
-          required
+    <>
+      {isLoading && (
+        <LoadingOverlay
+          visible={true}
+          loaderProps={{ children: <Loader color="blue" /> }}
         />
-        <PasswordInput
-          label="Password"
-          placeholder="Your password"
-          ta="left"
-          required
-          mt="md"
-        />
+      )}
+      <Container size={420} my={40}>
+        <Title ta="center" className={classes.title}>
+          Login page
+        </Title>
+        <Text c="dimmed" size="sm" ta="center" mt={5}>
+          Do not have an account yet?{" "}
+          <Anchor size="sm" component={Link} to="/register">
+            Create account
+          </Anchor>
+        </Text>
 
-        <Button fullWidth mt="xl">
-          Sign in
-        </Button>
-      </Paper>
-    </Container>
+        <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+          <form
+            onSubmit={form.onSubmit((values: LoginForm) => onSubmit(values))}
+          >
+            <TextInput
+              label="Username"
+              ta="left"
+              placeholder="user@email.com"
+              required
+              {...form.getInputProps("username")}
+            />
+            <PasswordInput
+              label="Password"
+              placeholder="Your password"
+              ta="left"
+              required
+              mt="md"
+              {...form.getInputProps("password")}
+            />
+
+            <Button fullWidth mt="xl" type="submit">
+              Sign in
+            </Button>
+          </form>
+        </Paper>
+      </Container>
+    </>
   );
 };
 
