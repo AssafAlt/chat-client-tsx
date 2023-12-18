@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
+import { Loader, LoadingOverlay } from "@mantine/core";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
 
@@ -12,7 +12,14 @@ function App() {
   return (
     <div>
       <Router>
-        <Suspense fallback={<p>Loading...</p>}>
+        <Suspense
+          fallback={
+            <LoadingOverlay
+              visible={true}
+              loaderProps={{ children: <Loader color="blue" /> }}
+            />
+          }
+        >
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />

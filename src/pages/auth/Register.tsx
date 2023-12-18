@@ -8,6 +8,8 @@ import {
   Text,
   Container,
   Button,
+  LoadingOverlay,
+  Loader,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 
@@ -16,10 +18,11 @@ import { RegisterForm } from "../../models/AuthForms";
 import classes from "./AuthStyles.module.css";
 
 import { notifications } from "@mantine/notifications";
+import { useToggle } from "@mantine/hooks";
 
 const Register = () => {
   const navigate = useNavigate();
-
+  const [isLoading, toggleIsLoading] = useToggle([false, true]);
   const form = useForm<RegisterForm>({
     initialValues: {
       username: "",
@@ -42,6 +45,7 @@ const Register = () => {
   const { register } = useAuth();
 
   const onSubmit = async (values: RegisterForm) => {
+    toggleIsLoading();
     try {
       await register(values);
       notifications.show({
@@ -55,64 +59,74 @@ const Register = () => {
         message: "Please try again later",
         color: "red",
       });
+    } finally {
+      toggleIsLoading();
     }
   };
   return (
-    <Container size={420} my={10}>
-      <Title ta="center" className={classes.title}>
-        Register page
-      </Title>
-      <Text c="dimmed" size="sm" ta="center" mt={5}>
-        Do you have an account already?{" "}
-        <Anchor size="sm" component={Link} to="/">
-          Login
-        </Anchor>
-      </Text>
+    <>
+      {isLoading && (
+        <LoadingOverlay
+          visible={true}
+          loaderProps={{ children: <Loader color="blue" /> }}
+        />
+      )}
+      <Container size={420} my={10}>
+        <Title ta="center" className={classes.title}>
+          Register page
+        </Title>
+        <Text c="dimmed" size="sm" ta="center" mt={5}>
+          Do you have an account already?{" "}
+          <Anchor size="sm" component={Link} to="/">
+            Login
+          </Anchor>
+        </Text>
 
-      <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <form
-          onSubmit={form.onSubmit(
-            async (values: RegisterForm) => await onSubmit(values)
-          )}
-        >
-          <TextInput
-            label="Username"
-            ta="left"
-            placeholder="user@email.com"
-            required
-            {...form.getInputProps("username")}
-          />
-          <TextInput
-            mt="md"
-            label="Nickname"
-            ta="left"
-            placeholder="Your Nickname"
-            required
-            {...form.getInputProps("nickname")}
-          />
-          <PasswordInput
-            label="Password"
-            placeholder="Your password"
-            ta="left"
-            required
-            mt="md"
-            {...form.getInputProps("password")}
-          />
-          <PasswordInput
-            label="Confirm Password"
-            placeholder="Confirm password"
-            ta="left"
-            required
-            mt="md"
-            {...form.getInputProps("confirmPassword")}
-          />
+        <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+          <form
+            onSubmit={form.onSubmit(
+              async (values: RegisterForm) => await onSubmit(values)
+            )}
+          >
+            <TextInput
+              label="Username"
+              ta="left"
+              placeholder="user@email.com"
+              required
+              {...form.getInputProps("username")}
+            />
+            <TextInput
+              mt="md"
+              label="Nickname"
+              ta="left"
+              placeholder="Your Nickname"
+              required
+              {...form.getInputProps("nickname")}
+            />
+            <PasswordInput
+              label="Password"
+              placeholder="Your password"
+              ta="left"
+              required
+              mt="md"
+              {...form.getInputProps("password")}
+            />
+            <PasswordInput
+              label="Confirm Password"
+              placeholder="Confirm password"
+              ta="left"
+              required
+              mt="md"
+              {...form.getInputProps("confirmPassword")}
+            />
 
-          <Button fullWidth mt="xl" type="submit">
-            Register
-          </Button>
-        </form>
-      </Paper>
-    </Container>
+            <Button fullWidth mt="xl" type="submit">
+              Register
+            </Button>
+          </form>
+        </Paper>
+      </Container>
+    </>
   );
 };
 
