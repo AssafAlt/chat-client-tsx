@@ -12,17 +12,15 @@ import {
   Loader,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-
 import { useAuth } from "../../hooks/useAuth";
 import { RegisterForm } from "../../models/AuthForms";
 import classes from "./AuthStyles.module.css";
-
 import { notifications } from "@mantine/notifications";
-import { useToggle } from "@mantine/hooks";
+import { useState } from "react";
 
 const Register = () => {
   const navigate = useNavigate();
-  const [isLoading, toggleIsLoading] = useToggle([false, true]);
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<RegisterForm>({
     initialValues: {
       username: "",
@@ -45,7 +43,7 @@ const Register = () => {
   const { register } = useAuth();
 
   const onSubmit = async (values: RegisterForm) => {
-    toggleIsLoading();
+    setIsLoading(true);
     try {
       await register(values);
       notifications.show({
@@ -60,7 +58,7 @@ const Register = () => {
         color: "red",
       });
     } finally {
-      toggleIsLoading();
+      setIsLoading(false);
     }
   };
   return (

@@ -8,7 +8,6 @@ import {
   Text,
   Container,
   Button,
-  Center,
   Loader,
   LoadingOverlay,
 } from "@mantine/core";
@@ -17,14 +16,13 @@ import classes from "./AuthStyles.module.css";
 import { LoginForm } from "../../models/AuthForms";
 import { useAuth } from "../../hooks/useAuth";
 import { notifications } from "@mantine/notifications";
-
-import { useToggle } from "@mantine/hooks";
+import { useState } from "react";
 
 const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [isLoading, toggleIsLoading] = useToggle([false, true]);
   const form = useForm<LoginForm>({
     initialValues: {
       username: "",
@@ -37,7 +35,7 @@ const Login = () => {
   });
 
   const onSubmit = async (values: LoginForm) => {
-    toggleIsLoading();
+    setIsLoading(true);
     try {
       await login(values);
       notifications.show({
@@ -54,7 +52,7 @@ const Login = () => {
         color: "red",
       });
     } finally {
-      toggleIsLoading();
+      setIsLoading(false);
     }
   };
 

@@ -1,5 +1,4 @@
 import api from "../api/apiConfig";
-import Cookies from "js-cookie";
 import { useAuthContext } from "../context/AuthContext";
 import { LoginForm, RegisterForm } from "../models/AuthForms";
 import { LoginResponse } from "../models/UserResponses";
@@ -56,13 +55,11 @@ export const useAuth = () => {
     }
   };
   const logout = async () => {
-    dispatch({ type: "START" });
+    dispatch({
+      type: "LOGOUT",
+    });
     try {
-      Cookies.remove("jwt_token");
       await api.post("auth/logout");
-      dispatch({
-        type: "LOGOUT",
-      });
     } catch (error: unknown) {
       const err = axiosErrorExtractor(error);
       console.log(err);
