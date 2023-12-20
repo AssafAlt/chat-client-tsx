@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Loader, LoadingOverlay } from "@mantine/core";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
-import Navbar from "./components/ui/navbar/Navbar";
+
+import Header from "./components/ui/header/Header";
 
 const Login = lazy(() => import("./pages/auth/Login"));
 const Register = lazy(() => import("./pages/auth/Register"));
@@ -13,7 +14,7 @@ function App() {
   return (
     <div>
       <Router>
-        <Navbar />
+        <Header />
         <Suspense
           fallback={
             <LoadingOverlay
