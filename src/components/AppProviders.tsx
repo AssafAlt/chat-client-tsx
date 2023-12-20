@@ -1,6 +1,7 @@
 import { MantineProvider, createTheme } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { AuthProvider } from "../context/AuthContext";
+import { UserProvider } from "../context/UserContext";
 interface IProps {
   children: JSX.Element;
 }
@@ -14,8 +15,10 @@ export const AppProviders = ({ children }: IProps) => {
   return (
     <MantineProvider theme={theme}>
       <AuthProvider>
-        <Notifications position="top-right" />
-        {children}
+        <UserProvider>
+          <Notifications position="top-right" />
+          {children}
+        </UserProvider>
       </AuthProvider>
     </MantineProvider>
   );

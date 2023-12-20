@@ -30,7 +30,7 @@ const initialState: AuthState = {
   loading: false,
   success: false,
   message: "",
-  isFirstLogin: currentUser ? currentUser.firstLogin : false,
+  isFirstLogin: currentUser ? currentUser.firstLogin : true,
 };
 
 // Create the SignUpContext
@@ -87,7 +87,7 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
       Cookies.remove("jwt_token");
       return {
         ...state,
-        isFirstLogin: false,
+        isFirstLogin: true,
         nickname: null,
         profileImg: null,
       };

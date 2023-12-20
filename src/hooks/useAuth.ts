@@ -1,4 +1,4 @@
-import api from "../api/apiConfig";
+import { springApi } from "../api/apiConfig";
 import { useAuthContext } from "../context/AuthContext";
 import { LoginForm, RegisterForm } from "../models/AuthForms";
 import { LoginResponse } from "../models/UserResponses";
@@ -11,7 +11,7 @@ export const useAuth = () => {
     dispatch({ type: "START" });
 
     try {
-      const res = await api.post("auth/login", userCredentials);
+      const res = await springApi.post("auth/login", userCredentials);
 
       if (res.status === 200) {
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data as LoginResponse });
@@ -32,7 +32,7 @@ export const useAuth = () => {
   const register = async (newUser: RegisterForm) => {
     dispatch({ type: "START" });
     try {
-      const res = await api.post("auth/register", newUser);
+      const res = await springApi.post("auth/register", newUser);
       if (res.status === 200) {
         dispatch({
           type: "REGISTER_SUCCESS",
@@ -59,7 +59,7 @@ export const useAuth = () => {
       type: "LOGOUT",
     });
     try {
-      await api.post("auth/logout");
+      await springApi.post("auth/logout");
     } catch (error: unknown) {
       const err = axiosErrorExtractor(error);
       console.log(err);
