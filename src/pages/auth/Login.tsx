@@ -64,7 +64,7 @@ const Login = () => {
           loaderProps={{ children: <Loader color="blue" /> }}
         />
       )}
-      <Container size={420} my={40}>
+      <Container size={420} my={10}>
         <Title ta="center" className={classes.title}>
           Login page
         </Title>
