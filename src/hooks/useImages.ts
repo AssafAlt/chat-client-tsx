@@ -10,8 +10,19 @@ export const useImages = () => {
   const { dispatch } = useUserContext();
   const uploadProfileImage = async (profileImage: ProfileImageClo) => {
     dispatch({ type: "START" });
+    const formData = new FormData();
+
+    formData.append("upload_preset", profileImage.upload_preset);
+
+    formData.append("folder", profileImage.folder);
+    if (!profileImage.file) {
+      throw new Error("File is not valid");
+    } else {
+      formData.append("file", profileImage.file);
+    }
+
     try {
-      const res = await imagesApi.post("/", profileImage);
+      const res = await imagesApi.post("/upload", formData);
 
       if (res.status === 200) {
         const imagePath = res.data.url;

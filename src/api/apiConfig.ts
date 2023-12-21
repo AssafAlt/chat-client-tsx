@@ -6,5 +6,5 @@ export const springApi = axios.create({
 });
 
 export const imagesApi = axios.create({
-  baseURL: "https://api.Cloudinary.com/v1_1/do9flnwgi/image/upload",
+  baseURL: "https://api.Cloudinary.com/v1_1/do9flnwgi/image/",
 });
