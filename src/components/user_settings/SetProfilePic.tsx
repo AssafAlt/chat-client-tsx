@@ -36,7 +36,17 @@ const SetProfilePic = (props: ISetProfilePicProps) => {
     setIsLoading(true);
     const profileImage = new ProfileImageClo(profilePicture);
     try {
-      await uploadProfileImage(profileImage);
+      const formData = new FormData();
+
+      formData.append("upload_preset", profileImage.upload_preset);
+
+      formData.append("folder", profileImage.folder);
+      if (!profileImage.file) {
+        throw new Error("File is not valid");
+      } else {
+        formData.append("file", profileImage.file);
+      }
+      await uploadProfileImage(formData);
       notifications.show({
         title: "Update Profile",
         message: "Profile Picture uploaded successfully",
