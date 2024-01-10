@@ -1,0 +1,21 @@
+import { springApi } from "../api/apiConfig";
+import { axiosErrorExtractor } from "../utils/axiosErrorUtils";
+
+export const useFriends = () => {
+  const searchUser = async (searchedUser: string) => {
+    try {
+      const res = await springApi.get(`users/search?prefix=${searchedUser}`);
+
+      if (res.status === 200) {
+        return res.data;
+      } else {
+        throw new Error("Unknown error");
+      }
+    } catch (error: unknown) {
+      const err = axiosErrorExtractor(error);
+
+      throw new Error(err);
+    }
+  };
+  return { searchUser };
+};
