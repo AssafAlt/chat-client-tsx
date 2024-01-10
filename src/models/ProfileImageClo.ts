@@ -1,18 +1,43 @@
 export class ProfileImageClo {
-  private upload_preset: string;
-  private file: File | undefined;
-  private folder: string; //= "chat_profiles";
+  private _upload_preset: string;
+  private _file: File | undefined;
+  private _folder: string;
 
-  isFileExists(): boolean {
-    return this.file !== undefined;
-  }
   constructor(
     file: File | undefined,
-    folder: string = "chat_profiles",
-    upload_preset: string = "ts4tmsay"
+    upload_preset: string = "ts4tmsay",
+    folder: string = "chat_profiles"
   ) {
-    this.file = file;
-    this.folder = folder;
-    this.upload_preset = upload_preset;
+    this._file = file;
+    this._folder = folder;
+    this._upload_preset = upload_preset;
+  }
+
+  get upload_preset(): string {
+    return this._upload_preset;
+  }
+
+  set upload_preset(value: string) {
+    this._upload_preset = value;
+  }
+
+  get file(): File | undefined {
+    return this._file;
+  }
+
+  set file(value: File | undefined) {
+    this._file = value;
+  }
+
+  get folder(): string {
+    return this._folder;
+  }
+
+  set folder(value: string) {
+    this._folder = value;
+  }
+
+  isFileExists(): boolean {
+    return this._file !== undefined;
   }
 }

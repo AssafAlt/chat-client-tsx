@@ -1,6 +1,5 @@
 import { springApi, imagesApi } from "../api/apiConfig";
 import { axiosErrorExtractor } from "../utils/axiosErrorUtils";
-import { ProfileImageClo } from "../models/ProfileImageClo";
 import { UpdateProfileImageResponse } from "../models/UserResponses";
 import { useUserContext } from "../context/UserContext";
 import { useAuthContext } from "../context/AuthContext";
@@ -8,17 +7,17 @@ import { useAuthContext } from "../context/AuthContext";
 export const useImages = () => {
   const { state } = useAuthContext();
   const { dispatch } = useUserContext();
-  const uploadProfileImage = async (profileImage: ProfileImageClo) => {
+  const uploadProfileImage = async (profileImage: FormData) => {
     dispatch({ type: "START" });
+
     try {
-      const res = await imagesApi.post("/", profileImage);
+      const res = await imagesApi.post("/upload", profileImage);
 
       if (res.status === 200) {
-        const imagePath = res.data.url;
-        const response = await springApi.put(
-          "users/setting/update-profile",
-          imagePath
-        );
+        await console.log(res);
+        const response = await springApi.patch("users/setting/image", {
+          imagePath: res.data.url,
+        });
         if (response.status === 200) {
           const data: UpdateProfileImageResponse = await response.data;
 

@@ -1,16 +1,23 @@
-import SetProfile from "../components/SetProfile";
+import { Paper, Text } from "@mantine/core";
+
 import { useAuthContext } from "../context/AuthContext";
+
+import SetProfilePic from "../components/user_settings/SetProfilePic";
 
 const Home = () => {
   const { state } = useAuthContext();
   const imagePath = state.profileImg ? state.profileImg : "";
+  const userNickname = state.nickname ? state.nickname : "";
   return (
     <div>
       {state.isFirstLogin && (
-        <SetProfile
-          text="You don't have a profile image yet, do you want to upload one now?"
-          imageSrc={imagePath}
-        />
+        <Paper>
+          <Text ta="center" fz="lg" fw={500} mt="md">
+            You don't choose profile image yet, would you like to choose one
+            now?
+          </Text>
+          <SetProfilePic imageSrc={imagePath} userNickname={userNickname} />
+        </Paper>
       )}
     </div>
   );
