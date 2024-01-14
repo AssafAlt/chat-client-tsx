@@ -4,7 +4,6 @@ import {
   Card,
   rem,
   List,
-  ListItem,
   Avatar,
   Text,
   Flex,
@@ -14,8 +13,9 @@ import { IconSearch } from "@tabler/icons-react";
 import { useFriends } from "../../../hooks/useFriends";
 import { ISearchResponse } from "../../../models/SearchResponse";
 import classes from "./Cards.module.css";
+import { notifications } from "@mantine/notifications";
 const AddFriendCard = () => {
-  const { searchUser } = useFriends();
+  const { searchUser, sendFriendRequest } = useFriends();
   const [searchPrefix, setSearchPrefix] = useState<string>("");
   const [users, setUsers] = useState<ISearchResponse[]>([]);
 
@@ -28,6 +28,25 @@ const AddFriendCard = () => {
       await setUsers(res);
     } catch (error) {
       console.log(error);
+    }
+  };
+  const onSendFrinedRequest = async (recieverId: number) => {
+    try {
+      const res = await sendFriendRequest(recieverId);
+      if (res) {
+        notifications.show({
+          title: "Friend Request",
+          message: "Friend Request was sent successfully",
+          autoClose: 2000,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      notifications.show({
+        title: "Request was failed!",
+        message: "Please try again later",
+        color: "red",
+      });
     }
   };
   return (
@@ -49,12 +68,14 @@ const AddFriendCard = () => {
       />
       <List py="sm">
         {users.map((user) => (
-          <Flex key={user.nickname} justify="space-between" py="sm">
+          <Flex key={user.userId} justify="space-between" py="sm">
             <Avatar src={user.profileImg} />
             <Text ff="sans-serif" fs="italic">
               {user.nickname}
             </Text>
-            <Button bg="green">Add Friend</Button>
+            <Button bg="green" onClick={() => onSendFrinedRequest(user.userId)}>
+              Send Friend Request
+            </Button>
           </Flex>
         ))}
       </List>
