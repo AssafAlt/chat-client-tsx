@@ -19,7 +19,9 @@ export const useFriends = () => {
   };
   const sendFriendRequest = async (recieverId: number) => {
     try {
-      const res = await springApi.post("friend-requests/add", recieverId);
+      const res = await springApi.post("friend-requests/add", {
+        recieverId: recieverId,
+      });
 
       if (res.status === 200) {
         return res.data;
