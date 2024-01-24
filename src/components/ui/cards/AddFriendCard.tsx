@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import { useFriends } from "../../../hooks/useFriends";
-import { ISearchResponse } from "../../../models/SearchResponse";
+import { ISearchResponse } from "../../../models/FriendRequestResponses";
 import classes from "./Cards.module.css";
 import { notifications } from "@mantine/notifications";
 const AddFriendCard = () => {

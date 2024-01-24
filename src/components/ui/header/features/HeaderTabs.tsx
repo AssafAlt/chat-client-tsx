@@ -2,19 +2,19 @@ import { useState } from "react";
 import { Center, Container, Tabs } from "@mantine/core"; // Assuming Mantine provides Input and Button components
 import AddFriendCard from "../../cards/AddFriendCard";
 import classes from "../Header.module.css";
+import FriendRequestsCard from "../../cards/FriendRequestsCard";
 
 const HeaderTabs = () => {
   const tabs = ["Online", "All", "Pending", "Blocked", "Add Friend"];
 
-  const [showAddFriendCard, setShowAddFriendCard] = useState(false);
+  const [showCard, setShowCard] = useState("");
 
   const handleTabChange = (value: string) => {
     if (value === "Add Friend") {
-      // Display search bar when "Add Friend" tab is clicked
-      setShowAddFriendCard(true);
-    } else {
-      // Hide search bar for other tabs
-      setShowAddFriendCard(false);
+      setShowCard("Add Friend");
+    }
+    if (value === "Pending") {
+      setShowCard("Pending");
     }
   };
 
@@ -39,7 +39,8 @@ const HeaderTabs = () => {
         >
           <Tabs.List>{items}</Tabs.List>
         </Tabs>
-        {showAddFriendCard && <AddFriendCard />}
+        {showCard === "Add Friend" && <AddFriendCard />}
+        {showCard === "Pending" && <FriendRequestsCard />}
       </Container>
     </Center>
   );
