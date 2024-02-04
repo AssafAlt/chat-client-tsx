@@ -49,5 +49,47 @@ export const useFriends = () => {
       throw new Error(err);
     }
   };
-  return { searchUser, sendFriendRequest, getFriendRequests };
+  const confirmFriendRequest = async (friendRequestId: number) => {
+    try {
+      const res = await springApi.patch("friend-requests/confirm", {
+        friendRequestId: friendRequestId,
+      });
+
+      if (res.status === 200) {
+        return res.data;
+      } else {
+        throw new Error("Unknown error");
+      }
+    } catch (error: unknown) {
+      const err = axiosErrorExtractor(error);
+
+      throw new Error(err);
+    }
+  };
+  const cancelFriendRequest = async (friendRequestId: number) => {
+    try {
+      const res = await springApi.delete("friend-requests/cancel", {
+        data: {
+          friendRequestId: friendRequestId,
+        },
+      });
+
+      if (res.status === 200) {
+        return res.data;
+      } else {
+        throw new Error("Unknown error");
+      }
+    } catch (error: unknown) {
+      const err = axiosErrorExtractor(error);
+
+      throw new Error(err);
+    }
+  };
+  return {
+    searchUser,
+    sendFriendRequest,
+    getFriendRequests,
+    confirmFriendRequest,
+    cancelFriendRequest,
+  };
 };

@@ -17,6 +17,9 @@ import { notifications } from "@mantine/notifications";
 const AddFriendCard = () => {
   const { searchUser, sendFriendRequest } = useFriends();
   const [searchPrefix, setSearchPrefix] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSearched, setIsSearched] = useState(false);
+  const [requestStatus, setRequestStatus] = useState("Loading...");
   const [users, setUsers] = useState<ISearchResponse[]>([]);
 
   const onChangeSearch = (value: string) => {
@@ -24,6 +27,7 @@ const AddFriendCard = () => {
   };
   const onSearch = async () => {
     try {
+      setIsSearched(true);
       const res = await searchUser(searchPrefix);
       await setUsers(res);
     } catch (error) {
@@ -31,22 +35,14 @@ const AddFriendCard = () => {
     }
   };
   const onSendFrinedRequest = async (recieverId: number) => {
+    setIsLoading(true);
     try {
       const res = await sendFriendRequest(recieverId);
       if (res) {
-        notifications.show({
-          title: "Friend Request",
-          message: "Friend Request was sent successfully",
-          autoClose: 2000,
-        });
+        setRequestStatus("Request was sent");
       }
     } catch (error) {
-      console.log(error);
-      notifications.show({
-        title: "Request was failed!",
-        message: "Please try again later",
-        color: "red",
-      });
+      setRequestStatus("Request was failed!");
     }
   };
   return (
@@ -66,19 +62,32 @@ const AddFriendCard = () => {
         }
         visibleFrom="xs"
       />
-      <List py="sm">
-        {users.map((user) => (
-          <Flex key={user.userId} justify="space-between" py="sm">
-            <Avatar src={user.profileImg} />
-            <Text ff="sans-serif" fs="italic">
-              {user.nickname}
-            </Text>
-            <Button bg="green" onClick={() => onSendFrinedRequest(user.userId)}>
-              Send Friend Request
-            </Button>
-          </Flex>
-        ))}
-      </List>
+      {isSearched ? (
+        users.length ? (
+          <List py="sm">
+            {users.map((user) => (
+              <Flex key={user.userId} justify="space-between" py="sm" px="sm">
+                <Avatar src={user.profileImg} />
+                <Text ff="sans-serif" fs="italic">
+                  {user.nickname}
+                </Text>
+                {!isLoading ? (
+                  <Button
+                    bg="green"
+                    onClick={() => onSendFrinedRequest(user.userId)}
+                  >
+                    Send Friend Request
+                  </Button>
+                ) : (
+                  <Text c="green">{requestStatus}</Text>
+                )}
+              </Flex>
+            ))}
+          </List>
+        ) : (
+          <Text>No users found</Text>
+        )
+      ) : null}
     </Card>
   );
 };

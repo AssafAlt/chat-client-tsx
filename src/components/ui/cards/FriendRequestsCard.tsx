@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { Card, List, Avatar, Text, Flex, Button } from "@mantine/core";
+import { Card, Text } from "@mantine/core";
 import { useFriends } from "../../../hooks/useFriends";
 import { IGetFriendRequest } from "../../../models/FriendRequestResponses";
-import classes from "./Cards.module.css";
-import { notifications } from "@mantine/notifications";
 import FriendRequestsTable from "../tables/FriendRequestsTable";
 const FriendRequestsCard = () => {
   const { getFriendRequests } = useFriends();
@@ -33,7 +31,11 @@ const FriendRequestsCard = () => {
 
   return (
     <Card padding="md" radius="md" bg="cyan">
-      {friendRequests && <FriendRequestsTable fRequests={friendRequests} />}
+      {friendRequests.length ? (
+        <FriendRequestsTable fRequests={friendRequests} />
+      ) : (
+        <Text>There is no pending requests </Text>
+      )}
     </Card>
   );
 };
