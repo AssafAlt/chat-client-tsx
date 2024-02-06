@@ -1,11 +1,14 @@
 import { Container, Group, ThemeIcon, Image } from "@mantine/core";
+import Cookies from "js-cookie";
 import { useAuthContext } from "../../../context/AuthContext";
 import classes from "./Header.module.css";
 import UserDropMenu from "./features/UserDropMenu";
 import HeaderTabs from "./features/HeaderTabs";
 const Header = () => {
   const { state } = useAuthContext();
+  const token = Cookies.get("jwt_token");
   const userImage: string = state.profileImg ? state.profileImg : "";
+  const userNick: string = state.nickname ? state.nickname : "";
   return (
     <div className={classes.header}>
       <Container className={classes.mainSection} size="md">
@@ -16,12 +19,12 @@ const Header = () => {
               style={{ width: "100%", height: "100%" }}
             />
           </ThemeIcon>
-          {state.nickname && (
-            <UserDropMenu userImage={userImage} userNickname={state.nickname} />
+          {token && (
+            <UserDropMenu userImage={userImage} userNickname={userNick} />
           )}
         </Group>
       </Container>
-      {state.nickname && <HeaderTabs />}
+      {token && <HeaderTabs />}
     </div>
   );
 };

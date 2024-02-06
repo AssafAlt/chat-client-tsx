@@ -28,7 +28,6 @@ interface IUserDropMenuProps {
 const UserDropMenu = (props: IUserDropMenuProps) => {
   const navigate = useNavigate();
   const { logout } = useAuth();
-  const [opened, { toggle }] = useDisclosure(false);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const onLogout = () => {
     logout();
@@ -36,8 +35,6 @@ const UserDropMenu = (props: IUserDropMenuProps) => {
   };
   return (
     <>
-      <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
-
       <Menu
         width={260}
         position="bottom-end"

@@ -16,7 +16,7 @@ interface ISetProfilePicProps {
   userNickname: string;
 }
 const SetProfilePic = (props: ISetProfilePicProps) => {
-  const { uploadProfileImage } = useImages();
+  const { uploadProfileImage, continueWithoutImage } = useImages();
   const [profilePicture, setProfilePicture] = useState<File | undefined>(
     undefined
   );
@@ -62,6 +62,26 @@ const SetProfilePic = (props: ISetProfilePicProps) => {
       setIsLoading(false);
     }
   };
+  const onContinueWithoutImage = async () => {
+    setIsLoading(true);
+
+    try {
+      await continueWithoutImage();
+      notifications.show({
+        title: "Update Profile",
+        message: "Profile udated successfully",
+        autoClose: 2000,
+      });
+    } catch (error) {
+      notifications.show({
+        title: "Update failed!",
+        message: "Please try again later",
+        color: "red",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <>
       {isLoading && (
@@ -89,6 +109,9 @@ const SetProfilePic = (props: ISetProfilePicProps) => {
 
         <Button color="blue" fullWidth mt="md" onClick={onUpdateImage}>
           Update Profile Picture
+        </Button>
+        <Button color="red" fullWidth onClick={onContinueWithoutImage}>
+          Continue Without Update Profile
         </Button>
       </Paper>
     </>

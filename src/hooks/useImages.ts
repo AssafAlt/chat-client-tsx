@@ -46,6 +46,34 @@ export const useImages = () => {
       throw new Error(err);
     }
   };
+  const continueWithoutImage = async () => {
+    dispatch({ type: "START" });
 
-  return { uploadProfileImage };
+    try {
+      const res = await springApi.get("users/setting/update-first-login");
+
+      if (res.status === 200) {
+        const data = await res.data;
+
+        const updatedDetails = {
+          userNickname: state.nickname,
+          firstLogin: data.firstLogin,
+          imagePath: state.profileImg,
+        };
+        localStorage.setItem("currentUser", JSON.stringify(updatedDetails));
+        dispatch({ type: "UPDATE_FIRST_LOGIN_SUCCESS" });
+      } else {
+        dispatch({
+          type: "UPDATE_FIRST_LOGIN_FAILED",
+          payload: "Failed to update the url in the server!",
+        });
+      }
+    } catch (error: unknown) {
+      const err = axiosErrorExtractor(error);
+      console.log(err);
+      throw new Error(err);
+    }
+  };
+
+  return { uploadProfileImage, continueWithoutImage };
 };
