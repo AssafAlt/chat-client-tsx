@@ -13,7 +13,7 @@ import { IconSearch } from "@tabler/icons-react";
 import { useFriends } from "../../../hooks/useFriends";
 import { ISearchResponse } from "../../../models/FriendRequestResponses";
 import classes from "./Cards.module.css";
-import { notifications } from "@mantine/notifications";
+
 const AddFriendCard = () => {
   const { searchUser, sendFriendRequest } = useFriends();
   const [searchPrefix, setSearchPrefix] = useState<string>("");
@@ -79,7 +79,7 @@ const AddFriendCard = () => {
                     Send Friend Request
                   </Button>
                 ) : (
-                  <Text c="green">{requestStatus}</Text>
+                  <Text c="white">{requestStatus}</Text>
                 )}
               </Flex>
             ))}

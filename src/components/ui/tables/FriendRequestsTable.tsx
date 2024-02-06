@@ -57,7 +57,7 @@ const FriendRequestsTable = (props: IFriendRequestsTableProps) => {
                 </Button>
               </>
             ) : (
-              <Text>{requestStatus}</Text>
+              <Text c="white">{requestStatus}</Text>
             )}
           </Group>
         </Table.Td>

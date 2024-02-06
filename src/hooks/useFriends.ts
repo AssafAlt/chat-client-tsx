@@ -17,6 +17,21 @@ export const useFriends = () => {
       throw new Error(err);
     }
   };
+  const getFriends = async () => {
+    try {
+      const res = await springApi.get("users/friends");
+
+      if (res.status === 200) {
+        return res.data;
+      } else {
+        throw new Error("Unknown error");
+      }
+    } catch (error: unknown) {
+      const err = axiosErrorExtractor(error);
+
+      throw new Error(err);
+    }
+  };
   const sendFriendRequest = async (recieverId: number) => {
     try {
       const res = await springApi.post("friend-requests/add", {
@@ -87,6 +102,7 @@ export const useFriends = () => {
   };
   return {
     searchUser,
+    getFriends,
     sendFriendRequest,
     getFriendRequests,
     confirmFriendRequest,

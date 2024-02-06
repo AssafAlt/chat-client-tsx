@@ -18,16 +18,20 @@ const FriendRequestsCard = () => {
     }
   };
 
-  useEffect(() => {
-    if (effectRan.current === false) {
-      onGetFriendRequests();
-    }
+  useEffect(
+    () => {
+      if (effectRan.current === false) {
+        onGetFriendRequests();
+      }
 
-    return () => {
-      console.log("unmounted");
-      effectRan.current = true;
-    };
-  }, []);
+      return () => {
+        //unmounting
+        effectRan.current = true;
+      };
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   return (
     <Card padding="md" radius="md" bg="cyan">

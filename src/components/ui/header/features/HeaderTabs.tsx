@@ -3,6 +3,7 @@ import { Center, Container, Tabs } from "@mantine/core"; // Assuming Mantine pro
 import AddFriendCard from "../../cards/AddFriendCard";
 import classes from "../Header.module.css";
 import FriendRequestsCard from "../../cards/FriendRequestsCard";
+import FriendsCard from "../../cards/FriendsCard";
 
 const HeaderTabs = () => {
   const tabs = ["Online", "All", "Pending", "Blocked", "Add Friend"];
@@ -15,6 +16,9 @@ const HeaderTabs = () => {
     }
     if (value === "Pending") {
       setShowCard("Pending");
+    }
+    if (value === "All") {
+      setShowCard("All");
     }
   };
 
@@ -41,6 +45,7 @@ const HeaderTabs = () => {
         </Tabs>
         {showCard === "Add Friend" && <AddFriendCard />}
         {showCard === "Pending" && <FriendRequestsCard />}
+        {showCard === "All" && <FriendsCard />}
       </Container>
     </Center>
   );
