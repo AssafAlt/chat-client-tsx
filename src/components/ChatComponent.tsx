@@ -13,23 +13,24 @@ interface Message {
   user: User;
   receiverId: number | null;
   comment: string;
-  action: string; // Modify to match backend MessageType enum
+  action: string;
   timestamp: Date | null;
 }
 
 const ChatComponent: React.FC = () => {
   const token = Cookies.get("jwt_token") || "";
-  const [stompClient, setStompClient] = useState<unknown>(null); // Use 'any' type for simplicity, you can replace it with proper types
+  const [stompClient, setStompClient] = useState<Client | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [inputMessage, setInputMessage] = useState<string>("");
+  const [connectedUsers, setConnectedUsers] = useState<User[]>([]);
 
   useEffect(() => {
     const socket = new SockJS("http://localhost:8080/ws", {
       headers: { Cookie: `jwt_token=${token}` },
     });
-    const stomp = Stomp.over(socket);
+    const stomp = Stomp.over(socket) as Client;
 
-    stomp.connect({}, () => {
+    stomp.connect({ token: token }, () => {
       setStompClient(stomp);
       console.log("Connected");
     });
@@ -40,9 +41,52 @@ const ChatComponent: React.FC = () => {
         console.log("Disconnected");
       }
     };
-  }, []);
+  }, [token]);
+
+  /*useEffect(() => {
+    if (stompClient && user) {
+      const subscription = stompClient.subscribe(
+        `/user/${user.id}/topic/users`,
+        (message) => {
+          console.log(message);
+          const userList: User[] = JSON.parse(message.body);
+          setConnectedUsers(userList);
+        }
+      );
+
+      return () => {
+        subscription.unsubscribe();
+      };
+    }
+  }, [stompClient, user]);*/
 
   const sendMessages = () => {
+    if (stompClient && user) {
+      const message: Message = {
+        user: user,
+        receiverId: null,
+        comment: inputMessage,
+        action: "JOIN",
+        timestamp: null,
+      };
+      stompClient.send("/app/message", {}, JSON.stringify(message));
+    }
+  };
+
+  const sendPrivateMessages = (receiverId: number) => {
+    if (stompClient && user) {
+      const message: Message = {
+        user: user,
+        receiverId: receiverId,
+        comment: inputMessage,
+        action: "PRIVATE_MESSAGE",
+        timestamp: null,
+      };
+      stompClient.send("/app/privatemessage", {}, JSON.stringify(message));
+    }
+  };
+
+  /*const sendMessages = () => {
     if (stompClient && user) {
       const message: Message = {
         user: user,
@@ -72,9 +116,32 @@ const ChatComponent: React.FC = () => {
           JSON.stringify(message)
         );
     }
-  };
+  };*/
 
-  return <div>{/* Your chat component JSX */}</div>;
+  return (
+    <div>
+      <h2>Connected Users</h2>
+      <ul>
+        {/*connectedUsers.map((user) => (
+          <li key={user.id}>{user.username}</li>
+        ))*/}
+      </ul>
+    </div>
+  );
 };
 
 export default ChatComponent;
+/*const url = "ws://localhost:8080/spring-boot-tutorial";
+const userUrl = "/topic/users";
+const topicUrl = "/topic/messages";
+const privateTopicUrl = "/topic/privatemessages";
+const privatePreUrl = "/user/";
+const appUsers = "/app/user";
+const appMessages = "/app/message";
+const appPrivateMessages = "/app/privatemessage";
+const client = new StompJs.Client({
+  brokerURL: url,
+});
+client.subscribe(privatePreUrl + user.id + userUrl, (usersList) => {
+  showUsers(JSON.parse(usersList.body));
+});*/
