@@ -1,7 +1,9 @@
 import { springApi } from "../api/apiConfig";
+import { useSocketContext } from "../context/SocketContext";
 import { axiosErrorExtractor } from "../utils/axiosErrorUtils";
 
 export const useFriends = () => {
+  const { socketDispatch } = useSocketContext();
   const searchUser = async (searchedUser: string) => {
     try {
       const res = await springApi.get(`users/search?prefix=${searchedUser}`);
@@ -24,6 +26,23 @@ export const useFriends = () => {
       if (res.status === 200) {
         return res.data;
       } else {
+        throw new Error("Unknown error");
+      }
+    } catch (error: unknown) {
+      const err = axiosErrorExtractor(error);
+
+      throw new Error(err);
+    }
+  };
+
+  const getOnlineFriends = async () => {
+    try {
+      const res = await springApi.get("users/online-friends");
+
+      if (res.status === 200) {
+        socketDispatch({ type: "GET_CONNECTED_FRIENDS", payload: res.data });
+      } else {
+        socketDispatch({ type: "NO_CONNECTED_FRIENDS" });
         throw new Error("Unknown error");
       }
     } catch (error: unknown) {
@@ -103,6 +122,7 @@ export const useFriends = () => {
   return {
     searchUser,
     getFriends,
+    getOnlineFriends,
     sendFriendRequest,
     getFriendRequests,
     confirmFriendRequest,

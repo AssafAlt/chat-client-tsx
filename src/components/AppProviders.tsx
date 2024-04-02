@@ -3,6 +3,7 @@ import { Notifications } from "@mantine/notifications";
 import { AuthProvider } from "../context/AuthContext";
 import { UserProvider } from "../context/UserContext";
 import { ModalsProvider } from "@mantine/modals";
+import { SocketProvider } from "../context/SocketContext";
 interface IProps {
   children: JSX.Element;
 }
@@ -18,8 +19,10 @@ export const AppProviders = ({ children }: IProps) => {
       <ModalsProvider>
         <AuthProvider>
           <UserProvider>
-            <Notifications position="top-right" />
-            {children}
+            <SocketProvider>
+              <Notifications position="top-right" />
+              {children}
+            </SocketProvider>
           </UserProvider>
         </AuthProvider>
       </ModalsProvider>

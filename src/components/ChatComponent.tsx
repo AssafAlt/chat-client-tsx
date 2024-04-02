@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Stomp, { Client, Message } from "stompjs";
 import SockJS from "sockjs-client";
 import Cookies from "js-cookie";
+import { useSocketContext } from "../context/SocketContext";
+import { useSocket } from "../hooks/useSocket";
 
 interface User {
   id: string;
@@ -10,39 +12,21 @@ interface User {
 }
 
 const ChatComponent: React.FC = () => {
-  const token = Cookies.get("jwt_token") || "";
-  const [stompClient, setStompClient] = useState<Client | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [inputMessage, setInputMessage] = useState<string>("");
   const [connectedUsers, setConnectedUsers] = useState<string[]>([]);
-  const [connectionError, setConnectionError] = useState<boolean>(false);
-
+  const { socketState } = useSocketContext();
+  const { disconnectingSocket } = useSocket();
+  const { stompClient } = socketState;
+  /*
   useEffect(() => {
-    const socket = new SockJS("http://localhost:8080/ws", {
-      headers: { Cookie: `jwt_token=${token}` },
-    });
-    const stomp = Stomp.over(socket) as Client;
-
-    stomp.connect(
-      { token: token },
-      () => {
-        setStompClient(stomp);
-        console.log("Connected");
-        setConnectionError(false); // Reset connection error
-      },
-      (error) => {
-        console.error("Error while connecting:", error);
-        setConnectionError(true); // Set connection error flag
-      }
-    );
-
     return () => {
-      if (stomp.connected) {
-        stomp.disconnect(() => {});
-        console.log("Disconnected");
+      if (socketState.stompClient?.connected) {
+        disconnectingSocket();
       }
     };
-  }, [token]);
+  }, []);
+*/
 
   useEffect(() => {
     if (stompClient) {
@@ -59,21 +43,11 @@ const ChatComponent: React.FC = () => {
           }
         }
       );
-
-      /* return () => {
-        subscription.unsubscribe();
-      };*/
     }
   }, [stompClient]);
 
   return (
     <div>
-      {connectionError && (
-        <p>
-          Connection error. Please check your internet connection and try again.
-        </p>
-      )}
-      <h2>Connected Users</h2>
       <ul>
         {connectedUsers.map((username, index) => (
           <li key={index}>{username}</li>
@@ -84,3 +58,6 @@ const ChatComponent: React.FC = () => {
 };
 
 export default ChatComponent;
+/* return () => {
+        subscription.unsubscribe();
+      };*/
