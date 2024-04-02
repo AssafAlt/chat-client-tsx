@@ -3,24 +3,17 @@ import { useAuthContext } from "../context/AuthContext";
 //("http://localhost:8080/ws")
 
 import SetProfilePic from "../components/user_settings/SetProfilePic";
-import { useEffect, useRef, useState } from "react";
-import Cookies from "js-cookie";
-import ChatComponent from "../components/ChatComponent";
+import { useEffect, useRef } from "react";
 import { useSocket } from "../hooks/useSocket";
-import { useSocketContext } from "../context/SocketContext";
-import Test from "../components/Test";
 import { useFriends } from "../hooks/useFriends";
-import { FriendWithStatus } from "../models/FriendWithStatus";
+import SideBar from "../components/ui/sidebar/SideBar";
 
 const Home = () => {
   const { state } = useAuthContext();
   const imagePath = state.profileImg ? state.profileImg : "";
   const userNickname = state.nickname ? state.nickname : "";
-  const token = Cookies.get("jwt_token") ?? "";
-  const { connectingSocket, disconnectingSocket } = useSocket();
-  const { socketState } = useSocketContext();
+  const { connectingSocket } = useSocket();
   const { getOnlineFriends } = useFriends();
-  const [isClicked, setIsClicked] = useState(false);
   const effectRan = useRef(false);
 
   const connect = async () => {
@@ -51,6 +44,7 @@ const Home = () => {
 
   return (
     <div>
+      <SideBar />
       {state.isFirstLogin && (
         <Paper>
           <Text ta="center" fz="lg" fw={500} mt="md">
@@ -59,11 +53,6 @@ const Home = () => {
           </Text>
           <SetProfilePic imageSrc={imagePath} userNickname={userNickname} />
         </Paper>
-      )}
-      {isClicked ? (
-        <Test />
-      ) : (
-        <Button onClick={() => setIsClicked(true)}>Open</Button>
       )}
     </div>
   );
