@@ -1,13 +1,21 @@
 import React, { createContext, useReducer, useContext, Dispatch } from "react";
 
+export interface ICurrentRoom {
+  currentRoom: string;
+  currentFriendProfileImg: string;
+  currentFriendNickname: string;
+}
+
 interface DisplayState {
   showChat: boolean;
+  currentChat: ICurrentRoom;
   showHeaders: boolean;
   overlay: { source: string; isVisible: boolean };
 }
 // Define the SignUp Actions
 type DisplayAction =
   | { type: "SHOW_CHAT" }
+  | { type: "CHOOSE_CHAT"; payload: ICurrentRoom }
   | { type: "SHOW_HEADERS" }
   | { type: "CLOSE_HEADERS" }
   | { type: "SHOW_OVERLAY"; payload: { source: string; isVisible: boolean } }
@@ -16,6 +24,11 @@ type DisplayAction =
 // Create the initial state
 const initialState: DisplayState = {
   showChat: false,
+  currentChat: {
+    currentRoom: "",
+    currentFriendProfileImg: "",
+    currentFriendNickname: "",
+  },
   showHeaders: false,
   overlay: { source: "", isVisible: false },
 };
@@ -39,6 +52,11 @@ const displayReducer = (
         ...state,
         showChat: true,
         showHeaders: false,
+      };
+    case "CHOOSE_CHAT":
+      return {
+        ...state,
+        currentChat: action.payload,
       };
     case "SHOW_HEADERS":
       return { ...state, showChat: false, showHeaders: true };

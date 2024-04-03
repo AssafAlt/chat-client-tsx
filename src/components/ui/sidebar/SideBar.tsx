@@ -28,13 +28,18 @@ import { DisplayType, useDisplay } from "../../../hooks/useDisplay";
 import { useSocket } from "../../../hooks/useSocket";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
+import { createPrivateRoomName } from "../../../utils/socketUtils";
+import { useAuthContext } from "../../../context/AuthContext";
+import { ICurrentRoom } from "../../../context/DisplayContext";
 
 const SideBar = () => {
   const { socketState } = useSocketContext();
-  const { displayManager } = useDisplay();
+  const { displayManager, chooseChat } = useDisplay();
   const [friendLists, setFriendsList] = useState<FriendWithStatus[]>([]);
   const [active, setActive] = useState("Friends");
   const [showCard, setShowCard] = useState("");
+  const { state } = useAuthContext();
+  const userNick: string = state.nickname ? state.nickname : "";
 
   const handleTabChange = (value: string) => {
     if (value !== "") {
@@ -149,17 +154,27 @@ const SideBar = () => {
           mb="sm"
         />
         {friends}
-        <Group className={classes.header} justify="space-between">
-          <Code fw={700} className={classes.version}>
-            v3.1.2
-          </Code>
-        </Group>
+        <Group className={classes.header} justify="space-between"></Group>
         {links}
       </div>
       {showCard === "Online Friends" && friendLists.length > 0 && (
         <List py="sm">
           {friendLists.map((friend, index) => (
-            <Flex key={index} justify="space-between" py="sm" px="sm">
+            <Flex
+              onClick={() => {
+                displayManager(DisplayType.CHAT);
+                const newRoom: ICurrentRoom = {
+                  currentFriendNickname: friend.nickname,
+                  currentFriendProfileImg: friend.profileImg,
+                  currentRoom: createPrivateRoomName(userNick, friend.nickname),
+                };
+                chooseChat(newRoom);
+              }}
+              key={index}
+              justify="space-between"
+              py="sm"
+              px="sm"
+            >
               <Avatar src={friend.profileImg} />
               <Text ff="sans-serif" fs="italic">
                 {friend.nickname}

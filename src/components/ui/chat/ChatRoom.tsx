@@ -1,38 +1,95 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Avatar, Button, Paper, Textarea, Text } from "@mantine/core";
 import ChatHeader from "./features/ChatHeader";
+import { useSocketContext } from "../../../context/SocketContext";
+import { useAuthContext } from "../../../context/AuthContext";
+import { useDisplayContext } from "../../../context/DisplayContext";
 
 // Sample data for messages
 const initialMessages = [
-  { id: 1, sender: "John", text: "Hi there!", time: "10:00 AM" },
-  { id: 2, sender: "Jane", text: "Hello!", time: "10:05 AM" },
+  { sender: "John", text: "Hi there!", time: "10:00 AM" },
+  { sender: "Jane", text: "Hello!", time: "10:05 AM" },
 ];
 
+interface CurrentChatMessage {
+  sender: string;
+  content: string;
+  time: string;
+}
+
+interface ChatMessage extends CurrentChatMessage {
+  room: string;
+  recipient: string;
+  date: string;
+}
+
 const ChatRoom = () => {
-  const [messages, setMessages] = useState(initialMessages);
+  const { state } = useAuthContext();
+
+  const userImage: string = state.profileImg ? state.profileImg : "";
+  const userNick: string = state.nickname ? state.nickname : "";
+  const { displayState } = useDisplayContext();
+  const { currentChat } = displayState;
+  const { socketState } = useSocketContext();
+  const { stompClient } = socketState;
+  const [messages, setMessages] = useState<CurrentChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState("");
 
   const handleMessageSend = () => {
     if (newMessage.trim() === "") return;
 
-    const newId =
-      messages.length > 0 ? messages[messages.length - 1].id + 1 : 1;
-    const newMessageObj = {
-      id: newId,
-      sender: "You", // Assuming the user sending the message is "You"
-      text: newMessage.trim(),
-      time: getCurrentTime(), // Get current time
+    const newChatMessage: ChatMessage = {
+      room: currentChat.currentRoom,
+      sender: userNick,
+      recipient: currentChat.currentFriendNickname,
+      content: newMessage.trim(),
+      date: getFormatDate(),
+      time: getCurrentTime(),
     };
 
-    setMessages([...messages, newMessageObj]);
+    stompClient?.send(
+      "/app/private." + currentChat.currentRoom,
+      {},
+      JSON.stringify(newChatMessage)
+    );
+    /*const newMessageObj: CurrentChatMessage = {
+      sender: userNick,
+      content: newMessage.trim(),
+      time: getCurrentTime(),
+    };
+
+    setMessages([...messages, newMessageObj]);*/
     setNewMessage("");
   };
 
-  // Function to get current time
+  const getFormatDate = (): string => {
+    const date = new Date();
+    const formattedDate = `${
+      date.getMonth() + 1
+    }-${date.getDate()}-${date.getFullYear()}`;
+    return formattedDate;
+  };
+
   const getCurrentTime = () => {
     const now = new Date();
     return now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
+
+  const handleEnterPress = (event) => {
+    if (event.key === "Enter") {
+      handleMessageSend();
+    }
+  };
+
+  useMemo(() => {
+    stompClient?.subscribe(
+      "/topic/private." + currentChat.currentRoom,
+      (message) => {
+        const receivedMessage: CurrentChatMessage = JSON.parse(message.body);
+        setMessages((prevMessages) => [...prevMessages, receivedMessage]);
+      }
+    );
+  }, [stompClient]);
 
   return (
     <div
@@ -46,51 +103,78 @@ const ChatRoom = () => {
         flexDirection: "column",
       }}
     >
-      <ChatHeader />
+      <ChatHeader
+        friendNickname={currentChat.currentFriendNickname}
+        profileImg={currentChat.currentFriendProfileImg}
+      />
       <div style={{ flex: "1", overflowY: "auto", padding: "10px" }}>
-        {messages.map((message) => (
+        {messages.map((message, index) => (
           <div
-            key={message.id}
+            key={index}
             style={{
               marginBottom: "10px",
               display: "flex",
               alignItems: "flex-start",
               justifyContent:
-                message.sender === "You" ? "flex-start" : "flex-end", // Align messages based on sender
+                message.sender === userNick ? "flex-start" : "flex-end", // Align messages based on sender
             }}
           >
-            {message.sender === "You" ? (
-              <Avatar
-                style={{ marginRight: "10px" }}
-                radius="xl"
-                src="/your-avatar.jpg"
-                alt="You"
-              />
+            {message.sender === userNick ? (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <Avatar
+                  style={{ marginRight: "10px" }}
+                  radius="xl"
+                  src={userImage}
+                  alt="You"
+                />
+                <div
+                  style={{
+                    backgroundColor: "#f0f0f0",
+                    padding: "8px 12px",
+                    borderRadius: "10px",
+                    textAlign: "left",
+                  }}
+                >
+                  <div>{message.content}</div>
+                  <div style={{ fontSize: "12px", color: "#777" }}>
+                    {message.time}
+                  </div>
+                </div>
+              </div>
             ) : (
-              <Avatar
-                style={{ marginLeft: "10px" }}
-                radius="xl"
-                src="/avatar.jpg"
-                alt={message.sender}
-              />
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <div
+                  style={{
+                    backgroundColor: "#dcf8c6",
+                    padding: "8px 12px",
+                    borderRadius: "10px",
+                    textAlign: "left",
+                    flex: "1",
+                  }}
+                >
+                  <div>{message.content}</div>
+                  <div style={{ fontSize: "12px", color: "#777" }}>
+                    {message.time}
+                  </div>
+                </div>
+                <Avatar
+                  style={{ marginLeft: "10px" }}
+                  radius="xl"
+                  src={currentChat.currentFriendProfileImg}
+                  alt={message.sender}
+                />
+              </div>
             )}
-            <div
-              style={{
-                backgroundColor:
-                  message.sender === "You" ? "#f0f0f0" : "#dcf8c6", // Different background colors for different senders
-                padding: "8px 12px",
-                borderRadius: "10px",
-                textAlign: "left",
-              }}
-            >
-              <div style={{ fontWeight: "bold", marginBottom: "4px" }}>
-                {message.sender}
-              </div>
-              <div>{message.text}</div>
-              <div style={{ fontSize: "12px", color: "#777" }}>
-                {message.time}
-              </div>
-            </div>
           </div>
         ))}
       </div>
@@ -106,6 +190,7 @@ const ChatRoom = () => {
           style={{ flex: "1", marginRight: "10px" }}
           value={newMessage}
           onChange={(event) => setNewMessage(event.target.value)}
+          onKeyDown={handleEnterPress}
           placeholder="Type your message here..."
         />
         <Button onClick={handleMessageSend} color="cyan">

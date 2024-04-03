@@ -1,4 +1,4 @@
-import { useDisplayContext } from "../context/DisplayContext";
+import { useDisplayContext, ICurrentRoom } from "../context/DisplayContext";
 
 export enum DisplayType {
   CHAT = "SHOW_CHAT",
@@ -12,5 +12,9 @@ export const useDisplay = () => {
     displayDispatch({ type: display });
   };
 
-  return { displayManager };
+  const chooseChat = (room: ICurrentRoom) => {
+    displayDispatch({ type: "CHOOSE_CHAT", payload: room });
+  };
+
+  return { displayManager, chooseChat };
 };
