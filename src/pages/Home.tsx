@@ -1,12 +1,12 @@
-import { Button, Paper, Text } from "@mantine/core";
+import { Button, Flex, Paper, Text } from "@mantine/core";
 import { useAuthContext } from "../context/AuthContext";
-//("http://localhost:8080/ws")
-
 import SetProfilePic from "../components/user_settings/SetProfilePic";
 import { useEffect, useRef } from "react";
 import { useSocket } from "../hooks/useSocket";
 import { useFriends } from "../hooks/useFriends";
 import SideBar from "../components/ui/sidebar/SideBar";
+import ChatRoom from "../components/ui/chat/ChatRoom";
+import { useDisplayContext } from "../context/DisplayContext";
 
 const Home = () => {
   const { state } = useAuthContext();
@@ -14,6 +14,7 @@ const Home = () => {
   const userNickname = state.nickname ? state.nickname : "";
   const { connectingSocket } = useSocket();
   const { getOnlineFriends } = useFriends();
+  const { displayState } = useDisplayContext();
   const effectRan = useRef(false);
 
   const connect = async () => {
@@ -43,17 +44,21 @@ const Home = () => {
   );
 
   return (
-    <div>
+    <div style={{ display: "flex" }}>
       <SideBar />
-      {state.isFirstLogin && (
-        <Paper>
-          <Text ta="center" fz="lg" fw={500} mt="md">
-            You don't choose profile image yet, would you like to choose one
-            now?
-          </Text>
-          <SetProfilePic imageSrc={imagePath} userNickname={userNickname} />
-        </Paper>
-      )}
+      <div style={{ flex: "1", marginLeft: "20px" }}>
+        {state.isFirstLogin && (
+          <Paper>
+            <Text ta="center" fz="lg" fw={500} mt="md">
+              You haven't chosen a profile image yet. Would you like to choose
+              one now?
+            </Text>
+            <SetProfilePic imageSrc={imagePath} userNickname={userNickname} />
+          </Paper>
+        )}
+      </div>
+
+      {displayState.showChat && <ChatRoom />}
     </div>
   );
 };

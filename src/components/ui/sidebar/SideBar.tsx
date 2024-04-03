@@ -9,23 +9,31 @@ import {
   Flex,
   List,
   Avatar,
+  Menu,
+  Button,
 } from "@mantine/core";
 import {
   IconBellRinging,
-  IconSwitchHorizontal,
+  IconSettings,
   IconLogout,
   IconUsers,
   IconBrandHipchat,
+  IconFriends,
 } from "@tabler/icons-react";
 
 import classes from "./SideBar.module.css";
 import { useSocketContext } from "../../../context/SocketContext";
 import { FriendWithStatus } from "../../../models/FriendWithStatus";
+import { DisplayType, useDisplay } from "../../../hooks/useDisplay";
+import { useSocket } from "../../../hooks/useSocket";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../hooks/useAuth";
 
 const SideBar = () => {
   const { socketState } = useSocketContext();
+  const { displayManager } = useDisplay();
   const [friendLists, setFriendsList] = useState<FriendWithStatus[]>([]);
-  const [active, setActive] = useState("Notifications");
+  const [active, setActive] = useState("Friends");
   const [showCard, setShowCard] = useState("");
 
   const handleTabChange = (value: string) => {
@@ -36,8 +44,18 @@ const SideBar = () => {
       setShowCard("Online Friends");
     }
   };
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+  const { disconnectingSocket } = useSocket();
+
+  const onLogout = () => {
+    logout();
+    disconnectingSocket();
+    navigate("/");
+  };
 
   useEffect(() => {
+    displayManager(DisplayType.HEADERS);
     setFriendsList(socketState.connectedFriends);
   }, [socketState]);
 
@@ -50,6 +68,49 @@ const SideBar = () => {
       variance: friendLists.length.toString(),
     },
   ];
+  const friends = (
+    <a
+      className={classes.link}
+      data-active={"Friends" === active || undefined}
+      href=""
+      onClick={(event) => {
+        event.preventDefault();
+        setActive("Friends");
+        handleTabChange("Friends");
+        displayManager(DisplayType.HEADERS);
+      }}
+    >
+      <IconFriends className={classes.linkIcon} stroke={1.5} />
+      <span>Friends</span>
+    </a>
+  );
+  const logoutElement = (
+    <a
+      className={classes.link}
+      data-active={"Logout" === active || undefined}
+      href=""
+      onClick={onLogout}
+    >
+      <IconLogout color="red" className={classes.linkIcon} stroke={1.5} />
+      <span>Logout</span>
+    </a>
+  );
+  const settings = (
+    <a
+      className={classes.link}
+      data-active={"Settings" === active || undefined}
+      href=""
+      onClick={(event) => {
+        event.preventDefault();
+        setActive("Settings");
+        handleTabChange("Settings");
+        displayManager(DisplayType.CLOSE_HEADERS);
+      }}
+    >
+      <IconSettings className={classes.linkIcon} stroke={1.5} />
+      <span>Settings</span>
+    </a>
+  );
 
   const links = data.map((item) => (
     <a
@@ -61,6 +122,7 @@ const SideBar = () => {
         event.preventDefault();
         setActive(item.label);
         handleTabChange(item.label);
+        displayManager(DisplayType.CLOSE_HEADERS);
       }}
     >
       <item.icon className={classes.linkIcon} stroke={1.5} />
@@ -86,6 +148,7 @@ const SideBar = () => {
           styles={{ section: { pointerEvents: "none" } }}
           mb="sm"
         />
+        {friends}
         <Group className={classes.header} justify="space-between">
           <Code fw={700} className={classes.version}>
             v3.1.2
@@ -109,23 +172,9 @@ const SideBar = () => {
         </List>
       )}{" "}
       <div className={classes.footer}>
-        <a
-          href="#"
-          className={classes.link}
-          onClick={(event) => event.preventDefault()}
-        >
-          <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
-          <span>Change account</span>
-        </a>
+        {settings}
 
-        <a
-          href="#"
-          className={classes.link}
-          onClick={(event) => event.preventDefault()}
-        >
-          <IconLogout className={classes.linkIcon} stroke={1.5} />
-          <span>Logout</span>
-        </a>
+        {logoutElement}
       </div>
     </Paper>
   );

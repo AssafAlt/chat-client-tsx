@@ -4,8 +4,10 @@ import { useAuthContext } from "../../../context/AuthContext";
 import classes from "./Header.module.css";
 import UserDropMenu from "./features/UserDropMenu";
 import HeaderTabs from "./features/HeaderTabs";
+import { useDisplayContext } from "../../../context/DisplayContext";
 const Header = () => {
   const { state } = useAuthContext();
+  const { displayState } = useDisplayContext();
   const token = Cookies.get("jwt_token");
   const userImage: string = state.profileImg ? state.profileImg : "";
   const userNick: string = state.nickname ? state.nickname : "";
@@ -24,7 +26,7 @@ const Header = () => {
           )}
         </Group>
       </Container>
-      {token && <HeaderTabs />}
+      {displayState.showHeaders && <HeaderTabs />}
     </div>
   );
 };
