@@ -4,24 +4,11 @@ import ChatHeader from "./features/ChatHeader";
 import { useSocketContext } from "../../../context/SocketContext";
 import { useAuthContext } from "../../../context/AuthContext";
 import { useDisplayContext } from "../../../context/DisplayContext";
-
-// Sample data for messages
-const initialMessages = [
-  { sender: "John", text: "Hi there!", time: "10:00 AM" },
-  { sender: "Jane", text: "Hello!", time: "10:05 AM" },
-];
-
-interface CurrentChatMessage {
-  sender: string;
-  content: string;
-  time: string;
-}
-
-interface ChatMessage extends CurrentChatMessage {
-  room: string;
-  recipient: string;
-  date: string;
-}
+import {
+  IChatMessage,
+  ICurrentChatMessage,
+} from "../../../models/ChatMessages";
+import { springApi } from "../../../api/apiConfig";
 
 const ChatRoom = () => {
   const { state } = useAuthContext();
@@ -32,19 +19,22 @@ const ChatRoom = () => {
   const { currentChat } = displayState;
   const { socketState } = useSocketContext();
   const { stompClient } = socketState;
-  const [messages, setMessages] = useState<CurrentChatMessage[]>([]);
+  const [messages, setMessages] = useState<ICurrentChatMessage[]>([]);
+  const [chatHistory, setChatHistory] = useState<{
+    [key: string]: ICurrentChatMessage[];
+  }>({});
   const [newMessage, setNewMessage] = useState("");
 
   const handleMessageSend = () => {
     if (newMessage.trim() === "") return;
 
-    const newChatMessage: ChatMessage = {
-      room: currentChat.currentRoom,
+    const newChatMessage: IChatMessage = {
       sender: userNick,
-      recipient: currentChat.currentFriendNickname,
       content: newMessage.trim(),
-      date: getFormatDate(),
       time: getCurrentTime(),
+      date: getFormatDate(),
+      room: currentChat.currentRoom,
+      recipient: currentChat.currentFriendNickname,
     };
 
     stompClient?.send(
@@ -52,21 +42,16 @@ const ChatRoom = () => {
       {},
       JSON.stringify(newChatMessage)
     );
-    /*const newMessageObj: CurrentChatMessage = {
-      sender: userNick,
-      content: newMessage.trim(),
-      time: getCurrentTime(),
-    };
 
-    setMessages([...messages, newMessageObj]);*/
     setNewMessage("");
   };
 
   const getFormatDate = (): string => {
     const date = new Date();
-    const formattedDate = `${
-      date.getMonth() + 1
-    }-${date.getDate()}-${date.getFullYear()}`;
+    const year = date.getFullYear();
+    const month = ("0" + (date.getMonth() + 1)).slice(-2); // Ensure two digits
+    const day = ("0" + date.getDate()).slice(-2);
+    const formattedDate = `${month}-${day}-${year}`;
     return formattedDate;
   };
 
@@ -75,7 +60,7 @@ const ChatRoom = () => {
     return now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
 
-  const handleEnterPress = (event) => {
+  const handleEnterPress = (event: { key: string }) => {
     if (event.key === "Enter") {
       handleMessageSend();
     }
@@ -85,11 +70,30 @@ const ChatRoom = () => {
     stompClient?.subscribe(
       "/topic/private." + currentChat.currentRoom,
       (message) => {
-        const receivedMessage: CurrentChatMessage = JSON.parse(message.body);
+        const receivedMessage: ICurrentChatMessage = JSON.parse(message.body);
+
         setMessages((prevMessages) => [...prevMessages, receivedMessage]);
       }
     );
   }, [stompClient]);
+
+  useEffect(
+    () => {
+      const chatHistory = async () => {
+        const res = await springApi.get(`messages/${currentChat.currentRoom}`);
+        if (res.status === 200) {
+          setChatHistory(res.data);
+        }
+        if (res.status === 206) {
+          setChatHistory(res.data);
+          console.log("There is no more messages");
+        }
+      };
+      chatHistory();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   return (
     <div
@@ -108,73 +112,159 @@ const ChatRoom = () => {
         profileImg={currentChat.currentFriendProfileImg}
       />
       <div style={{ flex: "1", overflowY: "auto", padding: "10px" }}>
+        {Object.entries(chatHistory).map(([date, messages]) => (
+          <div key={date}>
+            <div style={{ marginBottom: "10px", fontSize: "18px" }}>{date}</div>
+            {messages
+              .slice()
+              .reverse()
+              .map(
+                (
+                  message,
+                  index // Reverse the order here
+                ) => (
+                  <div key={`history-${index}`}>
+                    <div
+                      style={{
+                        marginBottom: "10px",
+                        display: "flex",
+                        alignItems: "flex-start",
+                        justifyContent:
+                          message.sender === userNick
+                            ? "flex-start"
+                            : "flex-end", // Align messages based on sender
+                      }}
+                    >
+                      {message.sender === userNick ? (
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Avatar
+                            style={{ marginRight: "10px" }}
+                            radius="xl"
+                            src={userImage}
+                            alt="You"
+                          />
+                          <div
+                            style={{
+                              backgroundColor: "#f0f0f0",
+                              padding: "8px 12px",
+                              borderRadius: "10px",
+                              textAlign: "left",
+                            }}
+                          >
+                            <div>{message.content}</div>
+                            <div style={{ fontSize: "12px", color: "#777" }}>
+                              {message.time}
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <div
+                            style={{
+                              backgroundColor: "#dcf8c6",
+                              padding: "8px 12px",
+                              borderRadius: "10px",
+                              textAlign: "left",
+                              flex: "1",
+                            }}
+                          >
+                            <div>{message.content}</div>
+                            <div style={{ fontSize: "12px", color: "#777" }}>
+                              {message.time}
+                            </div>
+                          </div>
+                          <Avatar
+                            style={{ marginLeft: "10px" }}
+                            radius="xl"
+                            src={currentChat.currentFriendProfileImg}
+                            alt={message.sender}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )
+              )}
+          </div>
+        ))}
         {messages.map((message, index) => (
-          <div
-            key={index}
-            style={{
-              marginBottom: "10px",
-              display: "flex",
-              alignItems: "flex-start",
-              justifyContent:
-                message.sender === userNick ? "flex-start" : "flex-end", // Align messages based on sender
-            }}
-          >
-            {message.sender === userNick ? (
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <Avatar
-                  style={{ marginRight: "10px" }}
-                  radius="xl"
-                  src={userImage}
-                  alt="You"
-                />
+          <div key={`new-${index}`}>
+            <div
+              style={{
+                marginBottom: "10px",
+                display: "flex",
+                alignItems: "flex-start",
+                justifyContent:
+                  message.sender === userNick ? "flex-start" : "flex-end", // Align messages based on sender
+              }}
+            >
+              {message.sender === userNick ? (
                 <div
                   style={{
-                    backgroundColor: "#f0f0f0",
-                    padding: "8px 12px",
-                    borderRadius: "10px",
-                    textAlign: "left",
+                    display: "flex",
+                    alignItems: "center",
                   }}
                 >
-                  <div>{message.content}</div>
-                  <div style={{ fontSize: "12px", color: "#777" }}>
-                    {message.time}
+                  <Avatar
+                    style={{ marginRight: "10px" }}
+                    radius="xl"
+                    src={userImage}
+                    alt="You"
+                  />
+                  <div
+                    style={{
+                      backgroundColor: "#f0f0f0",
+                      padding: "8px 12px",
+                      borderRadius: "10px",
+                      textAlign: "left",
+                    }}
+                  >
+                    <div>{message.content}</div>
+                    <div style={{ fontSize: "12px", color: "#777" }}>
+                      {message.time}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ) : (
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
+              ) : (
                 <div
                   style={{
-                    backgroundColor: "#dcf8c6",
-                    padding: "8px 12px",
-                    borderRadius: "10px",
-                    textAlign: "left",
-                    flex: "1",
+                    display: "flex",
+                    alignItems: "center",
                   }}
                 >
-                  <div>{message.content}</div>
-                  <div style={{ fontSize: "12px", color: "#777" }}>
-                    {message.time}
+                  <div
+                    style={{
+                      backgroundColor: "#dcf8c6",
+                      padding: "8px 12px",
+                      borderRadius: "10px",
+                      textAlign: "left",
+                      flex: "1",
+                    }}
+                  >
+                    <div>{message.content}</div>
+                    <div style={{ fontSize: "12px", color: "#777" }}>
+                      {message.time}
+                    </div>
                   </div>
+                  <Avatar
+                    style={{ marginLeft: "10px" }}
+                    radius="xl"
+                    src={currentChat.currentFriendProfileImg}
+                    alt={message.sender}
+                  />
                 </div>
-                <Avatar
-                  style={{ marginLeft: "10px" }}
-                  radius="xl"
-                  src={currentChat.currentFriendProfileImg}
-                  alt={message.sender}
-                />
-              </div>
-            )}
+              )}
+            </div>
           </div>
         ))}
       </div>
