@@ -1,9 +1,9 @@
 import { springApi } from "../api/apiConfig";
-import { useSocketContext } from "../context/SocketContext";
+import { useFriendsContext } from "../context/FriendsContext";
 import { axiosErrorExtractor } from "../utils/axiosErrorUtils";
 
 export const useFriends = () => {
-  const { socketDispatch } = useSocketContext();
+  const { friendsDispatch } = useFriendsContext();
   const searchUser = async (searchedUser: string) => {
     try {
       const res = await springApi.get(`users/search?prefix=${searchedUser}`);
@@ -35,7 +35,7 @@ export const useFriends = () => {
     }
   };
 
-  const getOnlineFriends = async () => {
+  /* const getOnlineFriends = async () => {
     try {
       const res = await springApi.get("users/online-friends");
 
@@ -43,6 +43,22 @@ export const useFriends = () => {
         socketDispatch({ type: "GET_CONNECTED_FRIENDS", payload: res.data });
       } else {
         socketDispatch({ type: "NO_CONNECTED_FRIENDS" });
+        throw new Error("Unknown error");
+      }
+    } catch (error: unknown) {
+      const err = axiosErrorExtractor(error);
+
+      throw new Error(err);
+    }
+  };*/
+  const getFriendsWithStatus = async () => {
+    try {
+      const res = await springApi.get("users/friends-status");
+      console.log(res.data);
+      if (res.status === 200) {
+        friendsDispatch({ type: "GET_FRIENDS_STATUS", payload: res.data });
+      } else {
+        friendsDispatch({ type: "NO_FRIENDS" });
         throw new Error("Unknown error");
       }
     } catch (error: unknown) {
@@ -122,7 +138,7 @@ export const useFriends = () => {
   return {
     searchUser,
     getFriends,
-    getOnlineFriends,
+    getFriendsWithStatus,
     sendFriendRequest,
     getFriendRequests,
     confirmFriendRequest,

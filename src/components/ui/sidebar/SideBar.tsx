@@ -19,11 +19,15 @@ import {
   IconUsers,
   IconBrandHipchat,
   IconFriends,
+  IconUserOff,
 } from "@tabler/icons-react";
 
 import classes from "./SideBar.module.css";
 import { useSocketContext } from "../../../context/SocketContext";
-import { FriendWithStatus } from "../../../models/FriendWithStatus";
+import {
+  IFriendMap,
+  IFriendsWithStatus,
+} from "../../../models/FriendWithStatus";
 import { DisplayType, useDisplay } from "../../../hooks/useDisplay";
 import { useSocket } from "../../../hooks/useSocket";
 import { useNavigate } from "react-router-dom";
@@ -31,22 +35,31 @@ import { useAuth } from "../../../hooks/useAuth";
 import { createPrivateRoomName } from "../../../utils/socketUtils";
 import { useAuthContext } from "../../../context/AuthContext";
 import { ICurrentRoom } from "../../../context/DisplayContext";
+import { useFriendsContext } from "../../../context/FriendsContext";
 
 const SideBar = () => {
   const { socketState } = useSocketContext();
+  const { friendsState } = useFriendsContext();
   const { displayManager, chooseChat } = useDisplay();
-  const [friendLists, setFriendsList] = useState<FriendWithStatus[]>([]);
+  //const [friendLists, setFriendsList] = useState<FriendWithStatus[]>([]);
+  /*useState<{
+    [key: string]: ICurrentChatMessage[];
+  }>*/
+  const [friendsList, setFriendsList] = useState<IFriendsWithStatus>();
+  const [onlineFriendsList, setOnlineFriendsList] = useState<IFriendMap>({});
+  const [offlineFriendsList, setOfflineFriendsList] = useState<IFriendMap>({});
   const [active, setActive] = useState("Friends");
   const [showCard, setShowCard] = useState("");
   const { state } = useAuthContext();
   const userNick: string = state.nickname ? state.nickname : "";
 
   const handleTabChange = (value: string) => {
-    if (value !== "") {
-      setShowCard("");
-    }
     if (value === "Online Friends") {
       setShowCard("Online Friends");
+    }
+
+    if (value === "Offline Friends") {
+      setShowCard("Offline Friends");
     }
   };
   const navigate = useNavigate();
@@ -61,8 +74,10 @@ const SideBar = () => {
 
   useEffect(() => {
     displayManager(DisplayType.HEADERS);
-    setFriendsList(socketState.connectedFriends);
-  }, [socketState]);
+    //setOnlineFriendsList(socketState.friends.onlineFriends);
+    //setOfflineFriendsList(socketState.friends.offlineFriends);
+    setFriendsList(friendsState.friends);
+  }, [friendsState]);
 
   const data = [
     { link: "", label: "Notifications", icon: IconBellRinging, variance: "0" },
@@ -70,7 +85,17 @@ const SideBar = () => {
       link: "",
       label: "Online Friends",
       icon: IconUsers,
-      variance: friendLists.length.toString(),
+      variance: Object.keys(
+        friendsState.friends.onlineFriends
+      ).length.toString(),
+    },
+    {
+      link: "",
+      label: "Offline Friends",
+      icon: IconUserOff,
+      variance: Object.keys(
+        friendsState.friends.offlineFriends
+      ).length.toString(),
     },
   ];
   const friends = (
@@ -89,6 +114,7 @@ const SideBar = () => {
       <span>Friends</span>
     </a>
   );
+
   const logoutElement = (
     <a
       className={classes.link}
@@ -157,35 +183,39 @@ const SideBar = () => {
         <Group className={classes.header} justify="space-between"></Group>
         {links}
       </div>
-      {showCard === "Online Friends" && friendLists.length > 0 && (
-        <List py="sm">
-          {friendLists.map((friend, index) => (
-            <Flex
-              onClick={() => {
-                displayManager(DisplayType.CHAT);
-                const newRoom: ICurrentRoom = {
-                  currentFriendNickname: friend.nickname,
-                  currentFriendProfileImg: friend.profileImg,
-                  currentRoom: createPrivateRoomName(userNick, friend.nickname),
-                };
-                chooseChat(newRoom);
-              }}
-              key={index}
-              justify="space-between"
-              py="sm"
-              px="sm"
-            >
-              <Avatar src={friend.profileImg} />
-              <Text ff="sans-serif" fs="italic">
-                {friend.nickname}
-              </Text>
-              <Flex>
-                <IconBrandHipchat />
-              </Flex>
-            </Flex>
-          ))}
-        </List>
-      )}{" "}
+      {showCard === "Online Friends" &&
+        Object.keys(friendsState.friends.onlineFriends).length > 0 && (
+          <List py="sm">
+            {Object.entries(friendsState.friends.onlineFriends).map(
+              ([nickname, profileImg]) => (
+                <Flex
+                  onClick={() => {
+                    displayManager(DisplayType.CHAT);
+                    const newRoom: ICurrentRoom = {
+                      currentFriendNickname: nickname,
+                      currentFriendProfileImg: profileImg,
+                      currentRoom: createPrivateRoomName(userNick, nickname),
+                    };
+                    chooseChat(newRoom);
+                  }}
+                  key={nickname}
+                  justify="space-between"
+                  py="sm"
+                  px="sm"
+                >
+                  <Avatar src={profileImg} />
+                  <Text ff="sans-serif" fs="italic">
+                    {nickname}
+                  </Text>
+                  <Flex>
+                    <IconBrandHipchat />
+                  </Flex>
+                </Flex>
+              )
+            )}
+          </List>
+        )}
+
       <div className={classes.footer}>
         {settings}
 

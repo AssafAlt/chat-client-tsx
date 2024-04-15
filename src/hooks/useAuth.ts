@@ -1,11 +1,13 @@
 import { springApi } from "../api/apiConfig";
 import { useAuthContext } from "../context/AuthContext";
+import { useDisplayContext } from "../context/DisplayContext";
 import { LoginForm, RegisterForm } from "../models/AuthForms";
 import { LoginResponse } from "../models/UserResponses";
 import { axiosErrorExtractor } from "../utils/axiosErrorUtils";
 
 export const useAuth = () => {
   const { dispatch } = useAuthContext();
+  const { displayDispatch } = useDisplayContext();
 
   const login = async (userCredentials: LoginForm) => {
     dispatch({ type: "START" });
@@ -55,6 +57,7 @@ export const useAuth = () => {
     }
   };
   const logout = async () => {
+    displayDispatch({ type: "DEFAULT_DISPLAY" });
     dispatch({
       type: "LOGOUT",
     });

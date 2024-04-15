@@ -19,7 +19,8 @@ type DisplayAction =
   | { type: "SHOW_HEADERS" }
   | { type: "CLOSE_HEADERS" }
   | { type: "SHOW_OVERLAY"; payload: { source: string; isVisible: boolean } }
-  | { type: "CLOSE_OVERLAY" };
+  | { type: "CLOSE_OVERLAY" }
+  | { type: "DEFAULT_DISPLAY" };
 
 // Create the initial state
 const initialState: DisplayState = {
@@ -77,6 +78,17 @@ const displayReducer = (
           source: "",
           isVisible: false,
         },
+      };
+    case "DEFAULT_DISPLAY":
+      return {
+        showChat: false,
+        currentChat: {
+          currentRoom: "",
+          currentFriendProfileImg: "",
+          currentFriendNickname: "",
+        },
+        showHeaders: false,
+        overlay: { source: "", isVisible: false },
       };
 
     default:

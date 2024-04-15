@@ -4,30 +4,28 @@ import { useSocketContext } from "../context/SocketContext";
 import Stomp, { Client } from "stompjs";
 import { useAuthContext } from "../context/AuthContext";
 import {
-  FriendWithStatus,
   IFriendStatusUpdate,
+  IFriendsWithStatus,
   MessageType,
 } from "../models/FriendWithStatus";
+import { useFriendsContext } from "../context/FriendsContext";
 
 export const useSocket = () => {
+  const { friendsDispatch } = useFriendsContext();
   const { socketState, socketDispatch } = useSocketContext();
   const { state } = useAuthContext();
   const userNick: string = state.nickname ? state.nickname : "";
   const token = Cookies.get("jwt_token") || "";
 
   const updateConnectedFriends = (newUserUpdate: IFriendStatusUpdate) => {
-    if (newUserUpdate.messageType === MessageType.JOIN) {
-      const newFriendConnected = new FriendWithStatus(
-        newUserUpdate.profileImg,
-        newUserUpdate.nickname
-      );
-      socketDispatch({ type: "FRIEND_CONNECTED", payload: newFriendConnected });
-    } else if (newUserUpdate.messageType === MessageType.LEAVE) {
-      socketDispatch({
-        type: "FRIEND_DISCONNECTED",
-        payload: { nickname: newUserUpdate.nickname },
-      });
-    }
+    const { messageType, nickname } = newUserUpdate;
+    friendsDispatch({
+      type:
+        messageType === MessageType.JOIN
+          ? "FRIEND_CONNECTED"
+          : "FRIEND_DISCONNECTED",
+      payload: nickname,
+    });
   };
 
   const connectingSocket = () => {
@@ -41,6 +39,7 @@ export const useSocket = () => {
         stomp.subscribe(`/user/${userNick}/queue/onlineFriends`, (message) => {
           try {
             const newUpdate: IFriendStatusUpdate = JSON.parse(message.body);
+
             updateConnectedFriends(newUpdate);
             console.log("Parsed user list:", newUpdate);
           } catch (error) {

@@ -13,7 +13,7 @@ const Home = () => {
   const imagePath = state.profileImg ? state.profileImg : "";
   const userNickname = state.nickname ? state.nickname : "";
   const { connectingSocket } = useSocket();
-  const { getOnlineFriends } = useFriends();
+  const { getFriendsWithStatus } = useFriends();
   const { displayState } = useDisplayContext();
   const effectRan = useRef(false);
 
@@ -23,7 +23,7 @@ const Home = () => {
 
   const onGetFriends = async () => {
     try {
-      await getOnlineFriends();
+      await getFriendsWithStatus();
     } catch (error) {
       console.log(error);
     }
@@ -31,8 +31,7 @@ const Home = () => {
   useEffect(
     () => {
       if (effectRan.current === false) {
-        connect();
-        onGetFriends();
+        onGetFriends().then(() => connect());
       }
 
       return () => {

@@ -1,10 +1,8 @@
 import React, { createContext, useReducer, useContext, Dispatch } from "react";
 import { Client } from "stompjs";
-import { FriendWithStatus } from "../models/FriendWithStatus";
 
 interface SocketState {
   stompClient: Client | null;
-  connectedFriends: FriendWithStatus[];
   connectionError: boolean;
   //connect: () => void;
   //disconnect: () => void;
@@ -16,15 +14,10 @@ interface SocketState {
 
 type SocketAction =
   | { type: "CONNECTION_SUCCESS"; payload: Client }
-  | { type: "CONNECTION_FAILED" }
-  | { type: "GET_CONNECTED_FRIENDS"; payload: FriendWithStatus[] }
-  | { type: "NO_CONNECTED_FRIENDS" }
-  | { type: "FRIEND_CONNECTED"; payload: FriendWithStatus }
-  | { type: "FRIEND_DISCONNECTED"; payload: { nickname: string } };
+  | { type: "CONNECTION_FAILED" };
 
 const initialState: SocketState = {
   stompClient: null,
-  connectedFriends: [],
   connectionError: false,
   //connect: () => {},
   //disconnect: () => {},
@@ -52,27 +45,6 @@ const socketReducer = (
       return {
         ...state,
         connectionError: true,
-      };
-    case "FRIEND_CONNECTED":
-      return {
-        ...state,
-        connectedFriends: [...state.connectedFriends, action.payload],
-      };
-    case "GET_CONNECTED_FRIENDS":
-      return {
-        ...state,
-        connectedFriends: action.payload,
-      };
-    case "NO_CONNECTED_FRIENDS":
-      return {
-        ...state,
-      };
-    case "FRIEND_DISCONNECTED":
-      return {
-        ...state,
-        connectedFriends: state.connectedFriends.filter(
-          (friend) => friend.nickname !== action.payload.nickname
-        ),
       };
 
     default:
