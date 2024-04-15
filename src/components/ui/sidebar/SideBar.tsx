@@ -14,8 +14,6 @@ import {
 } from "@mantine/core";
 import {
   IconBellRinging,
-  IconSettings,
-  IconLogout,
   IconUsers,
   IconBrandHipchat,
   IconFriends,
@@ -36,15 +34,14 @@ import { createPrivateRoomName } from "../../../utils/socketUtils";
 import { useAuthContext } from "../../../context/AuthContext";
 import { ICurrentRoom } from "../../../context/DisplayContext";
 import { useFriendsContext } from "../../../context/FriendsContext";
+import LogoutLabel from "./features/LogoutLabel";
+import SettingsLabel from "./features/SettingsLabel";
+import UsersToggle from "./features/UsersToggle";
 
 const SideBar = () => {
   const { socketState } = useSocketContext();
   const { friendsState } = useFriendsContext();
   const { displayManager, chooseChat } = useDisplay();
-  //const [friendLists, setFriendsList] = useState<FriendWithStatus[]>([]);
-  /*useState<{
-    [key: string]: ICurrentChatMessage[];
-  }>*/
   const [friendsList, setFriendsList] = useState<IFriendsWithStatus>();
   const [onlineFriendsList, setOnlineFriendsList] = useState<IFriendMap>({});
   const [offlineFriendsList, setOfflineFriendsList] = useState<IFriendMap>({});
@@ -72,6 +69,11 @@ const SideBar = () => {
     navigate("/");
   };
 
+  const onClickSettings = () => {
+    setActive("Settings");
+    displayManager(DisplayType.CLOSE_HEADERS);
+  };
+
   useEffect(() => {
     displayManager(DisplayType.HEADERS);
     //setOnlineFriendsList(socketState.friends.onlineFriends);
@@ -81,22 +83,6 @@ const SideBar = () => {
 
   const data = [
     { link: "", label: "Notifications", icon: IconBellRinging, variance: "0" },
-    {
-      link: "",
-      label: "Online Friends",
-      icon: IconUsers,
-      variance: Object.keys(
-        friendsState.friends.onlineFriends
-      ).length.toString(),
-    },
-    {
-      link: "",
-      label: "Offline Friends",
-      icon: IconUserOff,
-      variance: Object.keys(
-        friendsState.friends.offlineFriends
-      ).length.toString(),
-    },
   ];
   const friends = (
     <a
@@ -112,34 +98,6 @@ const SideBar = () => {
     >
       <IconFriends className={classes.linkIcon} stroke={1.5} />
       <span>Friends</span>
-    </a>
-  );
-
-  const logoutElement = (
-    <a
-      className={classes.link}
-      data-active={"Logout" === active || undefined}
-      href=""
-      onClick={onLogout}
-    >
-      <IconLogout color="red" className={classes.linkIcon} stroke={1.5} />
-      <span>Logout</span>
-    </a>
-  );
-  const settings = (
-    <a
-      className={classes.link}
-      data-active={"Settings" === active || undefined}
-      href=""
-      onClick={(event) => {
-        event.preventDefault();
-        setActive("Settings");
-        handleTabChange("Settings");
-        displayManager(DisplayType.CLOSE_HEADERS);
-      }}
-    >
-      <IconSettings className={classes.linkIcon} stroke={1.5} />
-      <span>Settings</span>
     </a>
   );
 
@@ -183,43 +141,26 @@ const SideBar = () => {
         <Group className={classes.header} justify="space-between"></Group>
         {links}
       </div>
-      {showCard === "Online Friends" &&
-        Object.keys(friendsState.friends.onlineFriends).length > 0 && (
-          <List py="sm">
-            {Object.entries(friendsState.friends.onlineFriends).map(
-              ([nickname, profileImg]) => (
-                <Flex
-                  onClick={() => {
-                    displayManager(DisplayType.CHAT);
-                    const newRoom: ICurrentRoom = {
-                      currentFriendNickname: nickname,
-                      currentFriendProfileImg: profileImg,
-                      currentRoom: createPrivateRoomName(userNick, nickname),
-                    };
-                    chooseChat(newRoom);
-                  }}
-                  key={nickname}
-                  justify="space-between"
-                  py="sm"
-                  px="sm"
-                >
-                  <Avatar src={profileImg} />
-                  <Text ff="sans-serif" fs="italic">
-                    {nickname}
-                  </Text>
-                  <Flex>
-                    <IconBrandHipchat />
-                  </Flex>
-                </Flex>
-              )
-            )}
-          </List>
-        )}
+
+      {friendsList?.onlineFriends !== undefined && (
+        <UsersToggle
+          friendsList={friendsList.onlineFriends}
+          Icon={IconUsers}
+          title="Online Friends"
+        />
+      )}
+      {friendsList?.offlineFriends !== undefined && (
+        <UsersToggle
+          friendsList={friendsList.offlineFriends}
+          Icon={IconUserOff}
+          title="Offline Friends"
+        />
+      )}
 
       <div className={classes.footer}>
-        {settings}
+        <SettingsLabel onClickSettings={onClickSettings} active={active} />
 
-        {logoutElement}
+        <LogoutLabel onLogout={onLogout} />
       </div>
     </Paper>
   );
