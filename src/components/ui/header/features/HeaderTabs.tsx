@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Center, Container, Tabs } from "@mantine/core"; // Assuming Mantine provides Input and Button components
+import { Center, Container, Flex, Tabs, Text } from "@mantine/core"; // Assuming Mantine provides Input and Button components
 import AddFriendCard from "../../cards/AddFriendCard";
 import classes from "../Header.module.css";
 import FriendRequestsCard from "../../cards/FriendRequestsCard";
 import FriendsCard from "../../cards/FriendsCard";
+import { IconFriends } from "@tabler/icons-react";
 
 const HeaderTabs = () => {
   const tabs = ["Online", "All", "Pending", "Blocked", "Add Friend"];
@@ -31,18 +32,25 @@ const HeaderTabs = () => {
   return (
     <Center>
       <Container size="md">
-        <Tabs
-          defaultValue="Home"
-          variant="outline"
-          visibleFrom="sm"
-          classNames={{
-            root: classes.tabs,
-            list: classes.tabsList,
-            tab: classes.tab,
-          }}
-        >
-          <Tabs.List>{items}</Tabs.List>
-        </Tabs>
+        <Flex>
+          <Flex pt={5} pr={10}>
+            <IconFriends stroke={2} />
+            <Text>Friends</Text>
+          </Flex>
+          <Tabs
+            defaultValue="Home"
+            variant="outline"
+            visibleFrom="sm"
+            classNames={{
+              root: classes.tabs,
+              list: classes.tabsList,
+              tab: classes.tab,
+            }}
+          >
+            <Tabs.List>{items}</Tabs.List>
+          </Tabs>
+        </Flex>
+
         {showCard === "Add Friend" && <AddFriendCard />}
         {showCard === "Pending" && <FriendRequestsCard />}
         {showCard === "All" && <FriendsCard />}

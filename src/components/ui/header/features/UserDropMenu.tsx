@@ -19,6 +19,7 @@ import {
 } from "@tabler/icons-react";
 import { useAuth } from "../../../../hooks/useAuth";
 import classes from "../Header.module.css";
+import { useSocket } from "../../../../hooks/useSocket";
 
 interface IUserDropMenuProps {
   userImage: string;
@@ -28,9 +29,11 @@ interface IUserDropMenuProps {
 const UserDropMenu = (props: IUserDropMenuProps) => {
   const navigate = useNavigate();
   const { logout } = useAuth();
+  const { disconnectingSocket } = useSocket();
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const onLogout = () => {
     logout();
+    disconnectingSocket();
     navigate("/");
   };
   return (
