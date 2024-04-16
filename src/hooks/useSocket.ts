@@ -44,7 +44,7 @@ export const useSocket = () => {
     } else if (newNotification.messageType === MessageType.NEW_FRIEND_REQUEST) {
       friendsDispatch({
         type: "NEW_FRIEND_REQUEST",
-        payload: newNotification.fRequest,
+        payload: newNotification.frequest,
       });
       notifications.show({
         title: "New Friend Request",

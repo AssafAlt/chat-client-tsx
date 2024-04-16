@@ -30,6 +30,12 @@ const HeaderTabs = () => {
     if (value === "All") {
       setShowCard("All");
     }
+    if (value === "Blocked") {
+      setShowCard("");
+    }
+    if (value === "Online") {
+      setShowCard("");
+    }
   };
 
   const items = tabs.map((tab) => (
