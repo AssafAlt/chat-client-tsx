@@ -1,7 +1,4 @@
-export enum MessageType {
-  JOIN = "JOIN",
-  LEAVE = "LEAVE",
-}
+import { MessageType } from "./MessageType";
 
 export class FriendWithStatus {
   profileImg: string;
@@ -24,4 +21,9 @@ export interface IFriendMap {
 export interface IFriendsWithStatus {
   onlineFriends: IFriendMap;
   offlineFriends: IFriendMap;
+}
+export interface IFriendIsOnline {
+  profileImg: string;
+  nickname: string;
+  isOnline: boolean;
 }

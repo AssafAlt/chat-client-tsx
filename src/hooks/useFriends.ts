@@ -19,6 +19,26 @@ export const useFriends = () => {
       throw new Error(err);
     }
   };
+  const isFriendOnline = async (checkedFriend: string) => {
+    try {
+      const res = await springApi.get(
+        `users/online-check?nickname=${checkedFriend}`
+      );
+
+      if (res.status === 200) {
+        friendsDispatch({
+          type: res.data.isOnline ? "FRIEND_IS_ONLINE" : "FRIEND_IS_NOT_ONLINE",
+          payload: res.data,
+        });
+      } else {
+        throw new Error("Unknown error");
+      }
+    } catch (error: unknown) {
+      const err = axiosErrorExtractor(error);
+
+      throw new Error(err);
+    }
+  };
   const getFriends = async () => {
     try {
       const res = await springApi.get("users/friends");
@@ -35,22 +55,6 @@ export const useFriends = () => {
     }
   };
 
-  /* const getOnlineFriends = async () => {
-    try {
-      const res = await springApi.get("users/online-friends");
-
-      if (res.status === 200) {
-        socketDispatch({ type: "GET_CONNECTED_FRIENDS", payload: res.data });
-      } else {
-        socketDispatch({ type: "NO_CONNECTED_FRIENDS" });
-        throw new Error("Unknown error");
-      }
-    } catch (error: unknown) {
-      const err = axiosErrorExtractor(error);
-
-      throw new Error(err);
-    }
-  };*/
   const getFriendsWithStatus = async () => {
     try {
       const res = await springApi.get("users/friends-status");
@@ -89,8 +93,9 @@ export const useFriends = () => {
       const res = await springApi.get("friend-requests/get-requests");
 
       if (res.status === 200) {
-        return res.data;
+        friendsDispatch({ type: "GET_FRIEND_REQUESTS", payload: res.data });
       } else {
+        friendsDispatch({ type: "NO_FRIEND_REQUESTS" });
         throw new Error("Unknown error");
       }
     } catch (error: unknown) {
@@ -106,8 +111,16 @@ export const useFriends = () => {
       });
 
       if (res.status === 200) {
-        return res.data;
+        setTimeout(() => {
+          {
+            friendsDispatch({
+              type: "CLICKED_FRIEND_REQUEST",
+              payload: friendRequestId,
+            });
+          }
+        }, 3000);
       } else {
+        friendsDispatch({ type: "CLICKED_FRIEND_REQUEST_FAILED" });
         throw new Error("Unknown error");
       }
     } catch (error: unknown) {
@@ -125,8 +138,16 @@ export const useFriends = () => {
       });
 
       if (res.status === 200) {
-        return res.data;
+        setTimeout(() => {
+          {
+            friendsDispatch({
+              type: "CLICKED_FRIEND_REQUEST",
+              payload: friendRequestId,
+            });
+          }
+        }, 3000);
       } else {
+        friendsDispatch({ type: "CLICKED_FRIEND_REQUEST_FAILED" });
         throw new Error("Unknown error");
       }
     } catch (error: unknown) {
@@ -137,6 +158,7 @@ export const useFriends = () => {
   };
   return {
     searchUser,
+    isFriendOnline,
     getFriends,
     getFriendsWithStatus,
     sendFriendRequest,

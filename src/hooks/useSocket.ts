@@ -2,13 +2,15 @@ import SockJS from "sockjs-client";
 import Cookies from "js-cookie";
 import { useSocketContext } from "../context/SocketContext";
 import Stomp, { Client } from "stompjs";
+import { notifications } from "@mantine/notifications";
 import { useAuthContext } from "../context/AuthContext";
 import {
   IFriendStatusUpdate,
   IFriendsWithStatus,
-  MessageType,
 } from "../models/FriendWithStatus";
 import { useFriendsContext } from "../context/FriendsContext";
+import { MessageType } from "../models/MessageType";
+import { INotification } from "../models/Notification";
 
 export const useSocket = () => {
   const { friendsDispatch } = useFriendsContext();
@@ -26,6 +28,22 @@ export const useSocket = () => {
           : "FRIEND_DISCONNECTED",
       payload: nickname,
     });
+  };
+
+  const updateOnNotification = (newNotification: INotification) => {
+    if (newNotification.messageType === MessageType.REQUEST_APPROVED) {
+      friendsDispatch({
+        type: "FRIEND_IS_ONLINE",
+        payload: newNotification.friend,
+      });
+      notifications.show({
+        title: "Friend Request Approved",
+        message: newNotification.message,
+        autoClose: 2000,
+      });
+    } else {
+      return;
+    }
   };
 
   const connectingSocket = () => {
@@ -46,6 +64,19 @@ export const useSocket = () => {
             console.error("Error parsing message body:", error);
           }
         });
+        stomp.subscribe(
+          `/user/${userNick}/queue/notifications`,
+          (notification) => {
+            try {
+              const newNotification: INotification = JSON.parse(
+                notification.body
+              );
+              updateOnNotification(newNotification);
+            } catch (error) {
+              console.error("Error parsing message body:", error);
+            }
+          }
+        );
       };
       const errorCallback = (error: unknown) => {
         console.error("Error during WebSocket connection:", error);

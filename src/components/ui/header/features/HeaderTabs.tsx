@@ -5,9 +5,18 @@ import classes from "../Header.module.css";
 import FriendRequestsCard from "../../cards/FriendRequestsCard";
 import FriendsCard from "../../cards/FriendsCard";
 import { IconFriends } from "@tabler/icons-react";
+import { useFriendsContext } from "../../../../context/FriendsContext";
 
 const HeaderTabs = () => {
-  const tabs = ["Online", "All", "Pending", "Blocked", "Add Friend"];
+  const { friendsState } = useFriendsContext();
+  const friendLen = friendsState.friendRequests.length;
+  const tabs = [
+    "Online",
+    "All",
+    `Pending (${friendLen})`,
+    "Blocked",
+    "Add Friend",
+  ];
 
   const [showCard, setShowCard] = useState("");
 
@@ -15,7 +24,7 @@ const HeaderTabs = () => {
     if (value === "Add Friend") {
       setShowCard("Add Friend");
     }
-    if (value === "Pending") {
+    if (value === `Pending (${friendLen})`) {
       setShowCard("Pending");
     }
     if (value === "All") {
