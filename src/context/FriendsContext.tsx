@@ -15,6 +15,7 @@ type FriendsAction =
   | { type: "NO_FRIENDS" }
   | { type: "GET_FRIEND_REQUESTS"; payload: IGetFriendRequest[] }
   | { type: "NO_FRIEND_REQUESTS" }
+  | { type: "NEW_FRIEND_REQUEST"; payload: IGetFriendRequest }
   | { type: "CLICKED_FRIEND_REQUEST"; payload: number }
   | { type: "CLICKED_FRIEND_REQUEST_FAILED" }
   | { type: "FRIEND_CONNECTED"; payload: string }
@@ -70,6 +71,11 @@ const friendsReducer = (
       };
     case "NO_FRIEND_REQUESTS":
       return state;
+    case "NEW_FRIEND_REQUEST":
+      return {
+        ...state,
+        friendRequests: [...state.friendRequests, action.payload],
+      };
     case "CLICKED_FRIEND_REQUEST":
       return {
         ...state,

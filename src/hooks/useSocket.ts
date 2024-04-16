@@ -39,10 +39,18 @@ export const useSocket = () => {
       notifications.show({
         title: "Friend Request Approved",
         message: newNotification.message,
-        autoClose: 2000,
+        autoClose: 4500,
       });
-    } else {
-      return;
+    } else if (newNotification.messageType === MessageType.NEW_FRIEND_REQUEST) {
+      friendsDispatch({
+        type: "NEW_FRIEND_REQUEST",
+        payload: newNotification.fRequest,
+      });
+      notifications.show({
+        title: "New Friend Request",
+        message: newNotification.message,
+        autoClose: 4500,
+      });
     }
   };
 
