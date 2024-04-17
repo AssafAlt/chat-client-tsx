@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { IUsersToggleProps } from "../../../../models/props/UserToggleProps";
-import { Flex, List, Avatar, Text } from "@mantine/core";
+import { Flex, List, Avatar, Text, ScrollArea } from "@mantine/core";
 import { IconBrandHipchat } from "@tabler/icons-react";
 import { DisplayType, useDisplay } from "../../../../hooks/useDisplay";
 import { ICurrentRoom } from "../../../../context/DisplayContext";
@@ -36,33 +36,35 @@ const UsersToggle = (props: IUsersToggleProps) => {
         </span>
       </div>
       {isClicked && listLength > 0 && (
-        <List py="sm">
-          {Object.entries(props.friendsList).map(([nickname, profileImg]) => (
-            <Flex
-              onClick={() => {
-                displayManager(DisplayType.CHAT);
-                const newRoom: ICurrentRoom = {
-                  currentFriendNickname: nickname,
-                  currentFriendProfileImg: profileImg,
-                  currentRoom: createPrivateRoomName(userNick, nickname),
-                };
-                chooseChat(newRoom);
-              }}
-              key={nickname}
-              justify="space-between"
-              py="sm"
-              px="sm"
-            >
-              <Avatar src={profileImg} />
-              <Text ff="sans-serif" fs="italic">
-                {nickname}
-              </Text>
-              <Flex>
-                <IconBrandHipchat />
+        <ScrollArea p="sm" h={150}>
+          <List py="sm">
+            {Object.entries(props.friendsList).map(([nickname, profileImg]) => (
+              <Flex
+                onClick={() => {
+                  displayManager(DisplayType.CHAT);
+                  const newRoom: ICurrentRoom = {
+                    currentFriendNickname: nickname,
+                    currentFriendProfileImg: profileImg,
+                    currentRoom: createPrivateRoomName(userNick, nickname),
+                  };
+                  chooseChat(newRoom);
+                }}
+                key={nickname}
+                justify="space-between"
+                py="sm"
+                px="sm"
+              >
+                <Avatar src={profileImg} />
+                <Text ff="sans-serif" fs="italic">
+                  {nickname.slice(0, 10) + "..."}
+                </Text>
+                <Flex>
+                  <IconBrandHipchat />
+                </Flex>
               </Flex>
-            </Flex>
-          ))}
-        </List>
+            ))}
+          </List>
+        </ScrollArea>
       )}
     </>
   );
