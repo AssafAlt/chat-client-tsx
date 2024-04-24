@@ -71,7 +71,9 @@ const Home = () => {
         )}
       </div>
 
-      {displayState.showChat && <ChatRoom />}
+      {displayState.showChat && (
+        <ChatRoom key={displayState.currentChat.currentRoom} />
+      )}
     </div>
   );
 };

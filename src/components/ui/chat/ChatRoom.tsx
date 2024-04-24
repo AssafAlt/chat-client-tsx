@@ -8,6 +8,7 @@ import {
   ScrollArea,
   Affix,
   ActionIcon,
+  Loader,
 } from "@mantine/core";
 import ChatHeader from "./features/ChatHeader";
 import { useSocketContext } from "../../../context/SocketContext";
@@ -19,10 +20,19 @@ import {
 } from "../../../models/ChatMessages";
 import { springApi } from "../../../api/apiConfig";
 import { IconArrowDown } from "@tabler/icons-react";
+import classes from "./ChatRoom.module.css";
 
 interface IConversation {
   [key: string]: ICurrentChatMessage[];
 }
+
+interface IConverSationResponse {
+  totalPages: number;
+  currentPage: number;
+  messagesByDate: IConversation;
+  hasNext: boolean;
+}
+
 const ChatRoom = () => {
   const { state } = useAuthContext();
   const viewport = useRef<HTMLDivElement>(null);
@@ -97,20 +107,23 @@ const ChatRoom = () => {
   };
 
   const getChatHistory = async (pageNum: number) => {
+    setIsLoading(true);
+    if (!hasMoreMessages.current) {
+      return;
+    }
     try {
       const res = await springApi.get(`messages/${currentChat.currentRoom}`, {
         params: { pageNumber: pageNum },
       });
-      if (res.status === 206) {
-        hasMoreMessages.current = false;
-      }
-      const data: IConversation = res.data;
+
+      const data: IConverSationResponse = res.data;
       console.log(data);
+      hasMoreMessages.current = data.hasNext;
 
       setChatConversation((prevChatHistory) => {
         const updatedChatHistory = { ...prevChatHistory };
 
-        Object.entries(data).forEach(([date, messages]) => {
+        Object.entries(data.messagesByDate).forEach(([date, messages]) => {
           if (updatedChatHistory[date]) {
             updatedChatHistory[date] = [
               ...updatedChatHistory[date],
@@ -125,6 +138,8 @@ const ChatRoom = () => {
       });
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -133,20 +148,19 @@ const ChatRoom = () => {
       "/topic/private." + currentChat.currentRoom,
       (message) => {
         const receivedMessage: ICurrentChatMessage = JSON.parse(message.body);
-
         setChatConversation((prevChatHistory) => {
           if (prevChatHistory[receivedMessage.date]) {
             return {
               ...prevChatHistory,
               [receivedMessage.date]: [
-                ...prevChatHistory[receivedMessage.date],
                 receivedMessage,
+                ...prevChatHistory[receivedMessage.date],
               ],
             };
           } else {
             return {
-              ...prevChatHistory,
               [receivedMessage.date]: [receivedMessage],
+              ...prevChatHistory,
             };
           }
         });
@@ -157,9 +171,10 @@ const ChatRoom = () => {
   useEffect(
     () => {
       if (effectRan.current === false) {
-        getChatHistory(0);
+        getChatHistory(pageNumber);
         scrollToBottom();
       }
+
       return () => {
         console.log("unmounted");
         effectRan.current = true;
@@ -181,23 +196,14 @@ const ChatRoom = () => {
   );
 
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        border: "1px solid #ccc",
-        borderRadius: "5px",
-        overflow: "hidden",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <div className={classes.chatWindow}>
       <ChatHeader
         friendNickname={currentChat.currentFriendNickname}
         profileImg={currentChat.currentFriendProfileImg}
       />
 
       <ScrollArea p="sm" h={300} viewportRef={viewport}>
+        {isLoading && <Loader size={30} />}
         {Object.entries(chatConversation)
           .slice()
           .reverse()
