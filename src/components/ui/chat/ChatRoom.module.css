@@ -7,3 +7,20 @@
   display: flex;
   flex-direction: column;
 }
+.scroller {
+  height: 300px;
+}
+
+.date {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+@media (min-width: 1440px) {
+  .chatWindow {
+    height: 700px;
+  }
+  .scroller {
+    height: 600px;
+  }
+}

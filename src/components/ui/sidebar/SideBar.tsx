@@ -48,6 +48,7 @@ const SideBar = () => {
   const [active, setActive] = useState("Friends");
   const [showCard, setShowCard] = useState("");
   const { state } = useAuthContext();
+  const userImage: string = state.profileImg ? state.profileImg : "";
   const userNick: string = state.nickname ? state.nickname : "";
 
   const handleTabChange = (value: string) => {
@@ -122,6 +123,12 @@ const SideBar = () => {
 
   return (
     <Paper className={classes.navbar} bg="cyan">
+      <Flex py="sm" px="sm">
+        <Avatar src={userImage} />
+        <Text ff="sans-serif" fs="italic" ml={10}>
+          {userNick}
+        </Text>
+      </Flex>
       <div className={classes.navbarMain}>
         <TextInput
           placeholder="Search"

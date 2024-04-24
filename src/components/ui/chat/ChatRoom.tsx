@@ -202,16 +202,14 @@ const ChatRoom = () => {
         profileImg={currentChat.currentFriendProfileImg}
       />
 
-      <ScrollArea p="sm" h={300} viewportRef={viewport}>
+      <ScrollArea p="sm" viewportRef={viewport} className={classes.scroller}>
         {isLoading && <Loader size={30} />}
         {Object.entries(chatConversation)
           .slice()
           .reverse()
           .map(([date, messages]) => (
             <div key={date}>
-              <div style={{ marginBottom: "10px", fontSize: "18px" }}>
-                {date}
-              </div>
+              <div className={classes.date}>{date}</div>
               {messages
                 .slice()
                 .reverse()

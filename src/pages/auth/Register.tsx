@@ -62,14 +62,14 @@ const Register = () => {
     }
   };
   return (
-    <>
+    <div className={classes.authForm}>
       {isLoading && (
         <LoadingOverlay
           visible={true}
           loaderProps={{ children: <Loader color="blue" /> }}
         />
       )}
-      <Container size={420}>
+      <Container className={classes.registerContainer}>
         <Title ta="center" className={classes.title}>
           Register page
         </Title>
@@ -124,7 +124,7 @@ const Register = () => {
           </form>
         </Paper>
       </Container>
-    </>
+    </div>
   );
 };
 

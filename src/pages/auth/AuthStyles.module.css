@@ -2,3 +2,28 @@
   font-family: Greycliff CF, var(--mantine-font-family);
   font-weight: 900;
 }
+.loginContainer {
+  height: 420px;
+  width: 420px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.registerContainer {
+  height: 420px;
+  width: 420px;
+}
+
+@media (min-width: 1440px) {
+  .authForm {
+    margin-top: 100px;
+  }
+  .loginContainer {
+    height: 500px;
+    width: 500px;
+  }
+  .registerContainer {
+    height: 500px;
+    width: 500px;
+  }
+}

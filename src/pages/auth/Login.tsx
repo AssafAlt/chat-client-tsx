@@ -57,14 +57,14 @@ const Login = () => {
   };
 
   return (
-    <>
+    <div className={classes.authForm}>
       {isLoading && (
         <LoadingOverlay
           visible={true}
           loaderProps={{ children: <Loader color="blue" /> }}
         />
       )}
-      <Container size={420} my={10}>
+      <Container className={classes.loginContainer}>
         <Title ta="center" className={classes.title}>
           Login page
         </Title>
@@ -101,7 +101,7 @@ const Login = () => {
           </form>
         </Paper>
       </Container>
-    </>
+    </div>
   );
 };
 
