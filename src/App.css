@@ -42,3 +42,12 @@
 }
 @media (min-width: 1440px) {
 }
+@media (max-width: 767px) {
+  #root {
+    max-width: 767px;
+    margin: 0;
+    /*padding: 1rem;*/
+    padding: 0;
+    text-align: center;
+  }
+}

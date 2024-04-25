@@ -80,7 +80,7 @@ const Register = () => {
           </Anchor>
         </Text>
 
-        <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+        <Paper withBorder shadow="md" p={30} mt={15} radius="md">
           <form
             onSubmit={form.onSubmit(
               async (values: RegisterForm) => await onSubmit(values)

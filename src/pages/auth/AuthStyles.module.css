@@ -13,6 +13,9 @@
   height: 420px;
   width: 420px;
 }
+/*.authForm {
+  padding-top: 42px;
+}*/
 
 @media (min-width: 1440px) {
   .authForm {
@@ -25,5 +28,20 @@
   .registerContainer {
     height: 500px;
     width: 500px;
+  }
+}
+
+@media (max-width: 767px) {
+  .loginContainer {
+    height: 200px;
+    width: 300px;
+  }
+
+  .registerContainer {
+    height: 200px;
+    width: 300px;
+  }
+  .authForm {
+    margin-top: 20px;
   }
 }

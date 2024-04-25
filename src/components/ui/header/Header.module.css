@@ -70,3 +70,13 @@
     border-bottom-color: transparent;
   }
 }
+
+.primaryHeader {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  position: absolute;
+  width: 97%;
+
+  z-index: 9999;
+}

@@ -1,0 +1,31 @@
+@media (max-width: 767px) {
+  .footer {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 10px 5%;
+    border-top: 1px solid #ddd;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    max-width: 100%;
+    z-index: 9999;
+  }
+
+  .iconButton {
+  }
+  .iconButton.clicked {
+    background-color: #15aabf;
+    border-radius: 10px;
+    width: 40px;
+  }
+
+  .iconButton.clicked strong {
+  }
+
+  .text {
+    font-size: 14px;
+  }
+  .text.clicked {
+    font-weight: bold;
+  }
+}

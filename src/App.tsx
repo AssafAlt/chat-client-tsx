@@ -10,12 +10,14 @@ const Login = lazy(() => import("./pages/auth/Login"));
 const Register = lazy(() => import("./pages/auth/Register"));
 const Home = lazy(() => import("./pages/Home"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const Test = lazy(() => import("./pages/Test"));
 
 function App() {
   return (
     <div>
+      <Header />
+
       <Router>
-        <Header />
         <Suspense
           fallback={
             <LoadingOverlay
@@ -36,6 +38,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route path="/test" element={<Test />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
