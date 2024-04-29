@@ -5,8 +5,15 @@
   padding: var(--mantine-spacing-md);
   display: flex;
   flex-direction: column;
-
+  margin-top: 4px;
   overflow-y: auto; /* Add scrollbar if content overflows */
+}
+.sideScroller {
+  height: 420px;
+}
+
+.userScroller {
+  height: 150px;
 }
 
 .searchCode {
@@ -82,6 +89,20 @@
 }
 @media (min-width: 1440px) {
   .navbar {
-    height: 700px;
+    height: 800px;
+    margin-top: 6px;
+  }
+  .sideScroller {
+    height: 800px;
+  }
+  .userScroller {
+    height: 300px;
+  }
+  .footer {
+    bottom: 0;
+    position: absolute;
+  }
+  .usersContainer {
+    margin-top: 50px;
   }
 }

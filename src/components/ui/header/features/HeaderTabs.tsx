@@ -10,13 +10,7 @@ import { useFriendsContext } from "../../../../context/FriendsContext";
 const HeaderTabs = () => {
   const { friendsState } = useFriendsContext();
   const friendLen = friendsState.friendRequests.length;
-  const tabs = [
-    "Online",
-    "All",
-    `Pending (${friendLen})`,
-    "Blocked",
-    "Add Friend",
-  ];
+  const tabs = ["All", `Pending (${friendLen})`, "Blocked", "Add Friend"];
 
   const [showCard, setShowCard] = useState("");
 
@@ -31,9 +25,6 @@ const HeaderTabs = () => {
       setShowCard("All");
     }
     if (value === "Blocked") {
-      setShowCard("");
-    }
-    if (value === "Online") {
       setShowCard("");
     }
   };
@@ -53,7 +44,6 @@ const HeaderTabs = () => {
             <Text>Friends</Text>
           </Flex>
           <Tabs
-            defaultValue="Home"
             variant="outline"
             visibleFrom="sm"
             classNames={{

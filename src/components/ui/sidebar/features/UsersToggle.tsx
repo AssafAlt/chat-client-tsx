@@ -36,7 +36,7 @@ const UsersToggle = (props: IUsersToggleProps) => {
         </span>
       </div>
       {isClicked && listLength > 0 && (
-        <ScrollArea p="sm" h={150}>
+        <ScrollArea p="sm" className={classes.userScroller}>
           <List py="sm">
             {Object.entries(props.friendsList).map(([nickname, profileImg]) => (
               <Flex

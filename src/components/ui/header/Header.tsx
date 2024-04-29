@@ -10,8 +10,9 @@ const Header = () => {
 
   return (
     <div>
+      <PrimaryHeader isConnected={token ? true : false} />
       {token && (
-        <div className={classes.header}>
+        <div className={classes.friendsHeader}>
           {displayState.showHeaders && <HeaderTabs />}
         </div>
       )}

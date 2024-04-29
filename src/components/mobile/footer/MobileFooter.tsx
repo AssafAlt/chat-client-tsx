@@ -1,7 +1,5 @@
 import { Button, Flex, Text } from "@mantine/core";
 import {
-  IconBrandTwitter,
-  IconBrandYoutube,
   IconBrandHipchat,
   IconFriends,
   IconUserQuestion,

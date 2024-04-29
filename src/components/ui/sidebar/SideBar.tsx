@@ -11,6 +11,8 @@ import {
   Avatar,
   Menu,
   Button,
+  ScrollArea,
+  Container,
 } from "@mantine/core";
 import {
   IconBellRinging,
@@ -123,52 +125,55 @@ const SideBar = () => {
 
   return (
     <Paper className={classes.navbar} bg="cyan">
-      <Flex py="sm" px="sm">
-        <Avatar src={userImage} />
-        <Text ff="sans-serif" fs="italic" ml={10}>
-          {userNick}
-        </Text>
-      </Flex>
-      <div className={classes.navbarMain}>
-        <TextInput
-          placeholder="Search"
-          size="xs"
-          leftSection={
-            <IconBellRinging
-              style={{ width: rem(12), height: rem(12) }}
-              stroke={1.5}
+      <ScrollArea p="sm" className={classes.sideScroller}>
+        <Flex py="sm" px="sm">
+          <Avatar src={userImage} />
+          <Text ff="sans-serif" fs="italic" ml={10}>
+            {userNick}
+          </Text>
+        </Flex>
+        <div className={classes.navbarMain}>
+          <TextInput
+            placeholder="Search"
+            size="xs"
+            leftSection={
+              <IconBellRinging
+                style={{ width: rem(12), height: rem(12) }}
+                stroke={1.5}
+              />
+            }
+            rightSectionWidth={70}
+            rightSection={<Code className={classes.searchCode}>Ctrl + K</Code>}
+            styles={{ section: { pointerEvents: "none" } }}
+            mb="sm"
+          />
+          {friends}
+          <Group className={classes.header} justify="space-between"></Group>
+          {/*links*/}
+        </div>
+        <div className={classes.usersContainer}>
+          {friendsList?.onlineFriends !== undefined && (
+            <UsersToggle
+              friendsList={friendsList.onlineFriends}
+              Icon={IconUsers}
+              title="Online Friends"
             />
-          }
-          rightSectionWidth={70}
-          rightSection={<Code className={classes.searchCode}>Ctrl + K</Code>}
-          styles={{ section: { pointerEvents: "none" } }}
-          mb="sm"
-        />
-        {friends}
-        <Group className={classes.header} justify="space-between"></Group>
-        {links}
-      </div>
+          )}
+          {friendsList?.offlineFriends !== undefined && (
+            <UsersToggle
+              friendsList={friendsList.offlineFriends}
+              Icon={IconUserOff}
+              title="Offline Friends"
+            />
+          )}
+        </div>
 
-      {friendsList?.onlineFriends !== undefined && (
-        <UsersToggle
-          friendsList={friendsList.onlineFriends}
-          Icon={IconUsers}
-          title="Online Friends"
-        />
-      )}
-      {friendsList?.offlineFriends !== undefined && (
-        <UsersToggle
-          friendsList={friendsList.offlineFriends}
-          Icon={IconUserOff}
-          title="Offline Friends"
-        />
-      )}
+        <div className={classes.footer}>
+          <SettingsLabel onClickSettings={onClickSettings} active={active} />
 
-      <div className={classes.footer}>
-        <SettingsLabel onClickSettings={onClickSettings} active={active} />
-
-        <LogoutLabel onLogout={onLogout} />
-      </div>
+          <LogoutLabel onLogout={onLogout} />
+        </div>
+      </ScrollArea>
     </Paper>
   );
 };

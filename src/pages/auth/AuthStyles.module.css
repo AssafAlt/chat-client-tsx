@@ -13,9 +13,9 @@
   height: 420px;
   width: 420px;
 }
-/*.authForm {
+.authForm {
   padding-top: 42px;
-}*/
+}
 
 @media (min-width: 1440px) {
   .authForm {

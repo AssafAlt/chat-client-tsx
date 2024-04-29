@@ -1,9 +1,9 @@
-.header {
-  padding-top: var(--mantine-spacing-sm);
-  background-color: light-dark(
+.friendsHeader {
+  padding-top: 30px;
+  /*background-color: light-dark(
     var(--mantine-color-gray-0),
     var(--mantine-color-dark-6)
-  );
+  );*/
   border-bottom: rem(1px) solid
     light-dark(var(--mantine-color-gray-2), transparent);
   margin-bottom: rem(120px);
@@ -29,6 +29,11 @@
   /*@media (max-width: $mantine-breakpoint-xs) {
     display: none;
   }*/
+}
+.notificationIcon {
+  height: 35px;
+  width: 35px;
+  padding-right: 10px;
 }
 
 .userActive {
@@ -77,6 +82,45 @@
   border-bottom: 1px solid #ddd;
   position: absolute;
   width: 97%;
-
+  top: 0;
+  padding-top: 15px;
   z-index: 9999;
+  justify-content: space-between;
+}
+.primaryHeader .textOne {
+  font-size: 30px;
+  margin-right: 8px;
+  font-weight: 700;
+}
+.primaryHeader .textTwo {
+  font-size: 30px;
+  color: #0f7c8b;
+  font-weight: 700;
+}
+
+@media (min-width: 1440px) {
+  .primaryHeader {
+    width: 95%;
+  }
+  .friendsHeader {
+    margin-top: 9px;
+  }
+
+  .notificationIcon {
+    height: 40px;
+    width: 40px;
+  }
+}
+@media (max-width: 767px) {
+  .primaryHeader {
+    padding-bottom: 10px;
+    width: 100%;
+  }
+  .primaryHeader .textOne {
+    font-size: 20px;
+    margin-right: 4px;
+  }
+  .primaryHeader .textTwo {
+    font-size: 20px;
+  }
 }
