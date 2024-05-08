@@ -1,7 +1,7 @@
 import React from "react";
 import { Flex, Text } from "@mantine/core";
 import classes from "./MobileHeader.module.css";
-import MobileDropMenu from "./features/MobileDropMenu";
+import MobileDropMenu from "../dropmenu/MobileDropMenu";
 const MobileHeader = () => {
   return (
     <nav className={classes.mobileNav}>

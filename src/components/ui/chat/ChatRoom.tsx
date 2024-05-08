@@ -287,21 +287,14 @@ const ChatRoom = () => {
                 ))}
             </div>
           ))}
-        <Affix position={{ bottom: 120, right: 50 }} onClick={scrollToBottom}>
+        <Affix className={classes.scrollButton} onClick={scrollToBottom}>
           <ActionIcon color="cyan" radius="xl" size={60}>
             <IconArrowDown stroke={1.5} size={30} />
           </ActionIcon>
         </Affix>
       </ScrollArea>
 
-      <div
-        style={{
-          padding: "10px",
-          borderTop: "1px solid #ccc",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
+      <div className={classes.chatBottom}>
         <Textarea
           style={{ flex: "1", marginRight: "10px" }}
           value={newMessage}

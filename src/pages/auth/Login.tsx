@@ -57,7 +57,7 @@ const Login = () => {
   };
 
   return (
-    <div className={classes.authForm}>
+    <div className={classes.loginForm}>
       {isLoading && (
         <LoadingOverlay
           visible={true}

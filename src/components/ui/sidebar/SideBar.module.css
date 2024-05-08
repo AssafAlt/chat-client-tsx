@@ -1,15 +1,15 @@
-.navbar {
-  width: 33.33%; /* Set sidebar width to one-third of the page */
-  min-width: rem(300px); /* Set a minimum width for the sidebar */
-  max-width: rem(400px); /* Set a maximum width for the sidebar */
-  padding: var(--mantine-spacing-md);
+.sideBar {
+  width: 33.33%;
+
+  /*padding: var(--mantine-spacing-md);*/
   display: flex;
   flex-direction: column;
-  margin-top: 4px;
+  margin-top: 1%;
   overflow-y: auto; /* Add scrollbar if content overflows */
 }
 .sideScroller {
-  height: 420px;
+  height: 84vh;
+  margin-top: 2vh;
 }
 
 .userScroller {
@@ -87,6 +87,7 @@
   width: rem(25px);
   height: rem(25px);
 }
+/*
 @media (min-width: 1440px) {
   .navbar {
     height: 800px;
@@ -106,3 +107,4 @@
     margin-top: 50px;
   }
 }
+*/

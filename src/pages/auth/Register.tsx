@@ -62,7 +62,7 @@ const Register = () => {
     }
   };
   return (
-    <div className={classes.authForm}>
+    <div className={classes.registerForm}>
       {isLoading && (
         <LoadingOverlay
           visible={true}

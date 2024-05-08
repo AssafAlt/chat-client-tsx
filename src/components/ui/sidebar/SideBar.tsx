@@ -124,7 +124,7 @@ const SideBar = () => {
   ));
 
   return (
-    <Paper className={classes.navbar} bg="cyan">
+    <Paper className={classes.sideBar} bg="cyan">
       <ScrollArea p="sm" className={classes.sideScroller}>
         <Flex py="sm" px="sm">
           <Avatar src={userImage} />

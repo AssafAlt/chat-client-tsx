@@ -3,8 +3,32 @@
   font-weight: 900;
 }
 .loginContainer {
-  height: 420px;
-  width: 420px;
+  height: 50%;
+  width: 33%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+.registerContainer {
+  height: 50%;
+  /*width: 40%;*/
+  min-width: 25%;
+  max-width: 35%;
+}
+.registerForm {
+  padding-top: 12vh;
+}
+.loginForm {
+  padding-top: 7%;
+}
+
+/*.title {
+  font-family: Greycliff CF, var(--mantine-font-family);
+  font-weight: 900;
+}
+.loginContainer {
+  height: 50%;
+  width: 33%;
   margin-top: 10px;
   margin-bottom: 10px;
 }
@@ -16,32 +40,21 @@
 .authForm {
   padding-top: 42px;
 }
-
-@media (min-width: 1440px) {
-  .authForm {
-    margin-top: 100px;
-  }
-  .loginContainer {
-    height: 500px;
-    width: 500px;
-  }
+*/
+@media (min-width: 1500px) {
   .registerContainer {
-    height: 500px;
-    width: 500px;
+    max-width: 27%;
   }
 }
-
-@media (max-width: 767px) {
+@media (max-width: 500px) {
   .loginContainer {
-    height: 200px;
-    width: 300px;
+    min-width: 70%;
   }
 
   .registerContainer {
-    height: 200px;
-    width: 300px;
+    min-width: 75%;
   }
-  .authForm {
-    margin-top: 20px;
+  .loginForm {
+    padding-top: 15%;
   }
 }

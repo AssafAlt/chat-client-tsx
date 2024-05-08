@@ -1,21 +1,47 @@
 .chatWindow {
-  width: 100%;
+  width: 66.66%;
   height: 100%;
+  margin-top: 1%;
   border: 1px solid #ccc;
   border-radius: 5px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  margin-right: 1vw;
 }
 .scroller {
-  height: 300px;
+  /*height: 300px;*/
+  height: 65vh;
 }
 
 .date {
+  border: 1px solid rgb(176, 171, 171);
+  background-color: #e4e3e3;
+
+  width: 12%;
+  border-radius: 15px;
+  margin: 0 auto; /* Center the element horizontally */
   margin-bottom: 10px;
-  font-size: 18px;
+  font-size: 1.15vw;
+  color: rgb(58, 58, 58);
+
+  font-weight: 400;
+  text-align: center;
+  flex: 1; /* To center vertically */
+}
+.scrollButton {
+  top: 77vh;
+  right: 1.7vw;
+  position: absolute;
 }
 
+.chatBottom {
+  padding: 1vh;
+  border-top: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+}
+/*
 @media (min-width: 1440px) {
   .chatWindow {
     height: 700px;
@@ -24,3 +50,4 @@
     height: 600px;
   }
 }
+*/
