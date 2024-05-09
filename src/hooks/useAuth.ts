@@ -74,7 +74,6 @@ export const useAuth = () => {
     });
     try {
       await springApi.post("auth/logout");
-      navigate("/");
     } catch (error: unknown) {
       const err = axiosErrorExtractor(error);
       console.log(err);

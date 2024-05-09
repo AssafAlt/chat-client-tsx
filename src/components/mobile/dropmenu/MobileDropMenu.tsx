@@ -3,14 +3,17 @@ import { IconDotsVertical, IconLogout } from "@tabler/icons-react";
 import { useAuth } from "../../../hooks/useAuth";
 import { useSocket } from "../../../hooks/useSocket";
 import classes from "./MobileDropMenu.module.css";
+import { useNavigate } from "react-router-dom";
 
 const MobileDropMenu = () => {
   const { logout } = useAuth();
   const { disconnectingSocket } = useSocket();
+  const navigate = useNavigate();
 
-  const onLogout = async () => {
+  const onLogout = () => {
+    logout();
     disconnectingSocket();
-    await logout();
+    navigate("/");
   };
   return (
     <div className={classes.mobileMenu}>

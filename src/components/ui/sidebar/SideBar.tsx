@@ -38,6 +38,7 @@ import { useFriendsContext } from "../../../context/FriendsContext";
 import LogoutLabel from "./features/LogoutLabel";
 import SettingsLabel from "./features/SettingsLabel";
 import UsersToggle from "./features/UsersToggle";
+import { useNavigate } from "react-router-dom";
 
 const SideBar = () => {
   const { socketState } = useSocketContext();
@@ -48,6 +49,7 @@ const SideBar = () => {
   const [offlineFriendsList, setOfflineFriendsList] = useState<IFriendMap>({});
   const [active, setActive] = useState("Friends");
   const [showCard, setShowCard] = useState("");
+  const navigate = useNavigate();
   const { state } = useAuthContext();
   const userImage: string = state.profileImg ? state.profileImg : "";
   const userNick: string = state.nickname ? state.nickname : "";
@@ -64,9 +66,10 @@ const SideBar = () => {
   const { logout } = useAuth();
   const { disconnectingSocket } = useSocket();
 
-  const onLogout = async () => {
+  const onLogout = () => {
+    logout();
     disconnectingSocket();
-    await logout();
+    navigate("/");
   };
 
   const onClickSettings = () => {
@@ -75,7 +78,7 @@ const SideBar = () => {
   };
 
   useEffect(() => {
-    displayManager(DisplayType.HEADERS);
+    //displayManager(DisplayType.HEADERS);
     //setOnlineFriendsList(socketState.friends.onlineFriends);
     //setOfflineFriendsList(socketState.friends.offlineFriends);
     setFriendsList(friendsState.friends);
