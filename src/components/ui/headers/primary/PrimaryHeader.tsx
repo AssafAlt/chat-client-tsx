@@ -1,8 +1,8 @@
-import React from "react";
 import { Flex, Text } from "@mantine/core";
-import classes from "./PrimaryHeader.module.css";
-import { IconBellRinging } from "@tabler/icons-react";
+import Cookies from "js-cookie";
 import MobileDropMenu from "../../../mobile/dropmenu/MobileDropMenu";
+import classes from "./PrimaryHeader.module.css";
+import { useAuthContext } from "../../../../context/AuthContext";
 
 /*
 interface IPrimaryHeaderProps {
@@ -11,6 +11,8 @@ interface IPrimaryHeaderProps {
 : React.FC<IPrimaryHeaderProps> = ({ isConnected })*/
 
 const PrimaryHeader = () => {
+  const { state } = useAuthContext();
+
   return (
     <nav className={classes.primaryHeader}>
       <Flex>
@@ -19,7 +21,7 @@ const PrimaryHeader = () => {
         </Text>
         <Text className={classes.textTwo}>ChatApp</Text>
       </Flex>
-      {/*isConnected && <MobileDropMenu />*/}
+      {state.nickname && <MobileDropMenu />}
     </nav>
   );
 };

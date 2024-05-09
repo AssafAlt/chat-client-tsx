@@ -30,7 +30,6 @@ import {
 } from "../../../models/FriendWithStatus";
 import { DisplayType, useDisplay } from "../../../hooks/useDisplay";
 import { useSocket } from "../../../hooks/useSocket";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 import { createPrivateRoomName } from "../../../utils/socketUtils";
 import { useAuthContext } from "../../../context/AuthContext";
@@ -62,14 +61,12 @@ const SideBar = () => {
       setShowCard("Offline Friends");
     }
   };
-  const navigate = useNavigate();
   const { logout } = useAuth();
   const { disconnectingSocket } = useSocket();
 
-  const onLogout = () => {
-    logout();
+  const onLogout = async () => {
     disconnectingSocket();
-    navigate("/");
+    await logout();
   };
 
   const onClickSettings = () => {

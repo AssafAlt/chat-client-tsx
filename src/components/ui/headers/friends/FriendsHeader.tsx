@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useFriendsContext } from "../../../../context/FriendsContext";
 import { Center, Container, Flex, Tabs, Text } from "@mantine/core";
 import { IconFriends } from "@tabler/icons-react";

@@ -1,19 +1,16 @@
 import { Menu, rem } from "@mantine/core";
 import { IconDotsVertical, IconLogout } from "@tabler/icons-react";
-import classes from "./MobileDropMenu.module.css";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 import { useSocket } from "../../../hooks/useSocket";
+import classes from "./MobileDropMenu.module.css";
 
 const MobileDropMenu = () => {
-  const navigate = useNavigate();
   const { logout } = useAuth();
   const { disconnectingSocket } = useSocket();
 
-  const onLogout = () => {
-    logout();
+  const onLogout = async () => {
     disconnectingSocket();
-    navigate("/");
+    await logout();
   };
   return (
     <div className={classes.mobileMenu}>

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   TextInput,
   PasswordInput,
@@ -11,15 +11,14 @@ import {
   LoadingOverlay,
   Loader,
 } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 import { useForm } from "@mantine/form";
 import { useAuth } from "../../hooks/useAuth";
 import { RegisterForm } from "../../models/AuthForms";
 import classes from "./AuthStyles.module.css";
-import { notifications } from "@mantine/notifications";
 import { useState } from "react";
 
 const Register = () => {
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<RegisterForm>({
     initialValues: {
@@ -49,8 +48,8 @@ const Register = () => {
       notifications.show({
         title: "Welcome to Capitan's Chat App",
         message: "Navigating to sign in",
+        autoClose: 3000,
       });
-      navigate("/");
     } catch (error) {
       notifications.show({
         title: "Register failed!",
