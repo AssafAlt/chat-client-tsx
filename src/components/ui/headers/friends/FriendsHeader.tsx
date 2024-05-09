@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { Center, Container, Flex, Tabs, Text } from "@mantine/core"; // Assuming Mantine provides Input and Button components
+import React, { useState } from "react";
+import { useFriendsContext } from "../../../../context/FriendsContext";
+import { Center, Container, Flex, Tabs, Text } from "@mantine/core";
+import { IconFriends } from "@tabler/icons-react";
 import AddFriendCard from "../../cards/AddFriendCard";
-import classes from "../Header.module.css";
 import FriendRequestsCard from "../../cards/FriendRequestsCard";
 import FriendsCard from "../../cards/FriendsCard";
-import { IconFriends } from "@tabler/icons-react";
-import { useFriendsContext } from "../../../../context/FriendsContext";
+import classes from "./FriendsHeader.module.css";
 
-const HeaderTabs = () => {
+const FriendsHeader = () => {
   const { friendsState } = useFriendsContext();
   const friendLen = friendsState.friendRequests.length;
   const tabs = ["All", `Pending (${friendLen})`, "Blocked", "Add Friend"];
@@ -64,4 +64,4 @@ const HeaderTabs = () => {
   );
 };
 
-export default HeaderTabs;
+export default FriendsHeader;

@@ -1,12 +1,14 @@
 import { Button, Flex, Paper, Text } from "@mantine/core";
-import { useAuthContext } from "../context/AuthContext";
-import SetProfilePic from "../components/user_settings/SetProfilePic";
+import { useAuthContext } from "../../context/AuthContext";
+import SetProfilePic from "../../components/user_settings/SetProfilePic";
 import { useEffect, useRef } from "react";
-import { useSocket } from "../hooks/useSocket";
-import { useFriends } from "../hooks/useFriends";
-import SideBar from "../components/ui/sidebar/SideBar";
-import ChatRoom from "../components/ui/chat/ChatRoom";
-import { useDisplayContext } from "../context/DisplayContext";
+import { useSocket } from "../../hooks/useSocket";
+import { useFriends } from "../../hooks/useFriends";
+import SideBar from "../../components/ui/sidebar/SideBar";
+import ChatRoom from "../../components/ui/chat/ChatRoom";
+import { useDisplayContext } from "../../context/DisplayContext";
+import classes from "./Home.module.css";
+import HeaderTabs from "../../components/ui/header/features/HeaderTabs";
 
 const Home = () => {
   const { state } = useAuthContext();
@@ -57,24 +59,31 @@ const Home = () => {
   );
 
   return (
-    <div style={{ display: "flex" }}>
-      <SideBar />
-      <div style={{ flex: "1", marginLeft: "20px" }}>
-        {state.isFirstLogin && (
-          <Paper>
-            <Text ta="center" fz="lg" fw={500} mt="md">
-              You haven't chosen a profile image yet. Would you like to choose
-              one now?
-            </Text>
-            <SetProfilePic imageSrc={imagePath} userNickname={userNickname} />
-          </Paper>
+    <>
+      {displayState.showHeaders && (
+        <div className={classes.friendsHeader}>
+          <HeaderTabs />
+        </div>
+      )}
+      <div className={classes.home}>
+        <SideBar />
+        <div style={{ flex: "1", marginLeft: "20px" }}>
+          {state.isFirstLogin && (
+            <Paper>
+              <Text ta="center" fz="lg" fw={500} mt="md">
+                You haven't chosen a profile image yet. Would you like to choose
+                one now?
+              </Text>
+              <SetProfilePic imageSrc={imagePath} userNickname={userNickname} />
+            </Paper>
+          )}
+        </div>
+
+        {displayState.showChat && (
+          <ChatRoom key={displayState.currentChat.currentRoom} />
         )}
       </div>
-
-      {displayState.showChat && (
-        <ChatRoom key={displayState.currentChat.currentRoom} />
-      )}
-    </div>
+    </>
   );
 };
 

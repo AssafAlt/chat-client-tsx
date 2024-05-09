@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Autocomplete, rem } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
-import { useFriends } from "../../../../hooks/useFriends";
+import { useFriends } from "../../../../../hooks/useFriends";
 import classes from "../Header.module.css";
 const SearchBar = () => {
   const { searchUser } = useFriends();
