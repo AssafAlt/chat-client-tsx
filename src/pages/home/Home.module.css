@@ -8,3 +8,7 @@
     light-dark(var(--mantine-color-gray-2), transparent);
   margin-bottom: rem(120px);
 }
+.sideBarContainer {
+  height: 100%;
+  width: 100%;
+}

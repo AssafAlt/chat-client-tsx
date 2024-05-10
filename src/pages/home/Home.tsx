@@ -65,7 +65,10 @@ const Home = () => {
         {displayState.showHeaders && <FriendsHeader />}
       </div>
       <div className={classes.home}>
-        <SideBar />
+        <div className={classes.sideBarContainer}>
+          <SideBar />
+        </div>
+
         <div style={{ flex: "1", marginLeft: "20px" }}>
           {isFirstLogin && (
             <Paper>
