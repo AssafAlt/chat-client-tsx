@@ -35,7 +35,7 @@ const FriendsCard = () => {
     []
   );
   return (
-    <Card padding="md" radius="md" bg="cyan">
+    <Card padding="md" radius="md" bg="cyan" className={classes.mobileCard}>
       <ScrollArea p="sm" className={classes.scroller}>
         {friends.length ? (
           <List py="sm">

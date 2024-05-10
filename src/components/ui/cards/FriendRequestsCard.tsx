@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Card, Text } from "@mantine/core";
 import FriendRequestsTable from "../tables/FriendRequestsTable";
 import { useFriendsContext } from "../../../context/FriendsContext";
+import classes from "./Cards.module.css";
 const FriendRequestsCard = () => {
   const { friendsState } = useFriendsContext();
 
@@ -12,11 +13,13 @@ const FriendRequestsCard = () => {
   );
 
   return (
-    <Card padding="md" radius="md" bg="cyan">
+    <Card padding="md" radius="md" bg="cyan" className={classes.mobileCard}>
       {friendsState.friendRequests.length ? (
         <FriendRequestsTable fRequests={friendsState.friendRequests} />
       ) : (
-        <Text>There is no pending requests </Text>
+        <Text ff="sans-serif" fs="italic" ta="center">
+          There is no pending requests{" "}
+        </Text>
       )}
     </Card>
   );

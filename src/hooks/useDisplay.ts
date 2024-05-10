@@ -16,5 +16,13 @@ export const useDisplay = () => {
     displayDispatch({ type: "CHOOSE_CHAT", payload: room });
   };
 
-  return { displayManager, chooseChat };
+  const closeChat = () => {
+    displayDispatch({ type: "CLOSE_CHAT" });
+  };
+
+  const chooseMobileTabToShow = (chosenTab: string) => {
+    displayDispatch({ type: "SHOW_MOBILE_TAB", payload: chosenTab });
+  };
+
+  return { displayManager, chooseChat, closeChat, chooseMobileTabToShow };
 };

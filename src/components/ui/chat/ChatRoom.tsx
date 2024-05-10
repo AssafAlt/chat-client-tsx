@@ -9,6 +9,7 @@ import {
   Affix,
   ActionIcon,
   Loader,
+  Center,
 } from "@mantine/core";
 import ChatHeader from "./features/ChatHeader";
 import { useSocketContext } from "../../../context/SocketContext";
@@ -203,7 +204,11 @@ const ChatRoom = () => {
       />
 
       <ScrollArea p="sm" viewportRef={viewport} className={classes.scroller}>
-        {isLoading && <Loader size={30} />}
+        {isLoading && (
+          <Center>
+            <Loader size={30} />
+          </Center>
+        )}
         {Object.entries(chatConversation)
           .slice()
           .reverse()

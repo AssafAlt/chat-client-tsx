@@ -26,7 +26,7 @@ const AddFriendCard = () => {
   };
 
   return (
-    <Card padding="md" radius="md" bg="cyan">
+    <Card padding="md" radius="md" bg="cyan" className={classes.mobileCard}>
       <Autocomplete
         className={classes.searchBar}
         value={searchPrefix}
@@ -40,7 +40,6 @@ const AddFriendCard = () => {
             stroke={1.5}
           />
         }
-        visibleFrom="xs"
       />
       {isSearched ? (
         users.length ? (

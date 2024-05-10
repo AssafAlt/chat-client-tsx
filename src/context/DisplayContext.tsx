@@ -10,12 +10,15 @@ interface DisplayState {
   showChat: boolean;
   currentChat: ICurrentRoom;
   showHeaders: boolean;
+  showMobileTab: string;
   overlay: { source: string; isVisible: boolean };
 }
 // Define the SignUp Actions
 type DisplayAction =
   | { type: "SHOW_CHAT" }
+  | { type: "CLOSE_CHAT" }
   | { type: "CHOOSE_CHAT"; payload: ICurrentRoom }
+  | { type: "SHOW_MOBILE_TAB"; payload: string }
   | { type: "SHOW_HEADERS" }
   | { type: "CLOSE_HEADERS" }
   | { type: "SHOW_OVERLAY"; payload: { source: string; isVisible: boolean } }
@@ -25,6 +28,7 @@ type DisplayAction =
 // Create the initial state
 const initialState: DisplayState = {
   showChat: false,
+  showMobileTab: "Chats",
   currentChat: {
     currentRoom: "",
     currentFriendProfileImg: "",
@@ -59,6 +63,19 @@ const displayReducer = (
         ...state,
         currentChat: action.payload,
       };
+    case "CLOSE_CHAT":
+      return {
+        ...state,
+        currentChat: {
+          currentRoom: "",
+          currentFriendProfileImg: "",
+          currentFriendNickname: "",
+        },
+        showChat: false,
+      };
+    case "SHOW_MOBILE_TAB":
+      return { ...state, showMobileTab: action.payload };
+
     case "SHOW_HEADERS":
       return { ...state, showChat: false, showHeaders: true };
     case "CLOSE_HEADERS":

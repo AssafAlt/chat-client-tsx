@@ -7,9 +7,18 @@ import {
 } from "@tabler/icons-react";
 import classes from "./MobileFooter.module.css";
 import { useState } from "react";
+import { useDisplay } from "../../../hooks/useDisplay";
+import { useFriendsContext } from "../../../context/FriendsContext";
 
 const MobileFooter = () => {
   const [active, setActive] = useState("Chats");
+  const { chooseMobileTabToShow } = useDisplay();
+  const { friendsState } = useFriendsContext();
+
+  const onChooseTab = (tab: string) => {
+    setActive(tab);
+    chooseMobileTabToShow(tab);
+  };
   return (
     <footer className={classes.footer}>
       <Flex w="25%" direction="column" align="center">
@@ -17,7 +26,7 @@ const MobileFooter = () => {
           className={`${classes.iconButton} ${
             active === "Chats" ? classes.clicked : ""
           }`}
-          onClick={() => setActive("Chats")}
+          onClick={() => onChooseTab("Chats")}
         />
         <Text
           className={`${classes.text} ${
@@ -32,7 +41,7 @@ const MobileFooter = () => {
           className={`${classes.iconButton} ${
             active === "Friends" ? classes.clicked : ""
           }`}
-          onClick={() => setActive("Friends")}
+          onClick={() => onChooseTab("Friends")}
         />
         <Text
           className={`${classes.text} ${
@@ -47,14 +56,14 @@ const MobileFooter = () => {
           className={`${classes.iconButton} ${
             active === "Pending" ? classes.clicked : ""
           }`}
-          onClick={() => setActive("Pending")}
+          onClick={() => onChooseTab("Pending")}
         />
         <Text
           className={`${classes.text} ${
             active === "Pending" ? classes.clicked : ""
           }`}
         >
-          Pending (0)
+          Pending ({friendsState.friendRequests.length})
         </Text>
       </Flex>
       <Flex w="25%" direction="column" align="center">
@@ -62,7 +71,7 @@ const MobileFooter = () => {
           className={`${classes.iconButton} ${
             active === "Add" ? classes.clicked : ""
           }`}
-          onClick={() => setActive("Add")}
+          onClick={() => onChooseTab("Add")}
         />
         <Text
           className={`${classes.text} ${
