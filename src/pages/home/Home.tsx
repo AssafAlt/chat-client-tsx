@@ -61,11 +61,9 @@ const Home = () => {
 
   return (
     <>
-      {displayState.showHeaders && (
-        <div className={classes.friendsHeader}>
-          <FriendsHeader />
-        </div>
-      )}
+      <div className={classes.friendsHeader}>
+        {displayState.showHeaders && <FriendsHeader />}
+      </div>
       <div className={classes.home}>
         <SideBar />
         <div style={{ flex: "1", marginLeft: "20px" }}>

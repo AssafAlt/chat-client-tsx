@@ -39,6 +39,7 @@ import LogoutLabel from "./features/LogoutLabel";
 import SettingsLabel from "./features/SettingsLabel";
 import UsersToggle from "./features/UsersToggle";
 import { useNavigate } from "react-router-dom";
+import FriendsHeaderTrigger from "./features/FriendsHeaderTrigger";
 
 const SideBar = () => {
   const { socketState } = useSocketContext();
@@ -47,7 +48,7 @@ const SideBar = () => {
   const [friendsList, setFriendsList] = useState<IFriendsWithStatus>();
   const [onlineFriendsList, setOnlineFriendsList] = useState<IFriendMap>({});
   const [offlineFriendsList, setOfflineFriendsList] = useState<IFriendMap>({});
-  const [active, setActive] = useState("Friends");
+  const [active, setActive] = useState("");
   const [showCard, setShowCard] = useState("");
   const navigate = useNavigate();
   const { state } = useAuthContext();
@@ -84,45 +85,6 @@ const SideBar = () => {
     setFriendsList(friendsState.friends);
   }, [friendsState]);
 
-  const data = [
-    { link: "", label: "Notifications", icon: IconBellRinging, variance: "0" },
-  ];
-  const friends = (
-    <a
-      className={classes.link}
-      data-active={"Friends" === active || undefined}
-      href=""
-      onClick={(event) => {
-        event.preventDefault();
-        setActive("Friends");
-        handleTabChange("Friends");
-        displayManager(DisplayType.HEADERS);
-      }}
-    >
-      <IconFriends className={classes.linkIcon} stroke={1.5} />
-      <span>Friends</span>
-    </a>
-  );
-
-  const links = data.map((item) => (
-    <a
-      className={classes.link}
-      data-active={item.label === active || undefined}
-      href={item.link}
-      key={item.label}
-      onClick={(event) => {
-        event.preventDefault();
-        setActive(item.label);
-        handleTabChange(item.label);
-        displayManager(DisplayType.CLOSE_HEADERS);
-      }}
-    >
-      <item.icon className={classes.linkIcon} stroke={1.5} />
-      <span>{item.label}</span>
-      <span>({item.variance})</span>
-    </a>
-  ));
-
   return (
     <Paper className={classes.sideBar} bg="cyan">
       <ScrollArea p="sm" className={classes.sideScroller}>
@@ -147,9 +109,8 @@ const SideBar = () => {
             styles={{ section: { pointerEvents: "none" } }}
             mb="sm"
           />
-          {friends}
+          <FriendsHeaderTrigger />
           <Group className={classes.header} justify="space-between"></Group>
-          {/*links*/}
         </div>
         <div className={classes.usersContainer}>
           {friendsList?.onlineFriends !== undefined && (

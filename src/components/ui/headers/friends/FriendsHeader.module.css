@@ -3,6 +3,10 @@
     display: none;
   }
 }
+.titleContainer {
+  display: flex;
+  padding-right: 2vw;
+}
 
 .tab {
   font-weight: 500;
