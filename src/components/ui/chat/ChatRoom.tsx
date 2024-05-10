@@ -22,6 +22,7 @@ import {
 import { springApi } from "../../../api/apiConfig";
 import { IconArrowDown } from "@tabler/icons-react";
 import classes from "./ChatRoom.module.css";
+import { useChat } from "../../../hooks/useChat";
 
 interface IConversation {
   [key: string]: ICurrentChatMessage[];
@@ -49,6 +50,7 @@ const ChatRoom = () => {
   const [pageNumber, setPageNumber] = useState(0);
   const hasMoreMessages = useRef(true);
   const [isLoading, setIsLoading] = useState(false);
+  const { getChatHistoryByPage } = useChat();
 
   const scrollToBottom = () => {
     viewport.current!.scrollTo({
@@ -113,12 +115,12 @@ const ChatRoom = () => {
       return;
     }
     try {
-      const res = await springApi.get(`messages/${currentChat.currentRoom}`, {
-        params: { pageNumber: pageNum },
-      });
+      const results = await getChatHistoryByPage(
+        pageNum,
+        currentChat.currentRoom
+      );
 
-      const data: IConverSationResponse = res.data;
-      console.log(data);
+      const data: IConverSationResponse = results;
       hasMoreMessages.current = data.hasNext;
 
       setChatConversation((prevChatHistory) => {
