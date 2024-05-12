@@ -20,3 +20,17 @@
   transition: border-color 0.1s ease;
   width: 100%;
 }
+
+.scroller {
+  height: 150px;
+}
+
+.mobileCard {
+  border-radius: 8px;
+}
+@media (max-width: 500px) {
+  .mobileCard {
+    height: 88vh;
+    border-radius: 0;
+  }
+}

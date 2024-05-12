@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   TextInput,
   PasswordInput,
@@ -11,16 +11,16 @@ import {
   LoadingOverlay,
   Loader,
 } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 import { useForm } from "@mantine/form";
 import { useAuth } from "../../hooks/useAuth";
 import { RegisterForm } from "../../models/AuthForms";
 import classes from "./AuthStyles.module.css";
-import { notifications } from "@mantine/notifications";
 import { useState } from "react";
 
 const Register = () => {
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const { register } = useAuth();
   const form = useForm<RegisterForm>({
     initialValues: {
       username: "",
@@ -31,16 +31,14 @@ const Register = () => {
 
     validate: {
       username: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
-      confirmPassword: (value) =>
-        form.values.password === value
+      confirmPassword: (value, formValues) =>
+        formValues.password === value
           ? null
           : "Password and Confirm Password do not match",
       nickname: (value) =>
         /\d/.test(value) ? "Nickname cannot contain numbers" : null,
     },
   });
-
-  const { register } = useAuth();
 
   const onSubmit = async (values: RegisterForm) => {
     setIsLoading(true);
@@ -49,8 +47,8 @@ const Register = () => {
       notifications.show({
         title: "Welcome to Capitan's Chat App",
         message: "Navigating to sign in",
+        autoClose: 3000,
       });
-      navigate("/");
     } catch (error) {
       notifications.show({
         title: "Register failed!",
@@ -62,14 +60,14 @@ const Register = () => {
     }
   };
   return (
-    <>
+    <div className={classes.registerForm}>
       {isLoading && (
         <LoadingOverlay
           visible={true}
           loaderProps={{ children: <Loader color="blue" /> }}
         />
       )}
-      <Container size={420}>
+      <Container className={classes.registerContainer}>
         <Title ta="center" className={classes.title}>
           Register page
         </Title>
@@ -80,11 +78,9 @@ const Register = () => {
           </Anchor>
         </Text>
 
-        <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+        <Paper withBorder shadow="md" p={30} mt={15} radius="md">
           <form
-            onSubmit={form.onSubmit(
-              async (values: RegisterForm) => await onSubmit(values)
-            )}
+            onSubmit={form.onSubmit((values: RegisterForm) => onSubmit(values))}
           >
             <TextInput
               label="Username"
@@ -124,7 +120,7 @@ const Register = () => {
           </form>
         </Paper>
       </Container>
-    </>
+    </div>
   );
 };
 

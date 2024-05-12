@@ -1,4 +1,5 @@
 import { springApi } from "../api/apiConfig";
+import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 import { useDisplayContext } from "../context/DisplayContext";
 import { LoginForm, RegisterForm } from "../models/AuthForms";
@@ -8,6 +9,7 @@ import { axiosErrorExtractor } from "../utils/axiosErrorUtils";
 export const useAuth = () => {
   const { dispatch } = useAuthContext();
   const { displayDispatch } = useDisplayContext();
+  const navigate = useNavigate();
 
   const login = async (userCredentials: LoginForm) => {
     dispatch({ type: "START" });
@@ -17,16 +19,20 @@ export const useAuth = () => {
 
       if (res.status === 200) {
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data as LoginResponse });
+
+        navigate("/home");
       } else {
         dispatch({
           type: "LOGIN_FAILED",
           payload: "Unknown error please try again",
         });
+
         throw new Error("Unknown error");
       }
     } catch (error: unknown) {
       const err = axiosErrorExtractor(error);
       dispatch({ type: "LOGIN_FAILED", payload: err });
+
       throw new Error(err);
     }
   };
@@ -40,19 +46,24 @@ export const useAuth = () => {
           type: "REGISTER_SUCCESS",
           payload: res.data,
         });
+
+        navigate("/");
       } else {
         dispatch({
           type: "REGISTER_FAILED",
           payload: "Unknown error please try again",
         });
+
         throw new Error("Unknown error");
       }
     } catch (error: unknown) {
       const err = axiosErrorExtractor(error);
+
       dispatch({
         type: "REGISTER_FAILED",
         payload: err,
       });
+
       throw new Error(err);
     }
   };

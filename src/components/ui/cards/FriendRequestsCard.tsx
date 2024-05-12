@@ -1,44 +1,25 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import { Card, Text } from "@mantine/core";
-import { useFriends } from "../../../hooks/useFriends";
-import { IGetFriendRequest } from "../../../models/FriendRequestResponses";
 import FriendRequestsTable from "../tables/FriendRequestsTable";
+import { useFriendsContext } from "../../../context/FriendsContext";
+import classes from "./Cards.module.css";
 const FriendRequestsCard = () => {
-  const { getFriendRequests } = useFriends();
-  const [friendRequests, setFriendRequests] = useState<IGetFriendRequest[]>([]);
-  const effectRan = useRef(false);
-
-  const onGetFriendRequests = async () => {
-    try {
-      const res: IGetFriendRequest[] = await getFriendRequests();
-      console.log(res);
-      await setFriendRequests(res);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { friendsState } = useFriendsContext();
 
   useEffect(
-    () => {
-      if (effectRan.current === false) {
-        onGetFriendRequests();
-      }
-
-      return () => {
-        //unmounting
-        effectRan.current = true;
-      };
-    },
+    () => {},
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [friendsState]
   );
 
   return (
-    <Card padding="md" radius="md" bg="cyan">
-      {friendRequests.length ? (
-        <FriendRequestsTable fRequests={friendRequests} />
+    <Card padding="md" radius="md" bg="cyan" className={classes.mobileCard}>
+      {friendsState.friendRequests.length ? (
+        <FriendRequestsTable fRequests={friendsState.friendRequests} />
       ) : (
-        <Text>There is no pending requests </Text>
+        <Text ff="sans-serif" fs="italic" ta="center">
+          There is no pending requests{" "}
+        </Text>
       )}
     </Card>
   );

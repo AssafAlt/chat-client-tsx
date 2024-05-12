@@ -1,0 +1,21 @@
+.homeContainer {
+  padding-top: 9vh;
+}
+.mainContainer {
+  display: flex;
+}
+
+.friendsHeader {
+  border-bottom: rem(1px) solid
+    light-dark(var(--mantine-color-gray-2), transparent);
+  margin-bottom: rem(120px);
+}
+.sideBarContainer {
+  /*height: 100%;
+  width: 33.33%;*/
+  width: 100%;
+}
+.chatContainer {
+  height: 100%;
+  width: 66.66%;
+}

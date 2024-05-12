@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   TextInput,
   PasswordInput,
@@ -11,16 +11,15 @@ import {
   Loader,
   LoadingOverlay,
 } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 import { useForm } from "@mantine/form";
 import classes from "./AuthStyles.module.css";
 import { LoginForm } from "../../models/AuthForms";
 import { useAuth } from "../../hooks/useAuth";
-import { notifications } from "@mantine/notifications";
 import { useState } from "react";
 
 const Login = () => {
   const { login } = useAuth();
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<LoginForm>({
@@ -41,10 +40,8 @@ const Login = () => {
       notifications.show({
         title: "Welcome Back to Capitan's Chat App",
         message: "Navigating to Home page",
-        autoClose: 2000,
+        autoClose: 3000,
       });
-
-      navigate("/home");
     } catch (error) {
       notifications.show({
         title: "Login failed!",
@@ -57,14 +54,14 @@ const Login = () => {
   };
 
   return (
-    <>
+    <div className={classes.loginForm}>
       {isLoading && (
         <LoadingOverlay
           visible={true}
           loaderProps={{ children: <Loader color="blue" /> }}
         />
       )}
-      <Container size={420} my={10}>
+      <Container className={classes.loginContainer}>
         <Title ta="center" className={classes.title}>
           Login page
         </Title>
@@ -101,7 +98,7 @@ const Login = () => {
           </form>
         </Paper>
       </Container>
-    </>
+    </div>
   );
 };
 

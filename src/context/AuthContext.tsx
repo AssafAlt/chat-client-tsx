@@ -97,7 +97,6 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
   }
 };
 
-// Create the SignUpProvider component
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
@@ -110,7 +109,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-// Create a custom hook to access the SignUp context
 export const useAuthContext = () => {
   const context = useContext(AuthContext);
 

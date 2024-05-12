@@ -2,3 +2,59 @@
   font-family: Greycliff CF, var(--mantine-font-family);
   font-weight: 900;
 }
+.loginContainer {
+  height: 50%;
+  width: 33%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+.registerContainer {
+  height: 50%;
+  /*width: 40%;*/
+  min-width: 25%;
+  max-width: 35%;
+}
+.registerForm {
+  padding-top: 12vh;
+}
+.loginForm {
+  padding-top: 7%;
+}
+
+/*.title {
+  font-family: Greycliff CF, var(--mantine-font-family);
+  font-weight: 900;
+}
+.loginContainer {
+  height: 50%;
+  width: 33%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.registerContainer {
+  height: 420px;
+  width: 420px;
+}
+.authForm {
+  padding-top: 42px;
+}
+*/
+@media (min-width: 1500px) {
+  .registerContainer {
+    max-width: 27%;
+  }
+}
+@media (max-width: 500px) {
+  .loginContainer {
+    min-width: 70%;
+  }
+
+  .registerContainer {
+    min-width: 75%;
+  }
+  .loginForm {
+    padding-top: 15%;
+  }
+}

@@ -6,6 +6,7 @@ import { ModalsProvider } from "@mantine/modals";
 import { SocketProvider } from "../context/SocketContext";
 import { DisplayProvider } from "../context/DisplayContext";
 import { FriendsProvider } from "../context/FriendsContext";
+import { BrowserRouter } from "react-router-dom";
 interface IProps {
   children: JSX.Element;
 }
@@ -18,20 +19,22 @@ const theme = createTheme({
 export const AppProviders = ({ children }: IProps) => {
   return (
     <MantineProvider theme={theme}>
-      <ModalsProvider>
-        <AuthProvider>
-          <UserProvider>
-            <DisplayProvider>
-              <FriendsProvider>
-                <SocketProvider>
-                  <Notifications position="top-right" />
-                  {children}
-                </SocketProvider>
-              </FriendsProvider>
-            </DisplayProvider>
-          </UserProvider>
-        </AuthProvider>
-      </ModalsProvider>
+      <BrowserRouter>
+        <ModalsProvider>
+          <AuthProvider>
+            <UserProvider>
+              <DisplayProvider>
+                <FriendsProvider>
+                  <SocketProvider>
+                    <Notifications position="top-right" />
+                    {children}
+                  </SocketProvider>
+                </FriendsProvider>
+              </DisplayProvider>
+            </UserProvider>
+          </AuthProvider>
+        </ModalsProvider>
+      </BrowserRouter>
     </MantineProvider>
   );
 };

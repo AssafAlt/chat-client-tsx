@@ -1,69 +1,13 @@
-import { Table, ScrollArea, Group, Avatar, Text, Button } from "@mantine/core";
+import { Table, ScrollArea } from "@mantine/core";
 import { IGetFriendRequest } from "../../../models/FriendRequestResponses";
-import { useFriends } from "../../../hooks/useFriends";
-import { useState } from "react";
+import FriendRequestRow from "./FriendRequestRow";
 
-interface IFriendRequestsTableProps {
-  fRequests: IGetFriendRequest[];
-}
-
-const FriendRequestsTable = (props: IFriendRequestsTableProps) => {
-  const { confirmFriendRequest, cancelFriendRequest } = useFriends();
-  const [isLoading, setIsLoading] = useState(false);
-  const [requestStatus, setRequestStatus] = useState("Loading...");
-  const onConfirmRequest = async (friendRequestId: number) => {
-    setIsLoading(true);
-    try {
-      await confirmFriendRequest(friendRequestId);
-      setRequestStatus("Confirmed");
-    } catch (error) {
-      setRequestStatus("Confirmation was failed!");
-    }
-  };
-  const onCancelRequest = async (friendRequestId: number) => {
-    setIsLoading(true);
-    try {
-      await cancelFriendRequest(friendRequestId);
-      setRequestStatus("Declined");
-    } catch (error) {
-      setRequestStatus("Declination was failed!");
-    }
-  };
-
-  const rows = props.fRequests.map((fRequest) => {
-    return (
-      <Table.Tr key={fRequest.id}>
-        <Table.Td>
-          <Group gap="sm">
-            <Avatar size={40} src={fRequest.profileImg} radius={26} />
-            <Text size="sm" fw={500}>
-              {fRequest.nickname}
-            </Text>
-          </Group>
-        </Table.Td>
-        <Table.Td ta="left">{fRequest.date}</Table.Td>
-        <Table.Td ta="left">
-          <Group gap="xs">
-            {!isLoading ? (
-              <>
-                <Button
-                  onClick={() => onConfirmRequest(fRequest.id)}
-                  bg="green"
-                >
-                  Confirm
-                </Button>
-                <Button onClick={() => onCancelRequest(fRequest.id)} bg="red">
-                  Decline
-                </Button>
-              </>
-            ) : (
-              <Text c="white">{requestStatus}</Text>
-            )}
-          </Group>
-        </Table.Td>
-      </Table.Tr>
-    );
-  });
+const FriendRequestsTable: React.FC<{ fRequests: IGetFriendRequest[] }> = ({
+  fRequests,
+}) => {
+  const rows = fRequests.map((fRequest) => (
+    <FriendRequestRow key={fRequest.id} fRequest={fRequest} />
+  ));
 
   return (
     <ScrollArea>

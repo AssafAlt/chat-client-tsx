@@ -1,0 +1,21 @@
+.headPaper {
+}
+.headContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.innerContainer {
+  display: flex;
+  align-items: center;
+}
+
+.arrowButton {
+  display: none;
+}
+
+@media (max-width: 500px) {
+  .arrowButton {
+    display: block;
+  }
+}
