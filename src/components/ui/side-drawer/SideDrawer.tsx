@@ -1,8 +1,6 @@
 import { Drawer } from "@mantine/core";
 import React from "react";
 import MobileUsersList from "../../mobile/users/MobileUsersList";
-import { useDisplayContext } from "../../../context/DisplayContext";
-import ChatRoom from "../chat/ChatRoom";
 import { useDisplay } from "../../../hooks/useDisplay";
 
 interface ISideDrawerProps {
@@ -14,7 +12,6 @@ const SideDrawer: React.FC<ISideDrawerProps> = ({
   drawerOpened,
   closeDrawer,
 }) => {
-  const { displayState } = useDisplayContext();
   const { closeChat } = useDisplay();
 
   const onCloseDrawer = () => {

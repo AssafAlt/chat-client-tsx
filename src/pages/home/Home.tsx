@@ -1,4 +1,4 @@
-import { Burger, Group, Paper, Text } from "@mantine/core";
+import { Burger, Paper, Text } from "@mantine/core";
 import { useAuthContext } from "../../context/AuthContext";
 import SetProfilePic from "../../components/user_settings/SetProfilePic";
 import { useEffect, useRef } from "react";
@@ -23,7 +23,6 @@ const Home = () => {
   const { getFriendsWithStatus, getFriendRequests } = useFriends();
   const { displayState } = useDisplayContext();
   const effectRan = useRef(false);
-  const [opened, { toggle }] = useDisclosure(false);
 
   const onGetFriendRequests = async () => {
     try {
@@ -65,39 +64,39 @@ const Home = () => {
   );
 
   return (
-    <>
-      <div className={classes.friendsHeader}>
-        {displayState.showHeaders && <FriendsHeader />}
-      </div>
-      <div className={classes.home}>
-        <SideBar />
-        <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="xs" />
-        <SideDrawer drawerOpened={drawerOpened} closeDrawer={closeDrawer} />
-
-        <div style={{ flex: "1", marginLeft: "20px" }}>
-          {isFirstLogin && (
-            <Paper>
-              <Text ta="center" fz="lg" fw={500} mt="md">
-                You haven't chosen a profile image yet. Would you like to choose
-                one now?
-              </Text>
-              <SetProfilePic imageSrc={imagePath} userNickname={userNickname} />
-            </Paper>
-          )}
+    <div className={classes.homeContainer}>
+      {isFirstLogin ? (
+        <div style={{ marginLeft: "20px" }}>
+          <Paper>
+            <Text ta="center" fz="lg" fw={500} mt="md">
+              You haven't chosen a profile image yet. Would you like to choose
+              one now?
+            </Text>
+            <SetProfilePic imageSrc={imagePath} userNickname={userNickname} />
+          </Paper>
         </div>
+      ) : (
+        <>
+          <div className={classes.friendsHeader}>
+            {displayState.showHeaders && <FriendsHeader />}
+          </div>
+          <div className={classes.mainContainer}>
+            <SideBar />
+            <Burger
+              opened={drawerOpened}
+              onClick={toggleDrawer}
+              hiddenFrom="xs"
+            />
+            <SideDrawer drawerOpened={drawerOpened} closeDrawer={closeDrawer} />
 
-        {displayState.showChat && (
-          <ChatRoom key={displayState.currentChat.currentRoom} />
-        )}
-      </div>
-    </>
+            {displayState.showChat && (
+              <ChatRoom key={displayState.currentChat.currentRoom} />
+            )}
+          </div>
+        </>
+      )}
+    </div>
   );
 };
 
 export default Home;
-/*<Burger
-            opened={drawerOpened}
-            onClick={toggleDrawer}
-            hiddenFrom="xs"
-          />
-          <SideDrawer drawerOpened={drawerOpened} closeDrawer={closeDrawer} />*/

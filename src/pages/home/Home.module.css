@@ -1,9 +1,11 @@
-.home {
+.homeContainer {
+  padding-top: 9vh;
+}
+.mainContainer {
   display: flex;
 }
 
 .friendsHeader {
-  padding-top: 9vh;
   border-bottom: rem(1px) solid
     light-dark(var(--mantine-color-gray-2), transparent);
   margin-bottom: rem(120px);
@@ -16,4 +18,7 @@
 .chatContainer {
   height: 100%;
   width: 66.66%;
+}
+
+.firstLoginContainer {
 }

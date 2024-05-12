@@ -1,19 +1,23 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import MobileFooter from "../../components/mobile/footer/MobileFooter";
 import MobileUsersList from "../../components/mobile/users/MobileUsersList";
-import { useFriendsContext } from "../../context/FriendsContext";
 import classes from "./MobileHome.module.css";
-import { IFriendsWithStatus } from "../../models/FriendWithStatus";
 import { useSocket } from "../../hooks/useSocket";
 import { useFriends } from "../../hooks/useFriends";
-import { Text } from "@mantine/core";
+import { Paper, Text } from "@mantine/core";
 import ChatRoom from "../../components/ui/chat/ChatRoom";
 import { useDisplayContext } from "../../context/DisplayContext";
 import AddFriendCard from "../../components/ui/cards/AddFriendCard";
 import FriendRequestsCard from "../../components/ui/cards/FriendRequestsCard";
 import FriendsCard from "../../components/ui/cards/FriendsCard";
+import { useAuthContext } from "../../context/AuthContext";
+import SetProfilePic from "../../components/user_settings/SetProfilePic";
 
 const MobileHome = () => {
+  const { state } = useAuthContext();
+  const { profileImg, nickname, isFirstLogin } = state;
+  const imagePath = profileImg ? profileImg : "";
+  const userNickname = nickname ? nickname : "";
   const { connectingSocket } = useSocket();
   const { getFriendsWithStatus, getFriendRequests } = useFriends();
   const { displayState } = useDisplayContext();
@@ -59,18 +63,31 @@ const MobileHome = () => {
   );
   return (
     <div className={classes.homeContainer}>
-      {displayState.showChat ? (
-        <ChatRoom key={displayState.currentChat.currentRoom} />
-      ) : (
-        <>
-          {displayState.showMobileTab === "Chats" && <MobileUsersList />}
-          {displayState.showMobileTab === "Friends" && <FriendsCard />}
-          {displayState.showMobileTab === "Pending" && <FriendRequestsCard />}
-          {displayState.showMobileTab === "Add" && <AddFriendCard />}
-
-          <MobileFooter />
-        </>
+      {isFirstLogin && (
+        <div>
+          <Paper>
+            <Text ta="center" fz="lg" fw={500} mt="md">
+              You haven't chosen a profile image yet. Would you like to choose
+              one now?
+            </Text>
+            <SetProfilePic imageSrc={imagePath} userNickname={userNickname} />
+          </Paper>
+        </div>
       )}
+      <>
+        {displayState.showChat ? (
+          <ChatRoom key={displayState.currentChat.currentRoom} />
+        ) : (
+          <>
+            {displayState.showMobileTab === "Chats" && <MobileUsersList />}
+            {displayState.showMobileTab === "Friends" && <FriendsCard />}
+            {displayState.showMobileTab === "Pending" && <FriendRequestsCard />}
+            {displayState.showMobileTab === "Add" && <AddFriendCard />}
+
+            <MobileFooter />
+          </>
+        )}
+      </>
     </div>
   );
 };
