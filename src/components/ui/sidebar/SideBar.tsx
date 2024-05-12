@@ -7,69 +7,35 @@ import {
   rem,
   Paper,
   Flex,
-  List,
   Avatar,
-  Menu,
-  Button,
   ScrollArea,
-  Container,
-  Burger,
-  Drawer,
 } from "@mantine/core";
-import {
-  IconBellRinging,
-  IconUsers,
-  IconBrandHipchat,
-  IconFriends,
-  IconUserOff,
-} from "@tabler/icons-react";
+import { IconBellRinging, IconUsers, IconUserOff } from "@tabler/icons-react";
 
 import classes from "./SideBar.module.css";
-import { useSocketContext } from "../../../context/SocketContext";
-import {
-  IFriendMap,
-  IFriendsWithStatus,
-} from "../../../models/FriendWithStatus";
+import { IFriendsWithStatus } from "../../../models/FriendWithStatus";
 import { DisplayType, useDisplay } from "../../../hooks/useDisplay";
 import { useSocket } from "../../../hooks/useSocket";
 import { useAuth } from "../../../hooks/useAuth";
-import { createPrivateRoomName } from "../../../utils/socketUtils";
 import { useAuthContext } from "../../../context/AuthContext";
-import { ICurrentRoom } from "../../../context/DisplayContext";
 import { useFriendsContext } from "../../../context/FriendsContext";
 import LogoutLabel from "./features/LogoutLabel";
 import SettingsLabel from "./features/SettingsLabel";
 import UsersToggle from "./features/UsersToggle";
 import { useNavigate } from "react-router-dom";
 import FriendsHeaderTrigger from "./features/FriendsHeaderTrigger";
-import { useDisclosure } from "@mantine/hooks";
-import SideDrawer from "../side-drawer/SideDrawer";
 
 const SideBar = () => {
-  const { socketState } = useSocketContext();
-
   const { friendsState } = useFriendsContext();
 
-  const { displayManager, chooseChat } = useDisplay();
+  const { displayManager } = useDisplay();
   const [friendsList, setFriendsList] = useState<IFriendsWithStatus>();
-  const [onlineFriendsList, setOnlineFriendsList] = useState<IFriendMap>({});
-  const [offlineFriendsList, setOfflineFriendsList] = useState<IFriendMap>({});
   const [active, setActive] = useState("");
-  const [showCard, setShowCard] = useState("");
   const navigate = useNavigate();
   const { state } = useAuthContext();
   const userImage: string = state.profileImg ? state.profileImg : "";
   const userNick: string = state.nickname ? state.nickname : "";
 
-  const handleTabChange = (value: string) => {
-    if (value === "Online Friends") {
-      setShowCard("Online Friends");
-    }
-
-    if (value === "Offline Friends") {
-      setShowCard("Offline Friends");
-    }
-  };
   const { logout } = useAuth();
   const { disconnectingSocket } = useSocket();
 
