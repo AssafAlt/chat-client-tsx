@@ -98,6 +98,7 @@ const displayReducer = (
       };
     case "DEFAULT_DISPLAY":
       return {
+        showMobileTab: "Chats",
         showChat: false,
         currentChat: {
           currentRoom: "",

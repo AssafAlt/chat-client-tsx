@@ -1,4 +1,4 @@
-import { Button, Flex, Text } from "@mantine/core";
+import { Flex, Text } from "@mantine/core";
 import {
   IconBrandHipchat,
   IconFriends,

@@ -1,6 +1,4 @@
-import { Flex, List, Paper, Text, ScrollArea } from "@mantine/core";
-import React from "react";
-import { IFriendsWithStatus } from "../../../models/FriendWithStatus";
+import { List, Text, ScrollArea } from "@mantine/core";
 import MobileUserRow from "./MobileUserRow";
 import { useFriendsContext } from "../../../context/FriendsContext";
 import classes from "./MobileUsers.module.css";
@@ -8,12 +6,6 @@ import { DisplayType, useDisplay } from "../../../hooks/useDisplay";
 import { ICurrentRoom } from "../../../context/DisplayContext";
 import { useAuthContext } from "../../../context/AuthContext";
 import { createPrivateRoomName } from "../../../utils/socketUtils";
-
-interface IMobileUsersListProps {
-  friendsList: IFriendsWithStatus;
-}
-/*onlineFriends: IFriendMap;
-  offlineFriends: IFriendMap;*/
 
 const MobileUsersList = () => {
   const { friendsState } = useFriendsContext();

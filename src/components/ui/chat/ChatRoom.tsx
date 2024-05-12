@@ -1,10 +1,8 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Avatar,
   Button,
-  Paper,
   Textarea,
-  Text,
   ScrollArea,
   Affix,
   ActionIcon,
@@ -19,7 +17,7 @@ import {
   IChatMessage,
   ICurrentChatMessage,
 } from "../../../models/ChatMessages";
-import { springApi } from "../../../api/apiConfig";
+
 import { IconArrowDown } from "@tabler/icons-react";
 import classes from "./ChatRoom.module.css";
 import { useChat } from "../../../hooks/useChat";

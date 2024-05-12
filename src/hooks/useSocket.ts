@@ -4,10 +4,7 @@ import { useSocketContext } from "../context/SocketContext";
 import Stomp, { Client } from "stompjs";
 import { notifications } from "@mantine/notifications";
 import { useAuthContext } from "../context/AuthContext";
-import {
-  IFriendStatusUpdate,
-  IFriendsWithStatus,
-} from "../models/FriendWithStatus";
+import { IFriendStatusUpdate } from "../models/FriendWithStatus";
 import { useFriendsContext } from "../context/FriendsContext";
 import { MessageType } from "../models/MessageType";
 import { INotification } from "../models/Notification";
