@@ -20,6 +20,7 @@ import { useState } from "react";
 
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const { register } = useAuth();
   const form = useForm<RegisterForm>({
     initialValues: {
       username: "",
@@ -30,16 +31,14 @@ const Register = () => {
 
     validate: {
       username: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
-      confirmPassword: (value) =>
-        form.values.password === value
+      confirmPassword: (value, formValues) =>
+        formValues.password === value
           ? null
           : "Password and Confirm Password do not match",
       nickname: (value) =>
         /\d/.test(value) ? "Nickname cannot contain numbers" : null,
     },
   });
-
-  const { register } = useAuth();
 
   const onSubmit = async (values: RegisterForm) => {
     setIsLoading(true);
@@ -81,9 +80,7 @@ const Register = () => {
 
         <Paper withBorder shadow="md" p={30} mt={15} radius="md">
           <form
-            onSubmit={form.onSubmit(
-              async (values: RegisterForm) => await onSubmit(values)
-            )}
+            onSubmit={form.onSubmit((values: RegisterForm) => onSubmit(values))}
           >
             <TextInput
               label="Username"
