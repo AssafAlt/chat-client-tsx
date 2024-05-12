@@ -11,6 +11,9 @@
   height: 86vh;
   margin-top: 1%;
 }
+.sideDrawer {
+  height: 86vh;
+}
 
 .userScroller {
   height: 150px;

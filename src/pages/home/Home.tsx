@@ -1,4 +1,4 @@
-import { Paper, Text } from "@mantine/core";
+import { Burger, Group, Paper, Text } from "@mantine/core";
 import { useAuthContext } from "../../context/AuthContext";
 import SetProfilePic from "../../components/user_settings/SetProfilePic";
 import { useEffect, useRef } from "react";
@@ -9,8 +9,12 @@ import ChatRoom from "../../components/ui/chat/ChatRoom";
 import { useDisplayContext } from "../../context/DisplayContext";
 import FriendsHeader from "../../components/ui/headers/friends/FriendsHeader";
 import classes from "./Home.module.css";
+import { useDisclosure } from "@mantine/hooks";
+import SideDrawer from "../../components/ui/side-drawer/SideDrawer";
 
 const Home = () => {
+  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
+    useDisclosure(false);
   const { state } = useAuthContext();
   const { profileImg, nickname, isFirstLogin } = state;
   const imagePath = profileImg ? profileImg : "";
@@ -19,6 +23,7 @@ const Home = () => {
   const { getFriendsWithStatus, getFriendRequests } = useFriends();
   const { displayState } = useDisplayContext();
   const effectRan = useRef(false);
+  const [opened, { toggle }] = useDisclosure(false);
 
   const onGetFriendRequests = async () => {
     try {
@@ -65,9 +70,9 @@ const Home = () => {
         {displayState.showHeaders && <FriendsHeader />}
       </div>
       <div className={classes.home}>
-        <div className={classes.sideBarContainer}>
-          <SideBar />
-        </div>
+        <SideBar />
+        <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="xs" />
+        <SideDrawer drawerOpened={drawerOpened} closeDrawer={closeDrawer} />
 
         <div style={{ flex: "1", marginLeft: "20px" }}>
           {isFirstLogin && (
@@ -90,3 +95,9 @@ const Home = () => {
 };
 
 export default Home;
+/*<Burger
+            opened={drawerOpened}
+            onClick={toggleDrawer}
+            hiddenFrom="xs"
+          />
+          <SideDrawer drawerOpened={drawerOpened} closeDrawer={closeDrawer} />*/

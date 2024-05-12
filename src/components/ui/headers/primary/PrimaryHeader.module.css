@@ -53,7 +53,10 @@
   color: #0f7c8b;
   font-weight: 700;
 }
-@media (max-width: 500px) {
+@media (max-width: 575px) {
+  .primaryHeader {
+    align-items: center;
+  }
   .primaryHeader .textOne {
     font-size: 5vw;
   }

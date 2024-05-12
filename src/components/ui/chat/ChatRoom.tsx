@@ -207,7 +207,7 @@ const ChatRoom = () => {
 
       <ScrollArea p="sm" viewportRef={viewport} className={classes.scroller}>
         {isLoading && (
-          <Center>
+          <Center p={5}>
             <Loader size={30} />
           </Center>
         )}

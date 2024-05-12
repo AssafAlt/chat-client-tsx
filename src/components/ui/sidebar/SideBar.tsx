@@ -13,6 +13,8 @@ import {
   Button,
   ScrollArea,
   Container,
+  Burger,
+  Drawer,
 } from "@mantine/core";
 import {
   IconBellRinging,
@@ -40,10 +42,14 @@ import SettingsLabel from "./features/SettingsLabel";
 import UsersToggle from "./features/UsersToggle";
 import { useNavigate } from "react-router-dom";
 import FriendsHeaderTrigger from "./features/FriendsHeaderTrigger";
+import { useDisclosure } from "@mantine/hooks";
+import SideDrawer from "../side-drawer/SideDrawer";
 
 const SideBar = () => {
   const { socketState } = useSocketContext();
+
   const { friendsState } = useFriendsContext();
+
   const { displayManager, chooseChat } = useDisplay();
   const [friendsList, setFriendsList] = useState<IFriendsWithStatus>();
   const [onlineFriendsList, setOnlineFriendsList] = useState<IFriendMap>({});
@@ -86,8 +92,8 @@ const SideBar = () => {
   }, [friendsState]);
 
   return (
-    <Paper className={classes.sideBar} bg="cyan">
-      <ScrollArea p="sm" className={classes.sideScroller}>
+    <Paper className={classes.sideBar} visibleFrom="xs">
+      <ScrollArea p="sm" className={classes.sideScroller} bg="cyan">
         <Flex py="sm" px="sm">
           <Avatar src={userImage} />
           <Text ff="sans-serif" fs="italic" ml={10}>

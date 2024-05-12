@@ -43,7 +43,7 @@
   align-items: center;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 575px) {
   .chatWindow {
     width: 100%;
     height: 97vh;
