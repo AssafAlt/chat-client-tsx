@@ -13,7 +13,7 @@ const FriendRequestsCard = () => {
   );
 
   return (
-    <Card padding="md" radius="md" bg="cyan" className={classes.mobileCard}>
+    <Card padding="md" radius="md" className={classes.mobileCard}>
       {friendsState.friendRequests.length ? (
         <FriendRequestsTable fRequests={friendsState.friendRequests} />
       ) : (

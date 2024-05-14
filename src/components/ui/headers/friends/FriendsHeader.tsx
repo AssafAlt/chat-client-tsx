@@ -36,7 +36,7 @@ const FriendsHeader = () => {
   ));
 
   return (
-    <Center>
+    <Center className={classes.friendsCenter}>
       <Container size="md">
         <Flex>
           <Flex pt={5} pr={10}>

@@ -1,6 +1,7 @@
 import { Avatar, Flex, Text } from "@mantine/core";
 import { IconCircleFilled } from "@tabler/icons-react";
 import React from "react";
+import classes from "./MobileUsers.module.css";
 
 interface IMobileUserRowProps {
   nickname: string;
@@ -20,6 +21,7 @@ const MobileUserRow: React.FC<IMobileUserRowProps> = ({
       </Text>
       <Flex>
         <IconCircleFilled
+          className={classes.circleIcon}
           style={{ color: isConnected ? "#1beb00" : "#f90101" }}
         />
       </Flex>

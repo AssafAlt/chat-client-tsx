@@ -59,7 +59,7 @@ const SideBar = () => {
 
   return (
     <Paper className={classes.sideBar} visibleFrom="xs">
-      <ScrollArea p="sm" className={classes.sideScroller} bg="cyan">
+      <ScrollArea p="sm" className={classes.sideScroller} c="cyan">
         <Flex py="sm" px="sm">
           <Avatar src={userImage} />
           <Text ff="sans-serif" fs="italic" ml={10}>
@@ -102,7 +102,7 @@ const SideBar = () => {
         </div>
 
         <div className={classes.footer}>
-          <SettingsLabel onClickSettings={onClickSettings} active={active} />
+          <SettingsLabel />
 
           <LogoutLabel onLogout={onLogout} />
         </div>

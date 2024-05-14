@@ -22,7 +22,7 @@ const MobileUsersList = () => {
     chooseChat(newRoom);
   };
   return (
-    <ScrollArea p="sm" className={classes.usersScroller} bg="cyan">
+    <ScrollArea p="sm" className={classes.usersScroller}>
       <Text pt="md" size="xl" ff="cursive" ta="center">
         Conversations
       </Text>

@@ -79,14 +79,16 @@ const Home = () => {
         <>
           <div className={classes.friendsHeader}>
             {displayState.showHeaders && <FriendsHeader />}
-          </div>
-          <div className={classes.mainContainer}>
-            <SideBar />
             <Burger
+              color="cyan"
               opened={drawerOpened}
               onClick={toggleDrawer}
               hiddenFrom="xs"
             />
+          </div>
+          <div className={classes.mainContainer}>
+            <SideBar />
+
             <SideDrawer drawerOpened={drawerOpened} closeDrawer={closeDrawer} />
 
             {displayState.showChat && (

@@ -39,6 +39,7 @@
   width: 100%;
   top: 0;
   padding-top: 1vh;
+  background-color: #15aabf;
   /*z-index: 1;*/
   justify-content: space-between;
 }
@@ -46,11 +47,12 @@
   font-size: 2.5vw;
   margin-right: 1vw;
   font-weight: 700;
+  color: #fff;
   padding-left: 1vw;
 }
 .primaryHeader .textTwo {
   font-size: 2.5vw;
-  color: #0f7c8b;
+  color: #fff;
   font-weight: 700;
 }
 @media (max-width: 575px) {
@@ -62,6 +64,17 @@
   }
   .primaryHeader .textTwo {
     font-size: 5vw;
+  }
+}
+@media (max-width: 940px) {
+  .primaryHeader {
+    align-items: center;
+  }
+  .primaryHeader .textOne {
+    font-size: 4vw;
+  }
+  .primaryHeader .textTwo {
+    font-size: 4vw;
   }
 }
 /*
