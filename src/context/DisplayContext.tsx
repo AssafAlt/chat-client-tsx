@@ -21,7 +21,7 @@ type DisplayAction =
   | { type: "SHOW_MOBILE_TAB"; payload: string }
   | { type: "SHOW_HEADERS" }
   | { type: "CLOSE_HEADERS" }
-  | { type: "SHOW_OVERLAY"; payload: { source: string; isVisible: boolean } }
+  | { type: "SHOW_OVERLAY"; payload: string }
   | { type: "CLOSE_OVERLAY" }
   | { type: "DEFAULT_DISPLAY" };
 
@@ -84,8 +84,8 @@ const displayReducer = (
       return {
         ...state,
         overlay: {
-          source: action.payload.source,
-          isVisible: action.payload.isVisible,
+          source: action.payload,
+          isVisible: true,
         },
       };
     case "CLOSE_OVERLAY":

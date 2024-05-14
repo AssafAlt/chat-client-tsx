@@ -12,6 +12,7 @@ import FriendRequestsCard from "../../components/ui/cards/FriendRequestsCard";
 import FriendsCard from "../../components/ui/cards/FriendsCard";
 import { useAuthContext } from "../../context/AuthContext";
 import SetProfilePic from "../../components/user_settings/SetProfilePic";
+import ImageOverlay from "../../components/ui/image-overlay/ImageOverlay";
 
 const MobileHome = () => {
   const { state } = useAuthContext();
@@ -63,6 +64,7 @@ const MobileHome = () => {
   );
   return (
     <div className={classes.homeContainer}>
+      {displayState.overlay.isVisible && <ImageOverlay />}
       {isFirstLogin && (
         <div>
           <Paper>

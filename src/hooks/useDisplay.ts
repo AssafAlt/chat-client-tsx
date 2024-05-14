@@ -24,5 +24,20 @@ export const useDisplay = () => {
     displayDispatch({ type: "SHOW_MOBILE_TAB", payload: chosenTab });
   };
 
-  return { displayManager, chooseChat, closeChat, chooseMobileTabToShow };
+  const chooseOverlayImage = (imageSrc: string) => {
+    displayDispatch({ type: "SHOW_OVERLAY", payload: imageSrc });
+  };
+
+  const closeOverlay = () => {
+    displayDispatch({ type: "CLOSE_OVERLAY" });
+  };
+
+  return {
+    displayManager,
+    chooseChat,
+    closeChat,
+    chooseMobileTabToShow,
+    chooseOverlayImage,
+    closeOverlay,
+  };
 };

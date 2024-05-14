@@ -2,21 +2,36 @@ import { Avatar, Flex, Text } from "@mantine/core";
 import { IconCircleFilled } from "@tabler/icons-react";
 import React from "react";
 import classes from "./MobileUsers.module.css";
+import { DisplayType, useDisplay } from "../../../hooks/useDisplay";
+import { createPrivateRoomName } from "../../../utils/socketUtils";
+import { ICurrentRoom } from "../../../context/DisplayContext";
 
 interface IMobileUserRowProps {
   nickname: string;
   profileImg: string;
   isConnected: boolean;
+  userNick: string;
 }
 const MobileUserRow: React.FC<IMobileUserRowProps> = ({
   nickname,
   profileImg,
   isConnected,
+  userNick,
 }) => {
+  const { chooseOverlayImage, displayManager, chooseChat } = useDisplay();
+  const onClickRow = () => {
+    displayManager(DisplayType.CHAT);
+    const newRoom: ICurrentRoom = {
+      currentFriendNickname: nickname,
+      currentFriendProfileImg: profileImg,
+      currentRoom: createPrivateRoomName(userNick, nickname),
+    };
+    chooseChat(newRoom);
+  };
   return (
     <Flex justify="space-between" py="sm" px="sm">
-      <Avatar src={profileImg} />
-      <Text ff="sans-serif" fs="italic">
+      <Avatar src={profileImg} onClick={() => chooseOverlayImage(profileImg)} />
+      <Text ff="sans-serif" fs="italic" onClick={onClickRow}>
         {nickname + "..."}
       </Text>
       <Flex>
