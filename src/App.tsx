@@ -12,7 +12,7 @@ const Login = lazy(() => import("./pages/auth/Login"));
 const Register = lazy(() => import("./pages/auth/Register"));
 const Home = lazy(() => import("./pages/home/Home"));
 const MobileHome = lazy(() => import("./pages/mobile/MobileHome"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+const NotFound = lazy(() => import("./pages/not-found/NotFound"));
 
 function App() {
   const isMobile = isMobileDevice();
