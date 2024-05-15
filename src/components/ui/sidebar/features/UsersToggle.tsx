@@ -12,7 +12,7 @@ import classes from "../SideBar.module.css";
 const UsersToggle = (props: IUsersToggleProps) => {
   const [isClicked, setIsClicked] = useState(false);
   const listLength = Object.keys(props.friendsList).length;
-  const { displayManager, chooseChat } = useDisplay();
+  const { displayManager, chooseChat, chooseOverlayImage } = useDisplay();
   const { state } = useAuthContext();
   const userNick: string = state.nickname ? state.nickname : "";
   return (
@@ -54,7 +54,10 @@ const UsersToggle = (props: IUsersToggleProps) => {
                 py="sm"
                 px="sm"
               >
-                <Avatar src={profileImg} />
+                <Avatar
+                  src={profileImg}
+                  onClick={() => chooseOverlayImage(profileImg)}
+                />
                 <Text ff="sans-serif" fs="italic">
                   {nickname.slice(0, 10) + "..."}
                 </Text>

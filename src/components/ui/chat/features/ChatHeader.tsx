@@ -9,7 +9,7 @@ interface IChatHeaderProps {
 }
 
 const ChatHeader = (props: IChatHeaderProps) => {
-  const { closeChat } = useDisplay();
+  const { closeChat, chooseOverlayImage } = useDisplay();
   return (
     <Paper bg="cyan" p="md" style={{ marginBottom: "20px" }}>
       <div className={classes.headContainer}>
@@ -17,6 +17,7 @@ const ChatHeader = (props: IChatHeaderProps) => {
           <Avatar
             radius="xl"
             src={props.profileImg}
+            onClick={() => chooseOverlayImage(props.profileImg)}
             style={{ marginRight: "10px" }}
           />
           <Text fw={500}>{props.friendNickname}</Text>
