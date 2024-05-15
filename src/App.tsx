@@ -6,7 +6,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import HomeNavigator from "./components/HomeNavigator";
 import { isMobileDevice } from "./utils/agentUtils";
 import PrimaryHeader from "./components/ui/headers/primary/PrimaryHeader";
-import "./App.css";
 
 const Login = lazy(() => import("./pages/auth/Login"));
 const Register = lazy(() => import("./pages/auth/Register"));
