@@ -4,11 +4,13 @@ import { IconBrandHipchat, IconBan } from "@tabler/icons-react";
 import { useFriends } from "../../../hooks/useFriends";
 import { IFriendship } from "../../../models/Friendship";
 import classes from "./Cards.module.css";
+import { useDisplay } from "../../../hooks/useDisplay";
 
 const FriendsCard = () => {
   const { getFriends } = useFriends();
   const [friends, setFriends] = useState<IFriendship[]>([]);
   const effectRan = useRef(false);
+  const { chooseOverlayImage } = useDisplay();
 
   const onGetFriends = async () => {
     try {
@@ -35,13 +37,16 @@ const FriendsCard = () => {
     []
   );
   return (
-    <Card padding="md" radius="md" bg="cyan" className={classes.mobileCard}>
+    <Card padding="md" radius="md" className={classes.mobileCard}>
       <ScrollArea p="sm" className={classes.scroller}>
         {friends.length ? (
           <List py="sm">
             {friends.map((fShip) => (
               <Flex key={fShip.id} justify="space-between" py="sm" px="sm">
-                <Avatar src={fShip.profileImg} />
+                <Avatar
+                  src={fShip.profileImg}
+                  onClick={() => chooseOverlayImage(fShip.profileImg)}
+                />
                 <Text ff="sans-serif" fs="italic">
                   {fShip.nickname}
                 </Text>

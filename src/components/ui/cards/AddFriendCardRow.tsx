@@ -2,11 +2,13 @@ import { Button, Flex, Text, Avatar } from "@mantine/core";
 import React, { useState } from "react";
 import { ISearchResponse } from "../../../models/FriendRequestResponses";
 import { useFriends } from "../../../hooks/useFriends";
+import { useDisplay } from "../../../hooks/useDisplay";
 
 const AddFriendCardRow: React.FC<{ searchedUser: ISearchResponse }> = ({
   searchedUser,
 }) => {
   const { sendFriendRequest } = useFriends();
+  const { chooseOverlayImage } = useDisplay();
   const [isLoading, setIsLoading] = useState(false);
   const [requestStatus, setRequestStatus] = useState("Loading...");
   const onSendFrinedRequest = async (recieverId: number) => {
@@ -22,7 +24,10 @@ const AddFriendCardRow: React.FC<{ searchedUser: ISearchResponse }> = ({
   };
   return (
     <Flex justify="space-between" py="sm" px="sm">
-      <Avatar src={searchedUser.profileImg} />
+      <Avatar
+        src={searchedUser.profileImg}
+        onClick={() => chooseOverlayImage(searchedUser.profileImg)}
+      />
       <Text ff="sans-serif" fs="italic">
         {searchedUser.nickname}
       </Text>

@@ -1,7 +1,6 @@
 import { Drawer } from "@mantine/core";
 import React from "react";
 import MobileUsersList from "../../mobile/users/MobileUsersList";
-import { useDisplay } from "../../../hooks/useDisplay";
 
 interface ISideDrawerProps {
   drawerOpened: boolean;
@@ -12,10 +11,7 @@ const SideDrawer: React.FC<ISideDrawerProps> = ({
   drawerOpened,
   closeDrawer,
 }) => {
-  const { closeChat } = useDisplay();
-
   const onCloseDrawer = () => {
-    closeChat();
     closeDrawer();
   };
   return (

@@ -11,6 +11,7 @@ import FriendsHeader from "../../components/ui/headers/friends/FriendsHeader";
 import classes from "./Home.module.css";
 import { useDisclosure } from "@mantine/hooks";
 import SideDrawer from "../../components/ui/side-drawer/SideDrawer";
+import ImageOverlay from "../../components/ui/image-overlay/ImageOverlay";
 
 const Home = () => {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
@@ -65,6 +66,7 @@ const Home = () => {
 
   return (
     <div className={classes.homeContainer}>
+      {displayState.overlay.isVisible && <ImageOverlay />}
       {isFirstLogin ? (
         <div style={{ marginLeft: "20px" }}>
           <Paper>
@@ -79,14 +81,16 @@ const Home = () => {
         <>
           <div className={classes.friendsHeader}>
             {displayState.showHeaders && <FriendsHeader />}
-          </div>
-          <div className={classes.mainContainer}>
-            <SideBar />
             <Burger
+              color="cyan"
               opened={drawerOpened}
               onClick={toggleDrawer}
               hiddenFrom="xs"
             />
+          </div>
+          <div className={classes.mainContainer}>
+            <SideBar />
+
             <SideDrawer drawerOpened={drawerOpened} closeDrawer={closeDrawer} />
 
             {displayState.showChat && (

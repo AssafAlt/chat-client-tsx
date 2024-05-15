@@ -1,6 +1,8 @@
 .sideBar {
   width: 33.33%;
 
+  border: 1px solid #15aabf;
+
   /*padding: var(--mantine-spacing-md);*/
   display: flex;
   flex-direction: column;
@@ -56,7 +58,7 @@
   align-items: center;
   text-decoration: none;
   font-size: var(--mantine-font-size-sm);
-  color: var(--mantine-color-white);
+  color: #15aabf;
   padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
   border-radius: var(--mantine-radius-sm);
   font-weight: 500;
@@ -64,18 +66,16 @@
   @mixin hover {
     background-color: var(--mantine-color-blue-7);
     color: var(--mantine-color-white);
-
-    .linkIcon {
-      color: var(--mantine-color-white);
-    }
+  }
+  .linkIcon {
+    color: #15aabf;
   }
 
   &[data-active] {
     &,
     &:hover {
       box-shadow: var(--mantine-shadow-sm);
-      background-color: var(--mantine-color-white);
-      color: var(--mantine-color-blue-filled);
+      background-color: var(--mantine-color-gray-2);
 
       .linkIcon {
         color: var(--mantine-color-blue-filled);
