@@ -1,5 +1,3 @@
-.headPaper {
-}
 .headContainer {
   display: flex;
   justify-content: space-between;
@@ -8,14 +6,4 @@
 .innerContainer {
   display: flex;
   align-items: center;
-}
-
-.arrowButton {
-  display: none;
-}
-
-@media (max-width: 500px) {
-  .arrowButton {
-    display: block;
-  }
 }

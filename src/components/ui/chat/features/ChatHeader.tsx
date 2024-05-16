@@ -23,7 +23,6 @@ const ChatHeader = (props: IChatHeaderProps) => {
           <Text fw={500}>{props.friendNickname}</Text>
         </div>
         <IconArrowRight
-          className={classes.arrowButton}
           onClick={() => {
             closeChat();
           }}
