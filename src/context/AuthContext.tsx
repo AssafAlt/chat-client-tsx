@@ -12,7 +12,10 @@ type AuthAction =
   | { type: "LOGIN_FAILED"; payload: string }
   | { type: "REGISTER_SUCCESS"; payload: string }
   | { type: "REGISTER_FAILED"; payload: string }
-  | { type: "LOGOUT" };
+  | { type: "LOGOUT" }
+  | { type: "DELETE_USER" }
+  | { type: "UPDATE_FIRST_LOGIN_SUCCESS" }
+  | { type: "UPDATE_IMG_SUCCESS"; payload: string };
 
 interface AuthState {
   nickname: string | null;
@@ -82,6 +85,18 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
         message: action.payload,
       };
 
+    case "UPDATE_FIRST_LOGIN_SUCCESS":
+      return {
+        ...state,
+        isFirstLogin: false,
+      };
+    case "UPDATE_IMG_SUCCESS":
+      return {
+        ...state,
+        isFirstLogin: false,
+        profileImg: action.payload,
+      };
+
     case "LOGOUT":
       localStorage.removeItem("currentUser");
       Cookies.remove("jwt_token");
@@ -90,6 +105,18 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
         isFirstLogin: true,
         nickname: null,
         profileImg: null,
+      };
+
+    case "DELETE_USER":
+      localStorage.removeItem("currentUser");
+      Cookies.remove("jwt_token");
+      return {
+        isFirstLogin: false,
+        nickname: null,
+        profileImg: null,
+        loading: false,
+        success: false,
+        message: "",
       };
 
     default:

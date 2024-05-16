@@ -16,7 +16,7 @@ import ImageOverlay from "../../components/ui/image-overlay/ImageOverlay";
 
 const MobileHome = () => {
   const { state } = useAuthContext();
-  const { profileImg, nickname, isFirstLogin } = state;
+  const { profileImg, nickname } = state;
   const imagePath = profileImg ? profileImg : "";
   const userNickname = nickname ? nickname : "";
   const { connectingSocket } = useSocket();
@@ -65,7 +65,7 @@ const MobileHome = () => {
   return (
     <div className={classes.homeContainer}>
       {displayState.overlay.isVisible && <ImageOverlay />}
-      {isFirstLogin && (
+      {state.isFirstLogin && (
         <div>
           <Paper>
             <Text ta="center" fz="lg" fw={500} mt="md">

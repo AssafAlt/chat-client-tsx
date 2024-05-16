@@ -80,5 +80,21 @@ export const useAuth = () => {
     }
   };
 
-  return { login, register, logout };
+  const deleteUser = async () => {
+    try {
+      const res = await springApi.delete("users/delete-user");
+      if (res.status === 200) {
+        displayDispatch({ type: "DEFAULT_DISPLAY" });
+        dispatch({
+          type: "DELETE_USER",
+        });
+        navigate("/");
+      }
+    } catch (error) {
+      const err = axiosErrorExtractor(error);
+      throw new Error(err);
+    }
+  };
+
+  return { login, register, logout, deleteUser };
 };

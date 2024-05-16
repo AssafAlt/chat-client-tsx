@@ -1,7 +1,6 @@
 import { MantineProvider, createTheme } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { AuthProvider } from "../context/AuthContext";
-import { UserProvider } from "../context/UserContext";
 import { ModalsProvider } from "@mantine/modals";
 import { SocketProvider } from "../context/SocketContext";
 import { DisplayProvider } from "../context/DisplayContext";
@@ -22,16 +21,14 @@ export const AppProviders = ({ children }: IProps) => {
       <HashRouter>
         <ModalsProvider>
           <AuthProvider>
-            <UserProvider>
-              <DisplayProvider>
-                <FriendsProvider>
-                  <SocketProvider>
-                    <Notifications position="top-right" />
-                    {children}
-                  </SocketProvider>
-                </FriendsProvider>
-              </DisplayProvider>
-            </UserProvider>
+            <DisplayProvider>
+              <FriendsProvider>
+                <SocketProvider>
+                  <Notifications position="top-right" />
+                  {children}
+                </SocketProvider>
+              </FriendsProvider>
+            </DisplayProvider>
           </AuthProvider>
         </ModalsProvider>
       </HashRouter>

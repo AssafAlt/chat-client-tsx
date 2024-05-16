@@ -28,7 +28,7 @@ type DisplayAction =
 // Create the initial state
 const initialState: DisplayState = {
   showChat: false,
-  showMobileTab: "Chats",
+  showMobileTab: "",
   currentChat: {
     currentRoom: "",
     currentFriendProfileImg: "",
@@ -98,7 +98,7 @@ const displayReducer = (
       };
     case "DEFAULT_DISPLAY":
       return {
-        showMobileTab: "Chats",
+        showMobileTab: "",
         showChat: false,
         currentChat: {
           currentRoom: "",
