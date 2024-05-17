@@ -66,10 +66,7 @@
     font-size: 5vw;
   }
 }
-@media (max-width: 940px) {
-  .primaryHeader {
-    align-items: center;
-  }
+@media (max-width: 1100px) {
   .primaryHeader .textOne {
     font-size: 4vw;
   }
@@ -77,20 +74,11 @@
     font-size: 4vw;
   }
 }
-/*
-  @media (min-width: 1440px) {
-    .primaryHeader {
-      width: 95%;
-    }
-    .friendsHeader {
-      margin-top: 9px;
-    }
-  
-    .notificationIcon {
-      height: 40px;
-      width: 40px;
-    }
+@media (max-width: 1275px) {
+  .primaryHeader .textOne {
+    font-size: 3.5vw;
   }
-  
+  .primaryHeader .textTwo {
+    font-size: 3.5vw;
   }
-  */
+}

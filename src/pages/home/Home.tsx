@@ -68,8 +68,8 @@ const Home = () => {
         opened={drawerOpened}
         onClick={toggleDrawer}
         hiddenFrom="xs"
+        className={classes.burger}
       />
-
       <div className={classes.mainContainer}>
         <SideBar />
         <div className={classes.friendsHeaderContainer}>

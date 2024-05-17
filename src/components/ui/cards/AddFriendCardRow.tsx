@@ -23,7 +23,7 @@ const AddFriendCardRow: React.FC<{ searchedUser: ISearchResponse }> = ({
     }
   };
   return (
-    <Flex justify="space-between" py="sm" px="sm">
+    <Flex justify="space-between" py="sm" px="sm" style={{ width: "100%" }}>
       <Avatar
         src={searchedUser.profileImg}
         onClick={() => chooseOverlayImage(searchedUser.profileImg)}
