@@ -16,10 +16,7 @@ import ImageOverlay from "../../components/ui/image-overlay/ImageOverlay";
 const Home = () => {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
-  const { state } = useAuthContext();
-  const { profileImg, nickname, isFirstLogin } = state;
-  const imagePath = profileImg ? profileImg : "";
-  const userNickname = nickname ? nickname : "";
+
   const { connectingSocket } = useSocket();
   const { getFriendsWithStatus, getFriendRequests } = useFriends();
   const { displayState } = useDisplayContext();
@@ -67,38 +64,25 @@ const Home = () => {
   return (
     <div className={classes.homeContainer}>
       {displayState.overlay.isVisible && <ImageOverlay />}
-      {isFirstLogin ? (
-        <div style={{ marginLeft: "20px" }}>
-          <Paper>
-            <Text ta="center" fz="lg" fw={500} mt="md">
-              You haven't chosen a profile image yet. Would you like to choose
-              one now?
-            </Text>
-            <SetProfilePic imageSrc={imagePath} userNickname={userNickname} />
-          </Paper>
-        </div>
-      ) : (
-        <>
-          <div className={classes.friendsHeader}>
-            {displayState.showHeaders && <FriendsHeader />}
-            <Burger
-              color="cyan"
-              opened={drawerOpened}
-              onClick={toggleDrawer}
-              hiddenFrom="xs"
-            />
-          </div>
-          <div className={classes.mainContainer}>
-            <SideBar />
 
-            <SideDrawer drawerOpened={drawerOpened} closeDrawer={closeDrawer} />
+      <div className={classes.friendsHeader}>
+        {displayState.showHeaders && <FriendsHeader />}
+        <Burger
+          color="cyan"
+          opened={drawerOpened}
+          onClick={toggleDrawer}
+          hiddenFrom="xs"
+        />
+      </div>
+      <div className={classes.mainContainer}>
+        <SideBar />
 
-            {displayState.showChat && (
-              <ChatRoom key={displayState.currentChat.currentRoom} />
-            )}
-          </div>
-        </>
-      )}
+        <SideDrawer drawerOpened={drawerOpened} closeDrawer={closeDrawer} />
+
+        {displayState.showChat && (
+          <ChatRoom key={displayState.currentChat.currentRoom} />
+        )}
+      </div>
     </div>
   );
 };
