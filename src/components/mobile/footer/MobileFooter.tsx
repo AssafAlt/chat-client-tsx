@@ -11,7 +11,7 @@ import { useDisplay } from "../../../hooks/useDisplay";
 import { useFriendsContext } from "../../../context/FriendsContext";
 
 const MobileFooter = () => {
-  const [active, setActive] = useState("");
+  const [active, setActive] = useState("Chats");
   const { chooseMobileTabToShow } = useDisplay();
   const { friendsState } = useFriendsContext();
 

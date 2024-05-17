@@ -9,6 +9,7 @@ import PrimaryHeader from "./components/ui/headers/primary/PrimaryHeader";
 
 const Login = lazy(() => import("./pages/auth/Login"));
 const Register = lazy(() => import("./pages/auth/Register"));
+const FirstLogin = lazy(() => import("./pages/first-login/FirstLogin"));
 const Home = lazy(() => import("./pages/home/Home"));
 const MobileHome = lazy(() => import("./pages/mobile/MobileHome"));
 const NotFound = lazy(() => import("./pages/not-found/NotFound"));
@@ -43,6 +44,14 @@ function App() {
               <HomeNavigator>
                 <Register />
               </HomeNavigator>
+            }
+          />
+          <Route
+            path="/first-login"
+            element={
+              <ProtectedRoute>
+                <FirstLogin />
+              </ProtectedRoute>
             }
           />
 

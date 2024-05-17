@@ -18,9 +18,13 @@ export const useAuth = () => {
       const res = await springApi.post("auth/login", userCredentials);
 
       if (res.status === 200) {
-        dispatch({ type: "LOGIN_SUCCESS", payload: res.data as LoginResponse });
-
-        navigate("/home");
+        const data: LoginResponse = res.data;
+        dispatch({ type: "LOGIN_SUCCESS", payload: data });
+        if (data.firstLogin) {
+          navigate("/first-login");
+        } else {
+          navigate("/home");
+        }
       } else {
         dispatch({
           type: "LOGIN_FAILED",
