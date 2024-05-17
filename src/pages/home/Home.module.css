@@ -1,15 +1,14 @@
 .homeContainer {
-  padding-top: 9vh;
+  padding-top: calc(7.5vh + 6px);
 }
 .mainContainer {
   display: flex;
+  justify-content: space-between;
+}
+.friendsHeaderContainer {
+  margin: 0 auto;
 }
 
-.friendsHeader {
-  border-bottom: rem(1px) solid
-    light-dark(var(--mantine-color-gray-2), transparent);
-  margin-bottom: rem(120px);
-}
 .sideBarContainer {
   /*height: 100%;
   width: 33.33%;*/

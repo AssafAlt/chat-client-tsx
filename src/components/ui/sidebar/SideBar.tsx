@@ -52,7 +52,7 @@ const SideBar = () => {
   return (
     <Paper className={classes.sideBar} visibleFrom="xs">
       <ScrollArea p="sm" className={classes.sideScroller} c="cyan">
-        <Flex py="sm" px="sm">
+        <div className={classes.userHeader}>
           <Avatar
             src={userImage}
             onClick={() => chooseOverlayImage(userImage)}
@@ -60,7 +60,7 @@ const SideBar = () => {
           <Text ff="sans-serif" fs="italic" ml={10}>
             {userNick}
           </Text>
-        </Flex>
+        </div>
         <div className={classes.navbarMain}>
           <TextInput
             placeholder="Search"

@@ -64,19 +64,18 @@ const Home = () => {
   return (
     <div className={classes.homeContainer}>
       {displayState.overlay.isVisible && <ImageOverlay />}
+      <Burger
+        color="cyan"
+        opened={drawerOpened}
+        onClick={toggleDrawer}
+        hiddenFrom="xs"
+      />
 
-      <div className={classes.friendsHeader}>
-        {displayState.showHeaders && <FriendsHeader />}
-        <Burger
-          color="cyan"
-          opened={drawerOpened}
-          onClick={toggleDrawer}
-          hiddenFrom="xs"
-        />
-      </div>
       <div className={classes.mainContainer}>
         <SideBar />
-
+        <div className={classes.friendsHeaderContainer}>
+          {displayState.showHeaders && <FriendsHeader />}
+        </div>
         <SideDrawer drawerOpened={drawerOpened} closeDrawer={closeDrawer} />
 
         {displayState.showChat && (
