@@ -6,7 +6,6 @@ import {
   TextInput,
   rem,
   Paper,
-  Flex,
   Avatar,
   ScrollArea,
 } from "@mantine/core";

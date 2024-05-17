@@ -1,6 +1,5 @@
-import { Burger, Paper, Text } from "@mantine/core";
-import { useAuthContext } from "../../context/AuthContext";
-import SetProfilePic from "../../components/user_settings/SetProfilePic";
+import { Burger } from "@mantine/core";
+
 import { useEffect, useRef } from "react";
 import { useSocket } from "../../hooks/useSocket";
 import { useFriends } from "../../hooks/useFriends";
