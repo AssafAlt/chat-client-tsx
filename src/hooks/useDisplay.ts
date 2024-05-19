@@ -32,6 +32,14 @@ export const useDisplay = () => {
     displayDispatch({ type: "CLOSE_OVERLAY" });
   };
 
+  const showSettings = () => {
+    displayDispatch({ type: "SHOW_SETTINGS" });
+  };
+
+  const closeSettings = () => {
+    displayDispatch({ type: "CLOSE_SETTINGS" });
+  };
+
   return {
     displayManager,
     chooseChat,
@@ -39,5 +47,7 @@ export const useDisplay = () => {
     chooseMobileTabToShow,
     chooseOverlayImage,
     closeOverlay,
+    showSettings,
+    closeSettings,
   };
 };

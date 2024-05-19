@@ -1,5 +1,5 @@
 import { modals } from "@mantine/modals";
-import { Menu, rem, Text } from "@mantine/core";
+import { Button, Menu, rem, Text } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
 import { useAuth } from "../../../hooks/useAuth";
 import { notifications } from "@mantine/notifications";
@@ -40,7 +40,7 @@ const DeleteAccountModal = () => {
       onConfirm: onDeleteAccount,
     });
   return (
-    <Menu.Item
+    <Button
       color="red"
       onClick={openDeleteModal}
       leftSection={
@@ -48,7 +48,7 @@ const DeleteAccountModal = () => {
       }
     >
       Delete account
-    </Menu.Item>
+    </Button>
   );
 };
 

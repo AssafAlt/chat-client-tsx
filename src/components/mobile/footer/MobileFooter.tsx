@@ -19,6 +19,7 @@ const MobileFooter = () => {
     setActive(tab);
     chooseMobileTabToShow(tab);
   };
+
   return (
     <footer className={classes.footer}>
       <Flex w="25%" direction="column" align="center">

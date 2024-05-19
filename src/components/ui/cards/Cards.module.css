@@ -35,6 +35,9 @@
     width: 100%;
     border-radius: 0;
   }
+  .scroller {
+    height: 88vh;
+  }
 }
 @media (max-width: 400px) {
   .mobileCard {
