@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  Avatar,
   Button,
   Textarea,
   ScrollArea,
@@ -15,16 +14,14 @@ import { useAuthContext } from "../../../context/AuthContext";
 import { useDisplayContext } from "../../../context/DisplayContext";
 import {
   IChatMessage,
+  IConversation,
   ICurrentChatMessage,
 } from "../../../models/ChatMessages";
 
 import { IconArrowDown } from "@tabler/icons-react";
 import classes from "./ChatRoom.module.css";
 import { useChat } from "../../../hooks/useChat";
-
-interface IConversation {
-  [key: string]: ICurrentChatMessage[];
-}
+import ChatConversation from "./features/ChatConversation";
 
 interface IConverSationResponse {
   totalPages: number;
@@ -50,6 +47,13 @@ const ChatRoom = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { getChatHistoryByPage } = useChat();
 
+  const deleteMessage = (messageId: number) => {
+    stompClient?.send(
+      `/app/delete.private.${currentChat.currentRoom}`,
+      {},
+      JSON.stringify(messageId)
+    );
+  };
   const scrollToBottom = () => {
     viewport.current!.scrollTo({
       top: viewport.current!.scrollHeight,
@@ -69,6 +73,7 @@ const ChatRoom = () => {
     if (newMessage.trim() === "") return;
 
     const newChatMessage: IChatMessage = {
+      id: 0,
       sender: userNick,
       content: newMessage.trim(),
       time: getCurrentTime(),
@@ -119,6 +124,7 @@ const ChatRoom = () => {
       );
 
       const data: IConverSationResponse = results;
+      console.log(data);
       hasMoreMessages.current = data.hasNext;
 
       setChatConversation((prevChatHistory) => {
@@ -195,6 +201,26 @@ const ChatRoom = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
+  useEffect(() => {
+    stompClient?.subscribe(
+      "/topic/delete.private." + currentChat.currentRoom,
+      (message) => {
+        const deletedId: number = JSON.parse(message.body); // Assuming deletedId is of type number
+        setChatConversation((prevChatConversation) => {
+          const updatedChatConversation: IConversation = {
+            ...prevChatConversation,
+          }; // Copy previous state
+          Object.keys(prevChatConversation).forEach((date) => {
+            // Filter out the message with deletedId from messages of each date
+            updatedChatConversation[date] = prevChatConversation[date].filter(
+              (msg) => msg.id !== deletedId
+            );
+          });
+          return updatedChatConversation;
+        });
+      }
+    );
+  }, [currentChat.currentRoom, stompClient, setChatConversation]);
 
   return (
     <div className={classes.chatWindow}>
@@ -209,89 +235,13 @@ const ChatRoom = () => {
             <Loader size={30} />
           </Center>
         )}
-        {Object.entries(chatConversation)
-          .slice()
-          .reverse()
-          .map(([date, messages]) => (
-            <div key={date}>
-              <div className={classes.date}>{date}</div>
-              {messages
-                .slice()
-                .reverse()
-                .map((message, index) => (
-                  <div key={`history-${index}`}>
-                    <div
-                      style={{
-                        marginBottom: "10px",
-                        display: "flex",
-                        alignItems: "flex-start",
-                        justifyContent:
-                          message.sender === userNick
-                            ? "flex-start"
-                            : "flex-end", // Align messages based on sender
-                      }}
-                    >
-                      {message.sender === userNick ? (
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Avatar
-                            style={{ marginRight: "10px" }}
-                            radius="xl"
-                            src={userImage}
-                            alt="You"
-                          />
-                          <div
-                            style={{
-                              backgroundColor: "#f0f0f0",
-                              padding: "8px 12px",
-                              borderRadius: "10px",
-                              textAlign: "left",
-                            }}
-                          >
-                            <div>{message.content}</div>
-                            <div style={{ fontSize: "12px", color: "#777" }}>
-                              {message.time}
-                            </div>
-                          </div>
-                        </div>
-                      ) : (
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                          }}
-                        >
-                          <div
-                            style={{
-                              backgroundColor: "#dcf8c6",
-                              padding: "8px 12px",
-                              borderRadius: "10px",
-                              textAlign: "left",
-                              flex: "1",
-                            }}
-                          >
-                            <div>{message.content}</div>
-                            <div style={{ fontSize: "12px", color: "#777" }}>
-                              {message.time}
-                            </div>
-                          </div>
-                          <Avatar
-                            style={{ marginLeft: "10px" }}
-                            radius="xl"
-                            src={currentChat.currentFriendProfileImg}
-                            alt={message.sender}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-            </div>
-          ))}
+        <ChatConversation
+          chatConversation={chatConversation}
+          userNick={userNick}
+          userImage={userImage}
+          friendProfileImg={currentChat.currentFriendProfileImg}
+          onDeleteMessage={deleteMessage}
+        />
         <Affix className={classes.scrollButton} onClick={scrollToBottom}>
           <ActionIcon color="cyan" radius="xl" size={60}>
             <IconArrowDown stroke={1.5} size={30} />

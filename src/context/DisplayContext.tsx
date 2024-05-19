@@ -65,6 +65,7 @@ const displayReducer = (
     case "CHOOSE_CHAT":
       return {
         ...state,
+        showSettings: false,
         currentChat: action.payload,
       };
     case "CLOSE_CHAT":

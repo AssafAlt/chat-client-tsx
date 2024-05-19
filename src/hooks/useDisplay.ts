@@ -37,7 +37,7 @@ export const useDisplay = () => {
   };
 
   const closeSettings = () => {
-    displayDispatch({ type: "CLOSE_SETTINGS" });
+    displayDispatch({ type: "DEFAULT_DISPLAY" });
   };
 
   return {

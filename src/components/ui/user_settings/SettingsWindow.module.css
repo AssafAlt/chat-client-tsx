@@ -1,6 +1,5 @@
 .settingsWindow {
   width: 66.66%;
-  height: 100%;
 
   border: 1px solid #15aabf;
   border-radius: 5px;
@@ -8,12 +7,25 @@
   display: flex;
   flex-direction: column;
   text-align: center;
+  overflow-y: auto;
 
   /*margin-right: 1vw;*/
 }
+.settingsHeader {
+  display: none;
+  width: 100%;
+  align-items: center;
+  justify-content: end;
+}
+.deleteCard {
+  border: 1px solid #ddd;
+  padding: 1%;
+  margin-top: 1%;
+  border-radius: 8px;
+}
 .scroller {
   /*height: 300px;*/
-  height: 91vh;
+  height: 85vh;
   /*padding: 12px;*/
 }
 @media (max-width: 575px) {
@@ -25,5 +37,8 @@
   .scroller {
     height: 88vh; /* Adjust as needed */
     padding: 4px;
+  }
+  .settingsHeader {
+    display: flex;
   }
 }

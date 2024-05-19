@@ -58,6 +58,7 @@
 @media (max-width: 575px) {
   .primaryHeader {
     align-items: center;
+    text-align: center;
   }
   .primaryHeader .textOne {
     font-size: 5vw;

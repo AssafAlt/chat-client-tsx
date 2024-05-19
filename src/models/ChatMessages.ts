@@ -1,4 +1,5 @@
 export interface ICurrentChatMessage {
+  id: number;
   sender: string;
   content: string;
   time: string;
@@ -8,4 +9,8 @@ export interface ICurrentChatMessage {
 export interface IChatMessage extends ICurrentChatMessage {
   room: string;
   recipient: string;
+}
+
+export interface IConversation {
+  [key: string]: ICurrentChatMessage[];
 }
