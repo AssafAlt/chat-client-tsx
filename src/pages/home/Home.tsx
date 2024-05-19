@@ -11,6 +11,7 @@ import classes from "./Home.module.css";
 import { useDisclosure } from "@mantine/hooks";
 import SideDrawer from "../../components/ui/side-drawer/SideDrawer";
 import ImageOverlay from "../../components/ui/image-overlay/ImageOverlay";
+import SettingsWindow from "../../components/ui/user_settings/SettingsWindow";
 
 const Home = () => {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
@@ -80,6 +81,7 @@ const Home = () => {
         {displayState.showChat && (
           <ChatRoom key={displayState.currentChat.currentRoom} />
         )}
+        {displayState.showSettings && <SettingsWindow />}
       </div>
     </div>
   );
