@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Button,
   Textarea,
@@ -12,16 +12,13 @@ import ChatHeader from "./features/ChatHeader";
 import { useSocketContext } from "../../../context/SocketContext";
 import { useAuthContext } from "../../../context/AuthContext";
 import { useDisplayContext } from "../../../context/DisplayContext";
-import {
-  IChatMessage,
-  IConversation,
-  ICurrentChatMessage,
-} from "../../../models/ChatMessages";
+import { IChatMessage, IConversation } from "../../../models/ChatMessages";
 
 import { IconArrowDown } from "@tabler/icons-react";
 import classes from "./ChatRoom.module.css";
 import { useChat } from "../../../hooks/useChat";
 import ChatConversation from "./features/ChatConversation";
+import useChatSubscriptions from "../../../hooks/useChatSubscription";
 
 interface IConverSationResponse {
   totalPages: number;
@@ -46,6 +43,11 @@ const ChatRoom = () => {
   const hasMoreMessages = useRef(true);
   const [isLoading, setIsLoading] = useState(false);
   const { getChatHistoryByPage } = useChat();
+
+  useChatSubscriptions({
+    setChatConversation,
+    currentRoom: currentChat.currentRoom,
+  });
 
   const deleteMessage = (messageId: number) => {
     stompClient?.send(
@@ -150,31 +152,6 @@ const ChatRoom = () => {
     }
   };
 
-  useMemo(() => {
-    stompClient?.subscribe(
-      "/topic/private." + currentChat.currentRoom,
-      (message) => {
-        const receivedMessage: ICurrentChatMessage = JSON.parse(message.body);
-        setChatConversation((prevChatHistory) => {
-          if (prevChatHistory[receivedMessage.date]) {
-            return {
-              ...prevChatHistory,
-              [receivedMessage.date]: [
-                receivedMessage,
-                ...prevChatHistory[receivedMessage.date],
-              ],
-            };
-          } else {
-            return {
-              [receivedMessage.date]: [receivedMessage],
-              ...prevChatHistory,
-            };
-          }
-        });
-      }
-    );
-  }, [currentChat.currentRoom, stompClient]);
-
   useEffect(
     () => {
       if (effectRan.current === false) {
@@ -201,26 +178,6 @@ const ChatRoom = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
-  useEffect(() => {
-    stompClient?.subscribe(
-      "/topic/delete.private." + currentChat.currentRoom,
-      (message) => {
-        const deletedId: number = JSON.parse(message.body); // Assuming deletedId is of type number
-        setChatConversation((prevChatConversation) => {
-          const updatedChatConversation: IConversation = {
-            ...prevChatConversation,
-          }; // Copy previous state
-          Object.keys(prevChatConversation).forEach((date) => {
-            // Filter out the message with deletedId from messages of each date
-            updatedChatConversation[date] = prevChatConversation[date].filter(
-              (msg) => msg.id !== deletedId
-            );
-          });
-          return updatedChatConversation;
-        });
-      }
-    );
-  }, [currentChat.currentRoom, stompClient, setChatConversation]);
 
   return (
     <div className={classes.chatWindow}>
