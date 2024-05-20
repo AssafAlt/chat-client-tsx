@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Autocomplete, Card, rem, List, Text } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
-import { useFriends } from "../../../hooks/useFriends";
-import { ISearchResponse } from "../../../models/FriendRequestResponses";
-import classes from "./Cards.module.css";
+import { useFriends } from "../../../../hooks/useFriends";
+import { ISearchResponse } from "../../../../models/FriendRequestResponses";
+import classes from "../Cards.module.css";
 import AddFriendCardRow from "./AddFriendCardRow";
 
 const AddFriendCard = () => {

@@ -1,8 +1,9 @@
 import { Button, Flex, Text, Avatar } from "@mantine/core";
 import React, { useState } from "react";
-import { ISearchResponse } from "../../../models/FriendRequestResponses";
-import { useFriends } from "../../../hooks/useFriends";
-import { useDisplay } from "../../../hooks/useDisplay";
+import { ISearchResponse } from "../../../../models/FriendRequestResponses";
+import { useFriends } from "../../../../hooks/useFriends";
+import { useDisplay } from "../../../../hooks/useDisplay";
+import StatusComp from "./StatusComp";
 
 const AddFriendCardRow: React.FC<{ searchedUser: ISearchResponse }> = ({
   searchedUser,
@@ -32,12 +33,11 @@ const AddFriendCardRow: React.FC<{ searchedUser: ISearchResponse }> = ({
         {searchedUser.nickname}
       </Text>
       {!isLoading ? (
-        <Button
-          bg="green"
-          onClick={() => onSendFrinedRequest(searchedUser.userId)}
-        >
-          Send Friend Request
-        </Button>
+        <StatusComp
+          status={searchedUser.status}
+          requestId={searchedUser.requestId}
+          userId={searchedUser.userId}
+        />
       ) : (
         <Text c="white">{requestStatus}</Text>
       )}

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useFriendsContext } from "../../../../context/FriendsContext";
 import { Center, Container, Flex, Tabs, Text } from "@mantine/core";
 import { IconFriends } from "@tabler/icons-react";
-import AddFriendCard from "../../cards/AddFriendCard";
+import AddFriendCard from "../../cards/add-friend/AddFriendCard";
 import FriendRequestsCard from "../../cards/FriendRequestsCard";
 import FriendsCard from "../../cards/FriendsCard";
 import classes from "./FriendsHeader.module.css";
