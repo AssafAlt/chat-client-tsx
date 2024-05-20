@@ -129,6 +129,23 @@ export const useFriends = () => {
       throw new Error(err);
     }
   };
+  const cancelFriendRequestBySender = async (friendRequestId: number) => {
+    try {
+      const res = await springApi.delete("friend-requests/cancel", {
+        data: {
+          friendRequestId: friendRequestId,
+        },
+      });
+
+      if (res.status === 200) {
+        return "Cancelled";
+      }
+    } catch (error: unknown) {
+      const err = axiosErrorExtractor(error);
+
+      throw new Error(err);
+    }
+  };
   const cancelFriendRequest = async (friendRequestId: number) => {
     try {
       const res = await springApi.delete("friend-requests/cancel", {
@@ -165,5 +182,6 @@ export const useFriends = () => {
     getFriendRequests,
     confirmFriendRequest,
     cancelFriendRequest,
+    cancelFriendRequestBySender,
   };
 };

@@ -1,28 +1,17 @@
-import { Button, Flex, Text, Avatar } from "@mantine/core";
+import { Flex, Text, Avatar } from "@mantine/core";
 import React, { useState } from "react";
 import { ISearchResponse } from "../../../../models/FriendRequestResponses";
-import { useFriends } from "../../../../hooks/useFriends";
+
 import { useDisplay } from "../../../../hooks/useDisplay";
 import StatusComp from "./StatusComp";
 
 const AddFriendCardRow: React.FC<{ searchedUser: ISearchResponse }> = ({
   searchedUser,
 }) => {
-  const { sendFriendRequest } = useFriends();
   const { chooseOverlayImage } = useDisplay();
   const [isLoading, setIsLoading] = useState(false);
   const [requestStatus, setRequestStatus] = useState("Loading...");
-  const onSendFrinedRequest = async (recieverId: number) => {
-    setIsLoading(true);
-    try {
-      const res = await sendFriendRequest(recieverId);
-      if (res) {
-        setRequestStatus("Request was sent");
-      }
-    } catch (error) {
-      setRequestStatus("Request was failed!");
-    }
-  };
+
   return (
     <Flex justify="space-between" py="sm" px="sm" style={{ width: "100%" }}>
       <Avatar
@@ -37,6 +26,8 @@ const AddFriendCardRow: React.FC<{ searchedUser: ISearchResponse }> = ({
           status={searchedUser.status}
           requestId={searchedUser.requestId}
           userId={searchedUser.userId}
+          setIsLoading={setIsLoading}
+          setRequestStatus={setRequestStatus}
         />
       ) : (
         <Text c="white">{requestStatus}</Text>
