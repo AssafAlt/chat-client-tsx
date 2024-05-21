@@ -7,7 +7,7 @@ import { useFriends } from "../../hooks/useFriends";
 
 import ChatRoom from "../../components/ui/chat/ChatRoom";
 import { useDisplayContext } from "../../context/DisplayContext";
-import AddFriendCard from "../../components/ui/cards/AddFriendCard";
+import AddFriendCard from "../../components/ui/cards/add-friend/AddFriendCard";
 import FriendRequestsCard from "../../components/ui/cards/FriendRequestsCard";
 import FriendsCard from "../../components/ui/cards/FriendsCard";
 import ImageOverlay from "../../components/ui/image-overlay/ImageOverlay";

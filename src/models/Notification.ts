@@ -7,4 +7,5 @@ export interface INotification {
   messageType: MessageType;
   friend: IFriendIsOnline;
   frequest: IGetFriendRequest;
+  requestId: number;
 }
