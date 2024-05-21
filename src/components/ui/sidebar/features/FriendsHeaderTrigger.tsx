@@ -3,14 +3,14 @@ import { DisplayType, useDisplay } from "../../../../hooks/useDisplay";
 import classes from "../SideBar.module.css";
 import { IconFriends } from "@tabler/icons-react";
 const FriendsHeaderTrigger = () => {
-  const [isClicked, setIsClicked] = useState(false);
+  const [isClicked, setIsClicked] = useState(true);
   const { displayManager } = useDisplay();
 
   const onClickTrigger = () => {
-    if (!isClicked) {
-      displayManager(DisplayType.HEADERS);
-    } else {
+    if (isClicked) {
       displayManager(DisplayType.CLOSE_HEADERS);
+    } else {
+      displayManager(DisplayType.HEADERS);
     }
     setIsClicked(!isClicked);
   };

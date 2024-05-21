@@ -12,6 +12,7 @@ import { useDisclosure } from "@mantine/hooks";
 import SideDrawer from "../../components/ui/side-drawer/SideDrawer";
 import ImageOverlay from "../../components/ui/image-overlay/ImageOverlay";
 import SettingsWindow from "../../components/ui/user_settings/SettingsWindow";
+import FriendsDrawer from "../../components/ui/headers/friends/features/FriendsDrawer";
 
 const Home = () => {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
@@ -71,10 +72,12 @@ const Home = () => {
         hiddenFrom="xs"
         className={classes.burger}
       />
+
       <div className={classes.mainContainer}>
         <SideBar />
         <div className={classes.friendsHeaderContainer}>
           {displayState.showHeaders && <FriendsHeader />}
+          <FriendsDrawer />
         </div>
         <SideDrawer drawerOpened={drawerOpened} closeDrawer={closeDrawer} />
 

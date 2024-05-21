@@ -44,14 +44,14 @@
   justify-content: space-between;
 }
 .primaryHeader .textOne {
-  font-size: 2.5vw;
+  font-size: 3vw;
   margin-right: 1vw;
   font-weight: 700;
   color: #fff;
   padding-left: 1vw;
 }
 .primaryHeader .textTwo {
-  font-size: 2.5vw;
+  font-size: 3vw;
   color: #fff;
   font-weight: 700;
 }
@@ -75,11 +75,17 @@
     font-size: 4vw;
   }
 }
-@media (max-width: 1275px) {
+@media (max-width: 1225px) {
   .primaryHeader .textOne {
-    font-size: 3.5vw;
+    font-size: 3.25vw;
   }
   .primaryHeader .textTwo {
-    font-size: 3.5vw;
+    font-size: 3.25vw;
+  }
+}
+
+@media (min-width: 1490px) {
+  .primaryHeader {
+    padding-top: 0.25vh;
   }
 }

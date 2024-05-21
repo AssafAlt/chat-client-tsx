@@ -38,7 +38,7 @@ const initialState: DisplayState = {
     currentFriendProfileImg: "",
     currentFriendNickname: "",
   },
-  showHeaders: false,
+  showHeaders: true,
   overlay: { source: "", isVisible: false },
 };
 

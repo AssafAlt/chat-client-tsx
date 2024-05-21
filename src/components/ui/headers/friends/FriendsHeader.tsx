@@ -36,16 +36,15 @@ const FriendsHeader = () => {
   ));
 
   return (
-    <Center className={classes.friendsCenter}>
+    <Center className={classes.friendsCenter} visibleFrom="sm">
       <Container>
         <Flex>
-          <Flex pt={5} pr={10}>
-            <IconFriends stroke={2} />
-            <Text>Friends</Text>
-          </Flex>
+          <div className={classes.titleContainer}>
+            <IconFriends className="iconFriends" stroke={2} />
+            <Text className="text">Friends</Text>
+          </div>
           <Tabs
             variant="outline"
-            visibleFrom="sm"
             classNames={{
               root: classes.tabs,
               list: classes.tabsList,

@@ -42,7 +42,7 @@ const FriendsCard = () => {
         {friends.length ? (
           <List py="sm">
             {friends.map((fShip) => (
-              <Flex key={fShip.id} justify="space-between" py="sm" px="sm">
+              <div key={fShip.id} className={classes.friendsDiv}>
                 <Avatar
                   src={fShip.profileImg}
                   onClick={() => chooseOverlayImage(fShip.profileImg)}
@@ -54,7 +54,7 @@ const FriendsCard = () => {
                   <IconBrandHipchat />
                   <IconBan />
                 </Flex>
-              </Flex>
+              </div>
             ))}
           </List>
         ) : (

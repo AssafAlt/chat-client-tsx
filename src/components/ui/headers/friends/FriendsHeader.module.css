@@ -1,5 +1,8 @@
 .friendsCenter {
   color: #15aabf;
+  padding-top: 2%;
+  display: flex;
+  justify-content: center;
 }
 
 .tabsList {
@@ -9,7 +12,17 @@
 }
 .titleContainer {
   display: flex;
+  align-items: center; /* Align items vertically centered */
   padding-right: 2vw;
+}
+
+.titleContainer .iconFriends {
+  margin-right: 0.5rem; /* Add space between the icon and the text */
+}
+
+.titleContainer .text {
+  display: flex;
+  align-items: center; /* Align text vertically centered */
 }
 
 .tab {
@@ -33,5 +46,11 @@
     );
     border-color: var(--mantine-color-gray-2);
     border-bottom-color: transparent;
+  }
+}
+
+@media (min-width: 1300px) {
+  .friendsCenter {
+    padding-top: 1vh;
   }
 }
