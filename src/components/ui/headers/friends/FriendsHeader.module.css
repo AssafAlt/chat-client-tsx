@@ -5,6 +5,21 @@
   justify-content: center;
 }
 
+.menuButtonContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.menuButton {
+  border-color: #15aabf;
+  background-color: #fff;
+  color: #15aabf;
+  display: inline-block;
+  margin: 0;
+  padding: 8px 16px;
+}
+
 .tabsList {
   &::before {
     display: none;
@@ -14,6 +29,7 @@
   display: flex;
   align-items: center; /* Align items vertically centered */
   padding-right: 2vw;
+  flex-shrink: 0;
 }
 
 .titleContainer .iconFriends {

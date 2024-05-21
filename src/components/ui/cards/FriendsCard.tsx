@@ -39,6 +39,9 @@ const FriendsCard = () => {
   return (
     <Card padding="md" radius="md" className={classes.mobileCard}>
       <ScrollArea p="sm" className={classes.scroller}>
+        <Text ta="center" c="cyan" hiddenFrom="sm">
+          All Friends
+        </Text>
         {friends.length ? (
           <List py="sm">
             {friends.map((fShip) => (

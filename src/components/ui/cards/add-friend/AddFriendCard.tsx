@@ -27,6 +27,9 @@ const AddFriendCard = () => {
 
   return (
     <Card padding="md" radius="md" className={classes.mobileCard}>
+      <Text ta="center" pb={2} c="cyan" hiddenFrom="sm">
+        Add Friend
+      </Text>
       <Autocomplete
         className={classes.searchBar}
         value={searchPrefix}

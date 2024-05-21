@@ -3,11 +3,12 @@ import { useState } from "react";
 import { IUsersToggleProps } from "../../../../models/props/UserToggleProps";
 import { Flex, List, Avatar, Text, ScrollArea } from "@mantine/core";
 import { IconBrandHipchat } from "@tabler/icons-react";
-import { DisplayType, useDisplay } from "../../../../hooks/useDisplay";
+import { useDisplay } from "../../../../hooks/useDisplay";
 import { ICurrentRoom } from "../../../../context/DisplayContext";
 import { createPrivateRoomName } from "../../../../utils/socketUtils";
 import { useAuthContext } from "../../../../context/AuthContext";
 import classes from "../SideBar.module.css";
+import { DisplayType } from "../../../../models/DisplayType";
 
 const UsersToggle = (props: IUsersToggleProps) => {
   const [isClicked, setIsClicked] = useState(false);

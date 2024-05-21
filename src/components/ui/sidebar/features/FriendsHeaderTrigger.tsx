@@ -1,10 +1,14 @@
 import { useState } from "react";
-import { DisplayType, useDisplay } from "../../../../hooks/useDisplay";
+import { useDisplay } from "../../../../hooks/useDisplay";
 import classes from "../SideBar.module.css";
 import { IconFriends } from "@tabler/icons-react";
+import { DisplayType } from "../../../../models/DisplayType";
+import { useDisplayContext } from "../../../../context/DisplayContext";
+
 const FriendsHeaderTrigger = () => {
   const [isClicked, setIsClicked] = useState(true);
   const { displayManager } = useDisplay();
+  const { displayState } = useDisplayContext();
 
   const onClickTrigger = () => {
     if (isClicked) {
@@ -17,7 +21,7 @@ const FriendsHeaderTrigger = () => {
 
   return (
     <div
-      data-active={isClicked || undefined}
+      data-active={displayState.showHeaders || undefined}
       className={classes.link}
       onClick={() => onClickTrigger()}
       onMouseEnter={(event) => {

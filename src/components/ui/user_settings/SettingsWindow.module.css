@@ -11,6 +11,9 @@
 
   /*margin-right: 1vw;*/
 }
+.profileCard {
+  margin-top: 1%;
+}
 .settingsHeader {
   display: none;
   width: 100%;
@@ -20,7 +23,7 @@
 .deleteCard {
   border: 1px solid #ddd;
   padding: 1%;
-  margin-top: 1%;
+  margin-top: 1.5%;
   border-radius: 8px;
 }
 .scroller {
@@ -40,5 +43,11 @@
   }
   .settingsHeader {
     display: flex;
+  }
+}
+
+@media (min-width: 1300px) {
+  .settingsWindow {
+    margin-top: 1%;
   }
 }

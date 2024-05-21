@@ -14,7 +14,7 @@ const SettingsWindow = () => {
       </div>
       <Text size="xl">Settings</Text>
       <ScrollArea p="sm" className={classes.scroller}>
-        <div>
+        <div className={classes.profileCard}>
           <Text size="lg">Choose Profile Picture</Text>
           <SetProfilePic />
         </div>

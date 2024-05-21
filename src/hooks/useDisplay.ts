@@ -1,10 +1,5 @@
 import { useDisplayContext, ICurrentRoom } from "../context/DisplayContext";
-
-export enum DisplayType {
-  CHAT = "SHOW_CHAT",
-  HEADERS = "SHOW_HEADERS",
-  CLOSE_HEADERS = "CLOSE_HEADERS",
-}
+import { DisplayType } from "../models/DisplayType";
 
 export const useDisplay = () => {
   const { displayDispatch } = useDisplayContext();

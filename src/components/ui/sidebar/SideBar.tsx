@@ -26,7 +26,6 @@ import FriendsHeaderTrigger from "./features/FriendsHeaderTrigger";
 
 const SideBar = () => {
   const { friendsState } = useFriendsContext();
-
   const { chooseOverlayImage } = useDisplay();
   const [friendsList, setFriendsList] = useState<IFriendsWithStatus>();
 

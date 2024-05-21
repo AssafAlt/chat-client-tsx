@@ -93,3 +93,15 @@
   width: rem(25px);
   height: rem(25px);
 }
+
+@media (min-width: 895px) and (max-width: 1000px) {
+  .sideScroller {
+    height: 91.5vh;
+  }
+}
+
+@media (min-width: 575px) and (max-width: 895px) {
+  .sideScroller {
+    height: 93vh;
+  }
+}

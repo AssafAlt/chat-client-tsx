@@ -96,7 +96,12 @@ const displayReducer = (
       return { ...state, showMobileTab: action.payload };
 
     case "SHOW_HEADERS":
-      return { ...state, showChat: false, showHeaders: true };
+      return {
+        ...state,
+        showChat: false,
+        showHeaders: true,
+        showSettings: false,
+      };
     case "CLOSE_HEADERS":
       return { ...state, showHeaders: false };
     case "SHOW_OVERLAY":
