@@ -8,6 +8,7 @@ export interface ICurrentRoom {
 
 interface DisplayState {
   showChat: boolean;
+  showSettings: boolean;
   currentChat: ICurrentRoom;
   showHeaders: boolean;
   showMobileTab: string;
@@ -18,6 +19,8 @@ type DisplayAction =
   | { type: "SHOW_CHAT" }
   | { type: "CLOSE_CHAT" }
   | { type: "CHOOSE_CHAT"; payload: ICurrentRoom }
+  | { type: "SHOW_SETTINGS" }
+  | { type: "CLOSE_SETTINGS" }
   | { type: "SHOW_MOBILE_TAB"; payload: string }
   | { type: "SHOW_HEADERS" }
   | { type: "CLOSE_HEADERS" }
@@ -28,13 +31,14 @@ type DisplayAction =
 // Create the initial state
 const initialState: DisplayState = {
   showChat: false,
+  showSettings: false,
   showMobileTab: "Chats",
   currentChat: {
     currentRoom: "",
     currentFriendProfileImg: "",
     currentFriendNickname: "",
   },
-  showHeaders: false,
+  showHeaders: true,
   overlay: { source: "", isVisible: false },
 };
 
@@ -61,6 +65,7 @@ const displayReducer = (
     case "CHOOSE_CHAT":
       return {
         ...state,
+        showSettings: false,
         currentChat: action.payload,
       };
     case "CLOSE_CHAT":
@@ -73,11 +78,30 @@ const displayReducer = (
         },
         showChat: false,
       };
+    case "SHOW_SETTINGS":
+      return {
+        ...state,
+        showChat: false,
+        showSettings: true,
+        showHeaders: false,
+        showMobileTab: "Settings",
+      };
+    case "CLOSE_SETTINGS":
+      return {
+        ...state,
+        showSettings: false,
+        showMobileTab: "",
+      };
     case "SHOW_MOBILE_TAB":
       return { ...state, showMobileTab: action.payload };
 
     case "SHOW_HEADERS":
-      return { ...state, showChat: false, showHeaders: true };
+      return {
+        ...state,
+        showChat: false,
+        showHeaders: true,
+        showSettings: false,
+      };
     case "CLOSE_HEADERS":
       return { ...state, showHeaders: false };
     case "SHOW_OVERLAY":
@@ -100,6 +124,7 @@ const displayReducer = (
       return {
         showMobileTab: "Chats",
         showChat: false,
+        showSettings: false,
         currentChat: {
           currentRoom: "",
           currentFriendProfileImg: "",

@@ -21,17 +21,44 @@
   width: 100%;
 }
 
+.friendsDiv {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2%;
+}
+
 .scroller {
-  height: 150px;
+  height: 75vh;
+  width: 45vw;
 }
 
 .mobileCard {
   border-radius: 8px;
   border: 1px solid #15aabf;
 }
+
+@media (max-width: 950px) {
+  .friendsDiv {
+    width: 50vw;
+  }
+  .scroller {
+    width: 55vw;
+  }
+}
+
 @media (max-width: 500px) {
   .mobileCard {
     height: 88vh;
+    width: 100%;
     border-radius: 0;
+  }
+  .scroller {
+    height: 88vh;
+  }
+}
+@media (max-width: 400px) {
+  .mobileCard {
+    height: 87.3vh;
   }
 }

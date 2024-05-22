@@ -48,6 +48,11 @@ export const useSocket = () => {
         message: newNotification.message,
         autoClose: 4500,
       });
+    } else if (newNotification.messageType === MessageType.REQUEST_CANCELLED) {
+      friendsDispatch({
+        type: "CLICKED_FRIEND_REQUEST",
+        payload: newNotification.requestId,
+      });
     }
   };
 

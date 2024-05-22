@@ -2,9 +2,10 @@ import { Avatar, Flex, Text } from "@mantine/core";
 import { IconCircleFilled } from "@tabler/icons-react";
 import React from "react";
 import classes from "./MobileUsers.module.css";
-import { DisplayType, useDisplay } from "../../../hooks/useDisplay";
+import { useDisplay } from "../../../hooks/useDisplay";
 import { createPrivateRoomName } from "../../../utils/socketUtils";
 import { ICurrentRoom } from "../../../context/DisplayContext";
+import { DisplayType } from "../../../models/DisplayType";
 
 interface IMobileUserRowProps {
   nickname: string;

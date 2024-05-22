@@ -7,3 +7,11 @@
 .circleIcon {
   width: 40%;
 }
+@media (max-width: 400px) {
+  .usersScroller {
+    height: 87.3vh;
+  }
+  .circleIcon {
+    width: 60%;
+  }
+}

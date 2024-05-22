@@ -1,20 +1,23 @@
+.userHeader {
+  display: flex;
+  padding-top: 1.5%;
+  padding-bottom: 1.5%;
+  align-content: center;
+  align-items: center;
+}
+
 .sideBar {
   width: 33.33%;
-
   border: 1px solid #15aabf;
-
-  /*padding: var(--mantine-spacing-md);*/
   display: flex;
   flex-direction: column;
-  margin-top: 1%;
-  overflow-y: auto; /* Add scrollbar if content overflows */
+  overflow-y: auto;
 }
 .sideScroller {
-  height: 86vh;
-  margin-top: 1%;
+  height: 91vh;
 }
 .sideDrawer {
-  height: 86vh;
+  height: 91vh;
 }
 
 .userScroller {
@@ -90,24 +93,15 @@
   width: rem(25px);
   height: rem(25px);
 }
-/*
-@media (min-width: 1440px) {
-  .navbar {
-    height: 800px;
-    margin-top: 6px;
-  }
+
+@media (min-width: 895px) and (max-width: 1000px) {
   .sideScroller {
-    height: 800px;
-  }
-  .userScroller {
-    height: 300px;
-  }
-  .footer {
-    bottom: 0;
-    position: absolute;
-  }
-  .usersContainer {
-    margin-top: 50px;
+    height: 91.5vh;
   }
 }
-*/
+
+@media (min-width: 575px) and (max-width: 895px) {
+  .sideScroller {
+    height: 93vh;
+  }
+}

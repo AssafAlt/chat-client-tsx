@@ -8,7 +8,7 @@ const PrimaryHeader = () => {
 
   return (
     <nav className={classes.primaryHeader}>
-      <Flex>
+      <Flex className={classes.textFlex}>
         <Text className={classes.textOne}>Capitan</Text>
         <Text className={classes.textTwo}>ChatApp</Text>
       </Flex>

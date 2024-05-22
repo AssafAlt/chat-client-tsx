@@ -1,6 +1,8 @@
-import { Table, ScrollArea } from "@mantine/core";
+import React from "react";
+import { Table, TableScrollContainer } from "@mantine/core";
 import { IGetFriendRequest } from "../../../models/FriendRequestResponses";
 import FriendRequestRow from "./FriendRequestRow";
+import classes from "./FriendRequest.module.css";
 
 const FriendRequestsTable: React.FC<{ fRequests: IGetFriendRequest[] }> = ({
   fRequests,
@@ -10,8 +12,14 @@ const FriendRequestsTable: React.FC<{ fRequests: IGetFriendRequest[] }> = ({
   ));
 
   return (
-    <ScrollArea>
-      <Table miw={800} verticalSpacing="sm" horizontalSpacing="lg">
+    <TableScrollContainer minWidth={300}>
+      <Table
+        className={classes.table}
+        withColumnBorders={true}
+        withRowBorders={true}
+        verticalSpacing="sm"
+        horizontalSpacing="lg"
+      >
         <Table.Thead>
           <Table.Tr>
             <Table.Th>User</Table.Th>
@@ -21,7 +29,7 @@ const FriendRequestsTable: React.FC<{ fRequests: IGetFriendRequest[] }> = ({
         </Table.Thead>
         <Table.Tbody>{rows}</Table.Tbody>
       </Table>
-    </ScrollArea>
+    </TableScrollContainer>
   );
 };
 

@@ -1,8 +1,16 @@
 import { useState } from "react";
 import { useFriendsContext } from "../../../../context/FriendsContext";
-import { Center, Container, Flex, Tabs, Text } from "@mantine/core";
+import {
+  Button,
+  Center,
+  Container,
+  Flex,
+  Menu,
+  Tabs,
+  Text,
+} from "@mantine/core";
 import { IconFriends } from "@tabler/icons-react";
-import AddFriendCard from "../../cards/AddFriendCard";
+import AddFriendCard from "../../cards/add-friend/AddFriendCard";
 import FriendRequestsCard from "../../cards/FriendRequestsCard";
 import FriendsCard from "../../cards/FriendsCard";
 import classes from "./FriendsHeader.module.css";
@@ -15,17 +23,10 @@ const FriendsHeader = () => {
   const [showCard, setShowCard] = useState("");
 
   const handleTabChange = (value: string) => {
-    if (value === "Add Friend") {
-      setShowCard("Add Friend");
-    }
-    if (value === `Pending (${friendLen})`) {
-      setShowCard("Pending");
-    }
-    if (value === "All") {
-      setShowCard("All");
-    }
-    if (value === "Blocked") {
+    if (showCard === value) {
       setShowCard("");
+    } else {
+      setShowCard(value);
     }
   };
 
@@ -34,18 +35,27 @@ const FriendsHeader = () => {
       {tab}
     </Tabs.Tab>
   ));
+  const menuItems = tabs.map((tab) => (
+    <Menu.Item
+      c="cyan"
+      value={tab}
+      key={tab}
+      onClick={() => handleTabChange(tab)}
+    >
+      {tab}
+    </Menu.Item>
+  ));
 
   return (
     <Center className={classes.friendsCenter}>
-      <Container size="md">
-        <Flex>
-          <Flex pt={5} pr={10}>
-            <IconFriends stroke={2} />
-            <Text>Friends</Text>
-          </Flex>
+      <Container>
+        <Flex visibleFrom="sm" justify="center" align="center">
+          <div className={classes.titleContainer}>
+            <IconFriends className="iconFriends" stroke={2} />
+            <Text className="text">Friends</Text>
+          </div>
           <Tabs
             variant="outline"
-            visibleFrom="sm"
             classNames={{
               root: classes.tabs,
               list: classes.tabsList,
@@ -55,9 +65,22 @@ const FriendsHeader = () => {
             <Tabs.List>{items}</Tabs.List>
           </Tabs>
         </Flex>
+        <Container hiddenFrom="sm" className={classes.menuButtonContainer}>
+          <Menu shadow="md" width={200}>
+            <Menu.Target>
+              <Button className={classes.menuButton}>Friends Menu</Button>
+            </Menu.Target>
 
+            <Menu.Dropdown>
+              {menuItems}
+              <Menu.Item c="cyan" onClick={() => setShowCard("")}>
+                Close
+              </Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
+        </Container>
         {showCard === "Add Friend" && <AddFriendCard />}
-        {showCard === "Pending" && <FriendRequestsCard />}
+        {showCard === `Pending (${friendLen})` && <FriendRequestsCard />}
         {showCard === "All" && <FriendsCard />}
       </Container>
     </Center>

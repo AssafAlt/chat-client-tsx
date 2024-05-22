@@ -5,6 +5,8 @@ interface IFriendResponse {
 
 export interface ISearchResponse extends IFriendResponse {
   userId: number;
+  requestId: number | null;
+  status: string;
 }
 
 export interface IGetFriendRequest extends IFriendResponse {

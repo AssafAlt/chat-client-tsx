@@ -39,10 +39,13 @@ const FriendsCard = () => {
   return (
     <Card padding="md" radius="md" className={classes.mobileCard}>
       <ScrollArea p="sm" className={classes.scroller}>
+        <Text ta="center" c="cyan" hiddenFrom="sm">
+          All Friends
+        </Text>
         {friends.length ? (
           <List py="sm">
             {friends.map((fShip) => (
-              <Flex key={fShip.id} justify="space-between" py="sm" px="sm">
+              <div key={fShip.id} className={classes.friendsDiv}>
                 <Avatar
                   src={fShip.profileImg}
                   onClick={() => chooseOverlayImage(fShip.profileImg)}
@@ -54,7 +57,7 @@ const FriendsCard = () => {
                   <IconBrandHipchat />
                   <IconBan />
                 </Flex>
-              </Flex>
+              </div>
             ))}
           </List>
         ) : (

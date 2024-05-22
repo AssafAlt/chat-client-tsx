@@ -1,15 +1,18 @@
 .homeContainer {
-  padding-top: 9vh;
+  padding-top: calc(7.5vh + 6px);
 }
 .mainContainer {
   display: flex;
+  justify-content: space-between;
+}
+.friendsHeaderContainer {
+  margin: 0 auto;
 }
 
-.friendsHeader {
-  border-bottom: rem(1px) solid
-    light-dark(var(--mantine-color-gray-2), transparent);
-  margin-bottom: rem(120px);
+.burger {
+  padding-top: 3%;
 }
+
 .sideBarContainer {
   /*height: 100%;
   width: 33.33%;*/
@@ -18,4 +21,11 @@
 .chatContainer {
   height: 100%;
   width: 66.66%;
+}
+
+@media (max-width: 1000px) {
+  .homeContainer {
+    /*padding-top: calc(4.7vh + 6px);*/
+    padding-top: calc(5.5% + 6px);
+  }
 }

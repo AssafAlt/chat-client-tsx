@@ -1,10 +1,5 @@
 import { useDisplayContext, ICurrentRoom } from "../context/DisplayContext";
-
-export enum DisplayType {
-  CHAT = "SHOW_CHAT",
-  HEADERS = "SHOW_HEADERS",
-  CLOSE_HEADERS = "CLOSE_HEADERS",
-}
+import { DisplayType } from "../models/DisplayType";
 
 export const useDisplay = () => {
   const { displayDispatch } = useDisplayContext();
@@ -32,6 +27,14 @@ export const useDisplay = () => {
     displayDispatch({ type: "CLOSE_OVERLAY" });
   };
 
+  const showSettings = () => {
+    displayDispatch({ type: "SHOW_SETTINGS" });
+  };
+
+  const closeSettings = () => {
+    displayDispatch({ type: "DEFAULT_DISPLAY" });
+  };
+
   return {
     displayManager,
     chooseChat,
@@ -39,5 +42,7 @@ export const useDisplay = () => {
     chooseMobileTabToShow,
     chooseOverlayImage,
     closeOverlay,
+    showSettings,
+    closeSettings,
   };
 };

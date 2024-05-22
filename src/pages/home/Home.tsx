@@ -1,6 +1,5 @@
-import { Burger, Paper, Text } from "@mantine/core";
-import { useAuthContext } from "../../context/AuthContext";
-import SetProfilePic from "../../components/user_settings/SetProfilePic";
+import { Burger } from "@mantine/core";
+
 import { useEffect, useRef } from "react";
 import { useSocket } from "../../hooks/useSocket";
 import { useFriends } from "../../hooks/useFriends";
@@ -12,6 +11,7 @@ import classes from "./Home.module.css";
 import { useDisclosure } from "@mantine/hooks";
 import SideDrawer from "../../components/ui/side-drawer/SideDrawer";
 import ImageOverlay from "../../components/ui/image-overlay/ImageOverlay";
+import SettingsWindow from "../../components/ui/user_settings/SettingsWindow";
 
 const Home = () => {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
@@ -64,24 +64,25 @@ const Home = () => {
   return (
     <div className={classes.homeContainer}>
       {displayState.overlay.isVisible && <ImageOverlay />}
+      <Burger
+        color="cyan"
+        opened={drawerOpened}
+        onClick={toggleDrawer}
+        hiddenFrom="xs"
+        className={classes.burger}
+      />
 
-      <div className={classes.friendsHeader}>
-        {displayState.showHeaders && <FriendsHeader />}
-        <Burger
-          color="cyan"
-          opened={drawerOpened}
-          onClick={toggleDrawer}
-          hiddenFrom="xs"
-        />
-      </div>
       <div className={classes.mainContainer}>
         <SideBar />
-
+        <div className={classes.friendsHeaderContainer}>
+          {displayState.showHeaders && <FriendsHeader />}
+        </div>
         <SideDrawer drawerOpened={drawerOpened} closeDrawer={closeDrawer} />
 
         {displayState.showChat && (
           <ChatRoom key={displayState.currentChat.currentRoom} />
         )}
+        {displayState.showSettings && <SettingsWindow />}
       </div>
     </div>
   );

@@ -8,14 +8,15 @@ import {
   Text,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import { useImages } from "../../hooks/useImages";
-import { ProfileImageClo } from "../../models/ProfileImageClo";
+import { useImages } from "../../../hooks/useImages";
+import { ProfileImageClo } from "../../../models/ProfileImageClo";
+import { useAuthContext } from "../../../context/AuthContext";
 
-interface ISetProfilePicProps {
-  imageSrc: string;
-  userNickname: string;
-}
-const SetProfilePic = (props: ISetProfilePicProps) => {
+const SetProfilePic = () => {
+  const { state } = useAuthContext();
+  const { profileImg, nickname, isFirstLogin } = state;
+  const imageSrc = profileImg ? profileImg : "";
+  const userNickname = nickname ? nickname : "";
   const { uploadProfileImage, continueWithoutImage } = useImages();
   const [profilePicture, setProfilePicture] = useState<File | undefined>(
     undefined
@@ -92,13 +93,13 @@ const SetProfilePic = (props: ISetProfilePicProps) => {
       )}
       <Paper radius="md" withBorder p="lg" bg="var(--mantine-color-body)">
         <Avatar
-          src={profilePictureUrl ? profilePictureUrl : props.imageSrc}
+          src={profilePictureUrl ? profilePictureUrl : imageSrc}
           size={120}
           radius={120}
           mx="auto"
         />
         <Text ta="center" fz="lg" fw={500} mt="md">
-          {props.userNickname}
+          {userNickname}
         </Text>
         <input
           type="file"
@@ -110,9 +111,11 @@ const SetProfilePic = (props: ISetProfilePicProps) => {
         <Button color="blue" fullWidth mt="md" onClick={onUpdateImage}>
           Update Profile Picture
         </Button>
-        <Button color="red" fullWidth onClick={onContinueWithoutImage}>
-          Continue Without Update Profile
-        </Button>
+        {isFirstLogin && (
+          <Button color="red" fullWidth onClick={onContinueWithoutImage}>
+            Continue Without Update Profile
+          </Button>
+        )}
       </Paper>
     </>
   );

@@ -28,3 +28,9 @@
     font-weight: bold;
   }
 }
+
+@media (max-width: 400px) {
+  .footer {
+    padding: 0.5vh 2%;
+  }
+}
