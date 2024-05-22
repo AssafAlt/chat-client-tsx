@@ -46,6 +46,7 @@
     width: 55vw;
   }
 }
+
 @media (max-width: 500px) {
   .mobileCard {
     height: 88vh;

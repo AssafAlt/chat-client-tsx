@@ -2,6 +2,8 @@ import React from "react";
 import { Button, Text } from "@mantine/core";
 import { FriendRequestStatus } from "../../../../models/FriendRequestStatus";
 import { useFriends } from "../../../../hooks/useFriends";
+import classes from "./AddCard.module.css";
+
 interface IStatusCompProps {
   requestId: number | null;
   status: string;
@@ -43,18 +45,28 @@ const StatusComp: React.FC<IStatusCompProps> = ({
   return (
     <>
       {status === FriendRequestStatus.WAITING && (
-        <div>
-          <Text c="black">Pending</Text>
-          <Button bg="red" onClick={onCancelRequestBySender}>
+        <>
+          <Text c="black" className={classes.statusText}>
+            Pending
+          </Text>
+          <Button
+            className={classes.addButton}
+            bg="red"
+            onClick={onCancelRequestBySender}
+          >
             Cancel
           </Button>
-        </div>
+        </>
       )}
       {status === FriendRequestStatus.PENDING && <Text c="black">Waiting</Text>}
       {status === FriendRequestStatus.FRIENDS && <Text c="black">Friends</Text>}
       {status === FriendRequestStatus.NOT_FRIENDS && (
-        <Button bg="green" onClick={onSendFrinedRequest}>
-          Send Friend Request
+        <Button
+          bg="green"
+          className={classes.addButton}
+          onClick={onSendFrinedRequest}
+        >
+          Add Friend
         </Button>
       )}
     </>

@@ -36,16 +36,14 @@ const FriendsHeader = () => {
     </Tabs.Tab>
   ));
   const menuItems = tabs.map((tab) => (
-    <>
-      <Menu.Item
-        c="cyan"
-        value={tab}
-        key={tab}
-        onClick={() => handleTabChange(tab)}
-      >
-        {tab}
-      </Menu.Item>
-    </>
+    <Menu.Item
+      c="cyan"
+      value={tab}
+      key={tab}
+      onClick={() => handleTabChange(tab)}
+    >
+      {tab}
+    </Menu.Item>
   ));
 
   return (
@@ -82,7 +80,7 @@ const FriendsHeader = () => {
           </Menu>
         </Container>
         {showCard === "Add Friend" && <AddFriendCard />}
-        {showCard === "Pending" && <FriendRequestsCard />}
+        {showCard === `Pending (${friendLen})` && <FriendRequestsCard />}
         {showCard === "All" && <FriendsCard />}
       </Container>
     </Center>

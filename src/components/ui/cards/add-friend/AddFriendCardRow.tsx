@@ -1,7 +1,7 @@
 import { Flex, Text, Avatar } from "@mantine/core";
 import React, { useState } from "react";
 import { ISearchResponse } from "../../../../models/FriendRequestResponses";
-
+import classes from "./AddCard.module.css";
 import { useDisplay } from "../../../../hooks/useDisplay";
 import StatusComp from "./StatusComp";
 
@@ -13,12 +13,13 @@ const AddFriendCardRow: React.FC<{ searchedUser: ISearchResponse }> = ({
   const [requestStatus, setRequestStatus] = useState("Loading...");
 
   return (
-    <Flex justify="space-between" py="sm" px="sm" style={{ width: "100%" }}>
+    <Flex align="center" className={classes.cardRow}>
       <Avatar
+        className={classes.rowImg}
         src={searchedUser.profileImg}
         onClick={() => chooseOverlayImage(searchedUser.profileImg)}
       />
-      <Text ff="sans-serif" fs="italic">
+      <Text ff="sans-serif" fs="italic" className={classes.friendName}>
         {searchedUser.nickname}
       </Text>
       {!isLoading ? (
@@ -30,7 +31,9 @@ const AddFriendCardRow: React.FC<{ searchedUser: ISearchResponse }> = ({
           setRequestStatus={setRequestStatus}
         />
       ) : (
-        <Text c="white">{requestStatus}</Text>
+        <Text c="black" ta="right" className={classes.reqStatus}>
+          {requestStatus}{" "}
+        </Text>
       )}
     </Flex>
   );

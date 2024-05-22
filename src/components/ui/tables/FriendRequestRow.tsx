@@ -1,8 +1,17 @@
 import React, { useState } from "react";
-import { Avatar, Button, Group, Table, Text } from "@mantine/core";
+import {
+  Avatar,
+  Button,
+  Center,
+  Flex,
+  Group,
+  Table,
+  Text,
+} from "@mantine/core";
 import { IGetFriendRequest } from "../../../models/FriendRequestResponses";
 import { useFriends } from "../../../hooks/useFriends";
 import { useDisplay } from "../../../hooks/useDisplay";
+import classes from "./FriendRequest.module.css";
 
 const FriendRequestRow: React.FC<{ fRequest: IGetFriendRequest }> = ({
   fRequest,
@@ -32,22 +41,29 @@ const FriendRequestRow: React.FC<{ fRequest: IGetFriendRequest }> = ({
   };
   return (
     <Table.Tr>
-      <Table.Td>
-        <Group gap="sm">
+      <Table.Td className={classes.userTd}>
+        <Flex align="center">
           <Avatar
-            size={40}
+            className={classes.requestImg}
             src={fRequest.profileImg}
             radius={26}
             onClick={() => chooseOverlayImage(fRequest.profileImg)}
           />
-          <Text size="sm" fw={500}>
+          <Text
+            className={classes.requesterName}
+            ff="revert"
+            fs="italic"
+            fw={500}
+          >
             {fRequest.nickname}
           </Text>
-        </Group>
+        </Flex>
       </Table.Td>
-      <Table.Td ta="left">{fRequest.date}</Table.Td>
-      <Table.Td ta="left">
-        <Group gap="xs">
+      <Table.Td ta="left" className={classes.dateTd}>
+        {fRequest.date}
+      </Table.Td>
+      <Table.Td ta="left" className={classes.optionsTd}>
+        <div className={classes.buttonsContainer}>
           {!isLoading ? (
             <>
               <Button
@@ -57,17 +73,22 @@ const FriendRequestRow: React.FC<{ fRequest: IGetFriendRequest }> = ({
                   )
                 }
                 bg="green"
+                className={classes.requestsButton}
               >
                 Confirm
               </Button>
-              <Button onClick={() => onCancelRequest(fRequest.id)} bg="red">
+              <Button
+                onClick={() => onCancelRequest(fRequest.id)}
+                bg="red"
+                className={classes.requestsButton}
+              >
                 Decline
               </Button>
             </>
           ) : (
-            <Text c="white">{requestStatus}</Text>
+            <Text c="black">{requestStatus}</Text>
           )}
-        </Group>
+        </div>
       </Table.Td>
     </Table.Tr>
   );
