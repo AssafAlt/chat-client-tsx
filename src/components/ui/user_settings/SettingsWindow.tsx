@@ -4,13 +4,16 @@ import SetProfilePic from "./SetProfilePic";
 import classes from "./SettingsWindow.module.css";
 import { Paper, ScrollArea, Text } from "@mantine/core";
 import { useDisplay } from "../../../hooks/useDisplay";
+import { DisplayType } from "../../../models/DisplayType";
 
 const SettingsWindow = () => {
-  const { closeSettings } = useDisplay();
+  const { displayManager } = useDisplay();
   return (
     <Paper className={classes.settingsWindow}>
       <div className={classes.settingsHeader}>
-        <IconArrowRight onClick={closeSettings} />
+        <IconArrowRight
+          onClick={() => displayManager(DisplayType.CLOSE_SETTINGS)}
+        />
       </div>
       <Text size="xl">Settings</Text>
       <ScrollArea p="sm" className={classes.scroller}>

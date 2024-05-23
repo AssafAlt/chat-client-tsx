@@ -11,10 +11,6 @@ export const useDisplay = () => {
     displayDispatch({ type: "CHOOSE_CHAT", payload: room });
   };
 
-  const closeChat = () => {
-    displayDispatch({ type: "CLOSE_CHAT" });
-  };
-
   const chooseMobileTabToShow = (chosenTab: string) => {
     displayDispatch({ type: "SHOW_MOBILE_TAB", payload: chosenTab });
   };
@@ -23,26 +19,10 @@ export const useDisplay = () => {
     displayDispatch({ type: "SHOW_OVERLAY", payload: imageSrc });
   };
 
-  const closeOverlay = () => {
-    displayDispatch({ type: "CLOSE_OVERLAY" });
-  };
-
-  const showSettings = () => {
-    displayDispatch({ type: "SHOW_SETTINGS" });
-  };
-
-  const closeSettings = () => {
-    displayDispatch({ type: "DEFAULT_DISPLAY" });
-  };
-
   return {
     displayManager,
     chooseChat,
-    closeChat,
     chooseMobileTabToShow,
     chooseOverlayImage,
-    closeOverlay,
-    showSettings,
-    closeSettings,
   };
 };

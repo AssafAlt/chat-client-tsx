@@ -2,6 +2,7 @@ import { Avatar, Paper, Text } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
 import classes from "./ChatHeader.module.css";
 import { useDisplay } from "../../../../hooks/useDisplay";
+import { DisplayType } from "../../../../models/DisplayType";
 
 interface IChatHeaderProps {
   profileImg: string;
@@ -9,7 +10,7 @@ interface IChatHeaderProps {
 }
 
 const ChatHeader = (props: IChatHeaderProps) => {
-  const { closeChat, chooseOverlayImage } = useDisplay();
+  const { displayManager, chooseOverlayImage } = useDisplay();
   return (
     <Paper bg="cyan" p="md" style={{ marginBottom: "20px" }}>
       <div className={classes.headContainer}>
@@ -22,7 +23,9 @@ const ChatHeader = (props: IChatHeaderProps) => {
           />
           <Text fw={500}>{props.friendNickname}</Text>
         </div>
-        <IconArrowRight onClick={closeChat} />
+        <IconArrowRight
+          onClick={() => displayManager(DisplayType.CLOSE_CHAT)}
+        />
       </div>
     </Paper>
   );
