@@ -1,5 +1,5 @@
 import { modals } from "@mantine/modals";
-import { Button, Menu, rem, Text } from "@mantine/core";
+import { Button, rem, Text } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
 import { useAuth } from "../../../hooks/useAuth";
 import { notifications } from "@mantine/notifications";

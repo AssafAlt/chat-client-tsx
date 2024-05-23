@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  Avatar,
-  Button,
-  Center,
-  Flex,
-  Group,
-  Table,
-  Text,
-} from "@mantine/core";
+import { Avatar, Button, Flex, Table, Text } from "@mantine/core";
 import { IGetFriendRequest } from "../../../models/FriendRequestResponses";
 import { useFriends } from "../../../hooks/useFriends";
 import { useDisplay } from "../../../hooks/useDisplay";

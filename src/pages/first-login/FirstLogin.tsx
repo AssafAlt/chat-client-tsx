@@ -6,9 +6,7 @@ import { Navigate } from "react-router-dom";
 
 const FirstLogin = () => {
   const { state } = useAuthContext();
-  const { profileImg, nickname, isFirstLogin } = state;
-  const imagePath = profileImg ? profileImg : "";
-  const userNickname = nickname ? nickname : "";
+  const { isFirstLogin } = state;
 
   return (
     <div className={classes.firstContainer}>

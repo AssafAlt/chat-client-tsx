@@ -34,8 +34,6 @@ export const useImages = () => {
     }
   };
   const continueWithoutImage = async () => {
-    dispatch({ type: "START" });
-
     try {
       const res = await springApi.get("users/setting/update-first-login");
 
