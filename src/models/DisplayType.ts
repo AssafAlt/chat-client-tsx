@@ -1,5 +1,4 @@
 export enum DisplayType {
-  CHAT = "SHOW_CHAT",
   CLOSE_CHAT = "CLOSE_CHAT",
   HEADERS = "SHOW_HEADERS",
   CLOSE_HEADERS = "CLOSE_HEADERS",

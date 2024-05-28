@@ -6,5 +6,5 @@ export const springApi = axios.create({
 });
 
 export const imagesApi = axios.create({
-  baseURL: `${import.meta.env.CLOUDINARY_API}`,
+  baseURL: `${import.meta.env.VITE_CLOUDINARY_API}`,
 });

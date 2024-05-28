@@ -66,7 +66,7 @@ const StatusComp: React.FC<IStatusCompProps> = ({
           className={classes.addButton}
           onClick={onSendFrinedRequest}
         >
-          Add Friend
+          Add
         </Button>
       )}
     </>

@@ -1,6 +1,6 @@
 .settingsWindow {
   width: 66.66%;
-
+  padding-top: 1%;
   border: 1px solid #15aabf;
   border-radius: 5px;
   overflow: hidden;

@@ -8,12 +8,11 @@ import { ICurrentRoom } from "../../../../context/DisplayContext";
 import { createPrivateRoomName } from "../../../../utils/socketUtils";
 import { useAuthContext } from "../../../../context/AuthContext";
 import classes from "../SideBar.module.css";
-import { DisplayType } from "../../../../models/DisplayType";
 
 const UsersToggle = (props: IUsersToggleProps) => {
   const [isClicked, setIsClicked] = useState(false);
   const listLength = Object.keys(props.friendsList).length;
-  const { displayManager, chooseChat, chooseOverlayImage } = useDisplay();
+  const { chooseChat, chooseOverlayImage } = useDisplay();
   const { state } = useAuthContext();
   const userNick: string = state.nickname ? state.nickname : "";
   return (
@@ -42,7 +41,6 @@ const UsersToggle = (props: IUsersToggleProps) => {
             {Object.entries(props.friendsList).map(([nickname, profileImg]) => (
               <Flex
                 onClick={() => {
-                  displayManager(DisplayType.CHAT);
                   const newRoom: ICurrentRoom = {
                     currentFriendNickname: nickname,
                     currentFriendProfileImg: profileImg,

@@ -9,7 +9,7 @@ export const useImages = () => {
 
   const uploadProfileImage = async (profileImage: FormData) => {
     try {
-      const res = await imagesApi.post("/upload", profileImage);
+      const res = await imagesApi.post("upload", profileImage);
 
       if (res.status === 200) {
         const response = await springApi.patch("users/setting/image", {

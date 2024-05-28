@@ -16,7 +16,6 @@ interface DisplayState {
 }
 // Define the SignUp Actions
 type DisplayAction =
-  | { type: "SHOW_CHAT" }
   | { type: "CLOSE_CHAT" }
   | { type: "CHOOSE_CHAT"; payload: ICurrentRoom }
   | { type: "SHOW_SETTINGS" }
@@ -56,15 +55,10 @@ const displayReducer = (
   action: DisplayAction
 ): DisplayState => {
   switch (action.type) {
-    case "SHOW_CHAT":
-      return {
-        ...state,
-        showChat: true,
-        showHeaders: false,
-      };
     case "CHOOSE_CHAT":
       return {
         ...state,
+        showChat: true,
         showSettings: false,
         currentChat: action.payload,
       };
