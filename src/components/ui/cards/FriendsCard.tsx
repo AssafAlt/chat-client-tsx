@@ -1,13 +1,25 @@
 import { useEffect, useRef, useState } from "react";
-import { Avatar, Card, Flex, List, ScrollArea, Text } from "@mantine/core";
+import {
+  Avatar,
+  Button,
+  Card,
+  Flex,
+  Group,
+  List,
+  Modal,
+  ScrollArea,
+  Text,
+} from "@mantine/core";
 import { IconBrandHipchat, IconBan } from "@tabler/icons-react";
 import { useFriends } from "../../../hooks/useFriends";
 import { IFriendship } from "../../../models/Friendship";
 import classes from "./Cards.module.css";
 import { useDisplay } from "../../../hooks/useDisplay";
+import { useDisclosure } from "@mantine/hooks";
 
 const FriendsCard = () => {
-  const { getFriends } = useFriends();
+  const { getFriends, deleteFriendship } = useFriends();
+  const [opened, { open, close }] = useDisclosure(false);
   const [friends, setFriends] = useState<IFriendship[]>([]);
   const effectRan = useRef(false);
   const { chooseOverlayImage } = useDisplay();
@@ -17,6 +29,20 @@ const FriendsCard = () => {
       const res: IFriendship[] = await getFriends();
       console.log(res);
       await setFriends(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onDeleteFriendship = async (
+    friendshipId: number,
+    nicknameToDelete: string
+  ) => {
+    try {
+      await deleteFriendship(friendshipId, nicknameToDelete);
+      setFriends((prevFriends) =>
+        prevFriends.filter((fship) => fship.id !== friendshipId)
+      );
     } catch (error) {
       console.log(error);
     }
@@ -55,8 +81,26 @@ const FriendsCard = () => {
                 </Text>
                 <Flex>
                   <IconBrandHipchat />
-                  <IconBan />
+                  <IconBan onClick={open} />
                 </Flex>
+                <Modal
+                  opened={opened}
+                  onClose={close}
+                  title="Are you sure you want to delete this friend?"
+                >
+                  {" "}
+                  <Group mt="xl" justify="right">
+                    <Button
+                      bg="red"
+                      onClick={() =>
+                        onDeleteFriendship(fShip.id, fShip.nickname)
+                      }
+                    >
+                      Delete
+                    </Button>
+                    <Button>Cancel</Button>
+                  </Group>
+                </Modal>
               </div>
             ))}
           </List>

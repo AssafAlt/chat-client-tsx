@@ -73,7 +73,7 @@ export const useFriends = () => {
   };
   const sendFriendRequest = async (recieverId: number) => {
     try {
-      const res = await springApi.post("friend-requests/add", {
+      const res = await springApi.post("friendship/add", {
         recieverId: recieverId,
       });
 
@@ -90,7 +90,7 @@ export const useFriends = () => {
   };
   const getFriendRequests = async () => {
     try {
-      const res = await springApi.get("friend-requests/get-requests");
+      const res = await springApi.get("friendship/get-requests");
 
       if (res.status === 200) {
         friendsDispatch({ type: "GET_FRIEND_REQUESTS", payload: res.data });
@@ -106,7 +106,7 @@ export const useFriends = () => {
   };
   const confirmFriendRequest = async (friendRequestId: number) => {
     try {
-      const res = await springApi.patch("friend-requests/confirm", {
+      const res = await springApi.patch("friendship/confirm", {
         friendRequestId: friendRequestId,
       });
 
@@ -131,7 +131,7 @@ export const useFriends = () => {
   };
   const cancelFriendRequestBySender = async (friendRequestId: number) => {
     try {
-      const res = await springApi.delete("friend-requests/cancel", {
+      const res = await springApi.delete("friendship/cancel", {
         data: {
           friendRequestId: friendRequestId,
         },
@@ -148,7 +148,7 @@ export const useFriends = () => {
   };
   const cancelFriendRequest = async (friendRequestId: number) => {
     try {
-      const res = await springApi.delete("friend-requests/cancel", {
+      const res = await springApi.delete("friendship/cancel", {
         data: {
           friendRequestId: friendRequestId,
         },
@@ -173,6 +173,26 @@ export const useFriends = () => {
       throw new Error(err);
     }
   };
+  const deleteFriendship = async (
+    friendshipId: number,
+    nicknameToDelete: string
+  ) => {
+    try {
+      await springApi.delete("friendship/delete", {
+        data: {
+          friendRequestId: friendshipId,
+        },
+      });
+      friendsDispatch({
+        type: "FRIENDSHIP_DELETED",
+        payload: nicknameToDelete,
+      });
+    } catch (error: unknown) {
+      const err = axiosErrorExtractor(error);
+
+      throw new Error(err);
+    }
+  };
   return {
     searchUser,
     isFriendOnline,
@@ -183,5 +203,6 @@ export const useFriends = () => {
     confirmFriendRequest,
     cancelFriendRequest,
     cancelFriendRequestBySender,
+    deleteFriendship,
   };
 };

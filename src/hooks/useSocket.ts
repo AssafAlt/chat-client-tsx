@@ -53,6 +53,11 @@ export const useSocket = () => {
         type: "CLICKED_FRIEND_REQUEST",
         payload: newNotification.requestId,
       });
+    } else if (newNotification.messageType === MessageType.FRIENDSHIP_DELETED) {
+      friendsDispatch({
+        type: "FRIENDSHIP_DELETED_NOTIFICATION",
+        payload: newNotification.friend.nickname,
+      });
     }
   };
 
