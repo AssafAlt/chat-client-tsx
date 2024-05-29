@@ -70,7 +70,7 @@ const SetProfilePic = () => {
       await continueWithoutImage();
       notifications.show({
         title: "Update Profile",
-        message: "Profile udated successfully",
+        message: "Profile updated successfully",
         autoClose: 2000,
       });
     } catch (error) {

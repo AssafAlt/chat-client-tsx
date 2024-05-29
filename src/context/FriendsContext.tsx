@@ -23,7 +23,8 @@ type FriendsAction =
   | { type: "FRIEND_IS_ONLINE"; payload: IFriendIsOnline }
   | { type: "FRIEND_IS_NOT_ONLINE"; payload: IFriendIsOnline }
   | { type: "FRIENDSHIP_DELETED"; payload: string }
-  | { type: "FRIENDSHIP_DELETED_NOTIFICATION"; payload: string };
+  | { type: "FRIENDSHIP_DELETED_NOTIFICATION"; payload: string }
+  | { type: "FRIEND_UPDATED_IMG"; payload: IFriendIsOnline };
 
 const initialState: FriendsState = {
   friends: { onlineFriends: {}, offlineFriends: {} },
@@ -88,6 +89,17 @@ const friendsReducer = (
     case "CLICKED_FRIEND_REQUEST_FAILED":
       return state;
     case "FRIEND_IS_ONLINE":
+      return {
+        ...state,
+        friends: {
+          ...state.friends,
+          onlineFriends: {
+            ...state.friends.onlineFriends,
+            [action.payload.nickname]: action.payload.profileImg,
+          },
+        },
+      };
+    case "FRIEND_UPDATED_IMG":
       return {
         ...state,
         friends: {

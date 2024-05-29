@@ -28,36 +28,54 @@ export const useSocket = () => {
   };
 
   const updateOnNotification = (newNotification: INotification) => {
-    if (newNotification.messageType === MessageType.REQUEST_APPROVED) {
-      friendsDispatch({
-        type: "FRIEND_IS_ONLINE",
-        payload: newNotification.friend,
-      });
-      notifications.show({
-        title: "Friend Request Approved",
-        message: newNotification.message,
-        autoClose: 4500,
-      });
-    } else if (newNotification.messageType === MessageType.NEW_FRIEND_REQUEST) {
-      friendsDispatch({
-        type: "NEW_FRIEND_REQUEST",
-        payload: newNotification.frequest,
-      });
-      notifications.show({
-        title: "New Friend Request",
-        message: newNotification.message,
-        autoClose: 4500,
-      });
-    } else if (newNotification.messageType === MessageType.REQUEST_CANCELLED) {
-      friendsDispatch({
-        type: "CLICKED_FRIEND_REQUEST",
-        payload: newNotification.requestId,
-      });
-    } else if (newNotification.messageType === MessageType.FRIENDSHIP_DELETED) {
-      friendsDispatch({
-        type: "FRIENDSHIP_DELETED_NOTIFICATION",
-        payload: newNotification.friend.nickname,
-      });
+    switch (newNotification.messageType) {
+      case MessageType.REQUEST_APPROVED:
+        friendsDispatch({
+          type: "FRIEND_IS_ONLINE",
+          payload: newNotification.friend,
+        });
+        notifications.show({
+          title: "Friend Request Approved",
+          message: newNotification.message,
+          autoClose: 4500,
+        });
+        break;
+      case MessageType.NEW_FRIEND_REQUEST:
+        friendsDispatch({
+          type: "NEW_FRIEND_REQUEST",
+          payload: newNotification.frequest,
+        });
+        notifications.show({
+          title: "New Friend Request",
+          message: newNotification.message,
+          autoClose: 4500,
+        });
+        break;
+      case MessageType.REQUEST_CANCELLED:
+        friendsDispatch({
+          type: "CLICKED_FRIEND_REQUEST",
+          payload: newNotification.requestId,
+        });
+        break;
+      case MessageType.FRIENDSHIP_DELETED:
+        friendsDispatch({
+          type: "FRIENDSHIP_DELETED_NOTIFICATION",
+          payload: newNotification.friend.nickname,
+        });
+        break;
+      case MessageType.FRIEND_UPDATED_IMG:
+        friendsDispatch({
+          type: "FRIENDSHIP_DELETED_NOTIFICATION",
+          payload: newNotification.friend.nickname,
+        });
+        notifications.show({
+          title: "New Profile Image",
+          message: newNotification.message,
+          autoClose: 4500,
+        });
+        break;
+      default:
+        console.warn("Unhandled message type:", newNotification.messageType);
     }
   };
 
