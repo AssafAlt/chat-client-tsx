@@ -200,7 +200,7 @@ const ChatRoom = () => {
           onDeleteMessage={deleteMessage}
         />
         <Affix className={classes.scrollButton} onClick={scrollToBottom}>
-          <ActionIcon color="cyan" radius="xl" size={60}>
+          <ActionIcon radius="xl" size={60}>
             <IconArrowDown stroke={1.5} size={30} />
           </ActionIcon>
         </Affix>
@@ -214,9 +214,7 @@ const ChatRoom = () => {
           onKeyDown={handleEnterPress}
           placeholder="Type your message here..."
         />
-        <Button onClick={handleMessageSend} color="cyan">
-          Send
-        </Button>
+        <Button onClick={handleMessageSend}>Send</Button>
       </div>
     </div>
   );
