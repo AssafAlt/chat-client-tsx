@@ -12,7 +12,7 @@ import {
 import { IconFriends } from "@tabler/icons-react";
 import AddFriendCard from "../../cards/add-friend/AddFriendCard";
 import FriendRequestsCard from "../../cards/FriendRequestsCard";
-import FriendsCard from "../../cards/FriendsCard";
+import FriendsCard from "../../cards/friends/FriendsCard";
 import classes from "./FriendsHeader.module.css";
 
 const FriendsHeader = () => {

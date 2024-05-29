@@ -4,17 +4,13 @@ import { IUsersToggleProps } from "../../../../models/props/UserToggleProps";
 import { Flex, List, Avatar, Text, ScrollArea } from "@mantine/core";
 import { IconBrandHipchat } from "@tabler/icons-react";
 import { useDisplay } from "../../../../hooks/useDisplay";
-import { ICurrentRoom } from "../../../../context/DisplayContext";
-import { createPrivateRoomName } from "../../../../utils/socketUtils";
-import { useAuthContext } from "../../../../context/AuthContext";
 import classes from "../SideBar.module.css";
 
 const UsersToggle = (props: IUsersToggleProps) => {
   const [isClicked, setIsClicked] = useState(false);
   const listLength = Object.keys(props.friendsList).length;
   const { chooseChat, chooseOverlayImage } = useDisplay();
-  const { state } = useAuthContext();
-  const userNick: string = state.nickname ? state.nickname : "";
+
   return (
     <>
       <div
@@ -41,12 +37,7 @@ const UsersToggle = (props: IUsersToggleProps) => {
             {Object.entries(props.friendsList).map(([nickname, profileImg]) => (
               <Flex
                 onClick={() => {
-                  const newRoom: ICurrentRoom = {
-                    currentFriendNickname: nickname,
-                    currentFriendProfileImg: profileImg,
-                    currentRoom: createPrivateRoomName(userNick, nickname),
-                  };
-                  chooseChat(newRoom);
+                  chooseChat(nickname, profileImg);
                 }}
                 key={nickname}
                 justify="space-between"

@@ -61,6 +61,7 @@ const displayReducer = (
         showChat: true,
         showSettings: false,
         currentChat: action.payload,
+        showHeaders: false,
       };
     case "CLOSE_CHAT":
       return {
