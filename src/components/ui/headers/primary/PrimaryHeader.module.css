@@ -40,7 +40,7 @@
   top: 0;
   padding-top: 1vh;
   background-color: #15aabf;
-  /*z-index: 1;*/
+  z-index: 1;
   justify-content: space-between;
 }
 .primaryHeader .textOne {

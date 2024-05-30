@@ -1,14 +1,24 @@
+import { useAuthContext } from "../context/AuthContext";
 import { useDisplayContext, ICurrentRoom } from "../context/DisplayContext";
 import { DisplayType } from "../models/DisplayType";
+import { createPrivateRoomName } from "../utils/socketUtils";
 
 export const useDisplay = () => {
+  const { state } = useAuthContext();
+  const userNick: string = state.nickname ? state.nickname : "";
+
   const { displayDispatch } = useDisplayContext();
   const displayManager = (display: DisplayType) => {
     displayDispatch({ type: display });
   };
 
-  const chooseChat = (room: ICurrentRoom) => {
-    displayDispatch({ type: "CHOOSE_CHAT", payload: room });
+  const chooseChat = (friendNickname: string, friendProfileImg: string) => {
+    const newRoom: ICurrentRoom = {
+      currentFriendNickname: friendNickname,
+      currentFriendProfileImg: friendProfileImg,
+      currentRoom: createPrivateRoomName(userNick, friendNickname),
+    };
+    displayDispatch({ type: "CHOOSE_CHAT", payload: newRoom });
   };
 
   const chooseMobileTabToShow = (chosenTab: string) => {

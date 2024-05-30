@@ -9,7 +9,7 @@ import ChatRoom from "../../components/ui/chat/ChatRoom";
 import { useDisplayContext } from "../../context/DisplayContext";
 import AddFriendCard from "../../components/ui/cards/add-friend/AddFriendCard";
 import FriendRequestsCard from "../../components/ui/cards/FriendRequestsCard";
-import FriendsCard from "../../components/ui/cards/FriendsCard";
+import FriendsCard from "../../components/ui/cards/friends/FriendsCard";
 import ImageOverlay from "../../components/ui/image-overlay/ImageOverlay";
 import SettingsWindow from "../../components/ui/user_settings/SettingsWindow";
 

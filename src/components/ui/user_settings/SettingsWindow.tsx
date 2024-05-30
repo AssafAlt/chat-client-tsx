@@ -2,12 +2,14 @@ import { IconArrowRight } from "@tabler/icons-react";
 import DeleteAccountModal from "../modals/DeleteAccountModal";
 import SetProfilePic from "./SetProfilePic";
 import classes from "./SettingsWindow.module.css";
-import { Paper, ScrollArea, Text } from "@mantine/core";
+import { Button, Paper, ScrollArea, Text } from "@mantine/core";
 import { useDisplay } from "../../../hooks/useDisplay";
 import { DisplayType } from "../../../models/DisplayType";
+import { useState } from "react";
 
 const SettingsWindow = () => {
   const { displayManager } = useDisplay();
+  const [isClicked, setIsClicked] = useState(false);
   return (
     <Paper className={classes.settingsWindow}>
       <div className={classes.settingsHeader}>
@@ -19,7 +21,14 @@ const SettingsWindow = () => {
       <ScrollArea p="sm" className={classes.scroller}>
         <div className={classes.profileCard}>
           <Text size="lg">Choose Profile Picture</Text>
-          <SetProfilePic />
+          {isClicked ? (
+            <>
+              <Button onClick={() => setIsClicked(false)}>Close</Button>
+              <SetProfilePic />
+            </>
+          ) : (
+            <Button onClick={() => setIsClicked(true)}>Choose</Button>
+          )}
         </div>
 
         <div className={classes.deleteCard}>

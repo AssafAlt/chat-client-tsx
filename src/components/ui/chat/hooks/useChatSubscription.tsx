@@ -1,6 +1,9 @@
 import { useEffect, useMemo } from "react";
-import { IConversation, ICurrentChatMessage } from "../models/ChatMessages";
-import { useSocketContext } from "../context/SocketContext";
+import {
+  IConversation,
+  ICurrentChatMessage,
+} from "../../../../models/ChatMessages";
+import { useSocketContext } from "../../../../context/SocketContext";
 
 interface UseChatSubscriptionsParams {
   setChatConversation: React.Dispatch<React.SetStateAction<IConversation>>;

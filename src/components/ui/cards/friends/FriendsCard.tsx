@@ -1,22 +1,36 @@
 import { useEffect, useRef, useState } from "react";
-import { Avatar, Card, Flex, List, ScrollArea, Text } from "@mantine/core";
-import { IconBrandHipchat, IconBan } from "@tabler/icons-react";
-import { useFriends } from "../../../hooks/useFriends";
-import { IFriendship } from "../../../models/Friendship";
-import classes from "./Cards.module.css";
-import { useDisplay } from "../../../hooks/useDisplay";
+import { Card, List, ScrollArea, Text } from "@mantine/core";
+import { useFriends } from "../../../../hooks/useFriends";
+import { IFriendship } from "../../../../models/Friendship";
+import { useDisplay } from "../../../../hooks/useDisplay";
+import FriendsCardRow from "./FriendsCardRow";
+import classes from "../Cards.module.css";
 
 const FriendsCard = () => {
-  const { getFriends } = useFriends();
+  const { getFriends, deleteFriendship } = useFriends();
+
   const [friends, setFriends] = useState<IFriendship[]>([]);
   const effectRan = useRef(false);
-  const { chooseOverlayImage } = useDisplay();
+  const { chooseChat, chooseOverlayImage } = useDisplay();
 
   const onGetFriends = async () => {
     try {
       const res: IFriendship[] = await getFriends();
-      console.log(res);
-      await setFriends(res);
+      setFriends(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onDeleteFriendship = async (
+    friendshipId: number,
+    nicknameToDelete: string
+  ) => {
+    try {
+      await deleteFriendship(friendshipId, nicknameToDelete);
+      setFriends((prevFriends) =>
+        prevFriends.filter((fship) => fship.id !== friendshipId)
+      );
     } catch (error) {
       console.log(error);
     }
@@ -45,19 +59,13 @@ const FriendsCard = () => {
         {friends.length ? (
           <List py="sm">
             {friends.map((fShip) => (
-              <div key={fShip.id} className={classes.friendsDiv}>
-                <Avatar
-                  src={fShip.profileImg}
-                  onClick={() => chooseOverlayImage(fShip.profileImg)}
-                />
-                <Text ff="sans-serif" fs="italic">
-                  {fShip.nickname}
-                </Text>
-                <Flex>
-                  <IconBrandHipchat />
-                  <IconBan />
-                </Flex>
-              </div>
+              <FriendsCardRow
+                key={fShip.id}
+                friendship={fShip}
+                chooseOverlayImage={chooseOverlayImage}
+                chooseChat={chooseChat}
+                onDeleteFriendship={onDeleteFriendship}
+              />
             ))}
           </List>
         ) : (

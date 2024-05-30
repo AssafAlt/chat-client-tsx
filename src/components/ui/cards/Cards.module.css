@@ -38,6 +38,10 @@
   border: 1px solid #15aabf;
 }
 
+.icon {
+  cursor: pointer;
+}
+
 @media (max-width: 950px) {
   .friendsDiv {
     width: 50vw;

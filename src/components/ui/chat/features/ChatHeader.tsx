@@ -16,6 +16,7 @@ const ChatHeader = (props: IChatHeaderProps) => {
       <div className={classes.headContainer}>
         <div className={classes.innerContainer}>
           <Avatar
+            className={classes.chatIcon}
             radius="xl"
             src={props.profileImg}
             onClick={() => chooseOverlayImage(props.profileImg)}
@@ -24,6 +25,7 @@ const ChatHeader = (props: IChatHeaderProps) => {
           <Text fw={500}>{props.friendNickname}</Text>
         </div>
         <IconArrowRight
+          className={classes.chatIcon}
           onClick={() => displayManager(DisplayType.CLOSE_CHAT)}
         />
       </div>

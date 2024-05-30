@@ -21,7 +21,10 @@ type FriendsAction =
   | { type: "FRIEND_CONNECTED"; payload: string }
   | { type: "FRIEND_DISCONNECTED"; payload: string }
   | { type: "FRIEND_IS_ONLINE"; payload: IFriendIsOnline }
-  | { type: "FRIEND_IS_NOT_ONLINE"; payload: IFriendIsOnline };
+  | { type: "FRIEND_IS_NOT_ONLINE"; payload: IFriendIsOnline }
+  | { type: "FRIENDSHIP_DELETED"; payload: string }
+  | { type: "FRIENDSHIP_DELETED_NOTIFICATION"; payload: string }
+  | { type: "FRIEND_UPDATED_IMG"; payload: IFriendIsOnline };
 
 const initialState: FriendsState = {
   friends: { onlineFriends: {}, offlineFriends: {} },
@@ -96,6 +99,43 @@ const friendsReducer = (
           },
         },
       };
+    case "FRIEND_UPDATED_IMG":
+      return {
+        ...state,
+        friends: {
+          ...state.friends,
+          onlineFriends: {
+            ...state.friends.onlineFriends,
+            [action.payload.nickname]: action.payload.profileImg,
+          },
+        },
+      };
+    case "FRIENDSHIP_DELETED_NOTIFICATION": {
+      const newState = {
+        ...state,
+        friends: {
+          ...state.friends,
+        },
+      };
+
+      delete newState.friends.onlineFriends[action.payload];
+
+      return newState;
+    }
+    case "FRIENDSHIP_DELETED": {
+      const newState = {
+        ...state,
+        friends: {
+          ...state.friends,
+        },
+      };
+      if (newState.friends.onlineFriends[action.payload]) {
+        delete newState.friends.onlineFriends[action.payload];
+      } else {
+        delete newState.friends.offlineFriends[action.payload];
+      }
+      return newState;
+    }
     case "FRIEND_IS_NOT_ONLINE":
       return {
         ...state,
