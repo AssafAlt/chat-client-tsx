@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import {
   Button,
-  Textarea,
   ScrollArea,
   Affix,
   ActionIcon,
   Loader,
   Center,
+  TextInput,
 } from "@mantine/core";
 import ChatHeader from "./features/ChatHeader";
 import { useSocketContext } from "../../../context/SocketContext";
@@ -18,7 +18,7 @@ import { IconArrowDown } from "@tabler/icons-react";
 import classes from "./ChatRoom.module.css";
 import { useChat } from "../../../hooks/useChat";
 import ChatConversation from "./features/ChatConversation";
-import useChatSubscriptions from "../../../hooks/useChatSubscription";
+import useChatSubscriptions from "./hooks/useChatSubscription";
 
 interface IConverSationResponse {
   totalPages: number;
@@ -40,9 +40,11 @@ const ChatRoom = () => {
   const [chatConversation, setChatConversation] = useState<IConversation>({});
   const [newMessage, setNewMessage] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
+  const [isScrollingDown, setIsScrollingDown] = useState(false);
   const hasMoreMessages = useRef(true);
   const [isLoading, setIsLoading] = useState(false);
   const { getChatHistoryByPage } = useChat();
+  const lastScrollTop = useRef(0);
 
   useChatSubscriptions({
     setChatConversation,
@@ -69,6 +71,12 @@ const ChatRoom = () => {
       getChatHistory(pageNumber + 1);
       setPageNumber((prevPage) => prevPage + 1);
     }
+  };
+  const handleScrollDown = () => {
+    const container = viewport.current!;
+    const currentScrollTop = container.scrollTop;
+    setIsScrollingDown(currentScrollTop > lastScrollTop.current);
+    lastScrollTop.current = currentScrollTop;
   };
 
   const handleMessageSend = () => {
@@ -126,7 +134,6 @@ const ChatRoom = () => {
       );
 
       const data: IConverSationResponse = results;
-      console.log(data);
       hasMoreMessages.current = data.hasNext;
 
       setChatConversation((prevChatHistory) => {
@@ -171,8 +178,10 @@ const ChatRoom = () => {
     () => {
       const container = viewport.current!;
       container.addEventListener("scroll", handleScrollToTop);
+      container.addEventListener("scroll", handleScrollDown);
       return () => {
         container.removeEventListener("scroll", handleScrollToTop);
+        container.removeEventListener("scroll", handleScrollDown);
       };
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -199,16 +208,19 @@ const ChatRoom = () => {
           friendProfileImg={currentChat.currentFriendProfileImg}
           onDeleteMessage={deleteMessage}
         />
-        <Affix className={classes.scrollButton} onClick={scrollToBottom}>
-          <ActionIcon radius="xl" size={60}>
-            <IconArrowDown stroke={1.5} size={30} />
-          </ActionIcon>
-        </Affix>
+        {isScrollingDown && (
+          <Affix className={classes.scrollButton} onClick={scrollToBottom}>
+            <ActionIcon radius="xl" size={60}>
+              <IconArrowDown stroke={1.5} size={30} />
+            </ActionIcon>
+          </Affix>
+        )}
       </ScrollArea>
 
       <div className={classes.chatBottom}>
-        <Textarea
-          style={{ flex: "1", marginRight: "10px" }}
+        <TextInput
+          size="lg"
+          className={classes.textArea}
           value={newMessage}
           onChange={(event) => setNewMessage(event.target.value)}
           onKeyDown={handleEnterPress}

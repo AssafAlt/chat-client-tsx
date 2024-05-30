@@ -8,13 +8,16 @@ import { IFriendStatusUpdate } from "../models/FriendWithStatus";
 import { useFriendsContext } from "../context/FriendsContext";
 import { MessageType } from "../models/MessageType";
 import { INotification } from "../models/Notification";
+import { useDisplayContext } from "../context/DisplayContext";
 
 export const useSocket = () => {
   const { friendsDispatch } = useFriendsContext();
+
   const { socketState, socketDispatch } = useSocketContext();
   const { state } = useAuthContext();
   const userNick: string = state.nickname ? state.nickname : "";
   const token = Cookies.get("jwt_token") || "";
+  const { displayState } = useDisplayContext();
 
   const updateConnectedFriends = (newUserUpdate: IFriendStatusUpdate) => {
     const { messageType, nickname } = newUserUpdate;
@@ -74,6 +77,17 @@ export const useSocket = () => {
           autoClose: 4500,
         });
         break;
+      case MessageType.NEW_MESSAGE:
+        if (
+          newNotification.info.room !== displayState.currentChat.currentRoom
+        ) {
+          notifications.show({
+            title: newNotification.message,
+            message: newNotification.info.content,
+            autoClose: 4500,
+          });
+        }
+        break;
       default:
         console.warn("Unhandled message type:", newNotification.messageType);
     }
@@ -92,7 +106,6 @@ export const useSocket = () => {
             const newUpdate: IFriendStatusUpdate = JSON.parse(message.body);
 
             updateConnectedFriends(newUpdate);
-            console.log("Parsed user list:", newUpdate);
           } catch (error) {
             console.error("Error parsing message body:", error);
           }
@@ -134,5 +147,5 @@ export const useSocket = () => {
     }
   };
 
-  return { connectingSocket, disconnectingSocket };
+  return { connectingSocket, disconnectingSocket, updateOnNotification };
 };
