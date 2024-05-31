@@ -3,9 +3,6 @@ import { IconCircleFilled } from "@tabler/icons-react";
 import React from "react";
 import classes from "./MobileUsers.module.css";
 import { useDisplay } from "../../../hooks/useDisplay";
-import { createPrivateRoomName } from "../../../utils/socketUtils";
-import { ICurrentRoom } from "../../../context/DisplayContext";
-import { DisplayType } from "../../../models/DisplayType";
 
 interface IMobileUserRowProps {
   nickname: string;
@@ -17,17 +14,10 @@ const MobileUserRow: React.FC<IMobileUserRowProps> = ({
   nickname,
   profileImg,
   isConnected,
-  userNick,
 }) => {
-  const { chooseOverlayImage, displayManager, chooseChat } = useDisplay();
+  const { chooseOverlayImage, chooseChat } = useDisplay();
   const onClickRow = () => {
-    displayManager(DisplayType.CHAT);
-    const newRoom: ICurrentRoom = {
-      currentFriendNickname: nickname,
-      currentFriendProfileImg: profileImg,
-      currentRoom: createPrivateRoomName(userNick, nickname),
-    };
-    chooseChat(newRoom);
+    chooseChat(nickname, profileImg);
   };
   return (
     <Flex justify="space-between" py="sm" px="sm">
