@@ -40,7 +40,7 @@ export const useSocket = () => {
         notifications.show({
           title: "Friend Request Approved",
           message: newNotification.message,
-          autoClose: 4500,
+          autoClose: 2000,
         });
         break;
       case MessageType.NEW_FRIEND_REQUEST:
@@ -51,7 +51,7 @@ export const useSocket = () => {
         notifications.show({
           title: "New Friend Request",
           message: newNotification.message,
-          autoClose: 4500,
+          autoClose: 2000,
         });
         break;
       case MessageType.REQUEST_CANCELLED:
@@ -68,24 +68,24 @@ export const useSocket = () => {
         break;
       case MessageType.FRIEND_UPDATED_IMG:
         friendsDispatch({
-          type: "FRIENDSHIP_DELETED_NOTIFICATION",
-          payload: newNotification.friend.nickname,
+          type: "FRIEND_UPDATED_IMG",
+          payload: newNotification.friend,
         });
         notifications.show({
           title: "New Profile Image",
           message: newNotification.message,
-          autoClose: 4500,
+          autoClose: 2000,
         });
         break;
       case MessageType.NEW_MESSAGE:
         if (
           newNotification.info.room !== displayState.currentChat.currentRoom
         ) {
-          notifications.show({
+          /* notifications.show({
             title: newNotification.message,
             message: newNotification.info.content,
-            autoClose: 4500,
-          });
+            autoClose: 2500,
+          });*/
         }
         break;
       default:

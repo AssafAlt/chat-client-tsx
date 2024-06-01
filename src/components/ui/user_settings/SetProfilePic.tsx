@@ -12,7 +12,11 @@ import { useImages } from "../../../hooks/useImages";
 import { ProfileImageClo } from "../../../models/ProfileImageClo";
 import { useAuthContext } from "../../../context/AuthContext";
 
-const SetProfilePic = () => {
+interface ISetProfilePicProps {
+  setIsClicked?: ((value: boolean) => void) | null;
+}
+
+const SetProfilePic: React.FC<ISetProfilePicProps> = ({ setIsClicked }) => {
   const { state } = useAuthContext();
   const { profileImg, nickname, isFirstLogin } = state;
   const imageSrc = profileImg ? profileImg : "";
@@ -48,6 +52,9 @@ const SetProfilePic = () => {
         formData.append("file", profileImage.file);
       }
       await uploadProfileImage(formData);
+      if (setIsClicked) {
+        setIsClicked(false);
+      }
       notifications.show({
         title: "Update Profile",
         message: "Profile Picture uploaded successfully",

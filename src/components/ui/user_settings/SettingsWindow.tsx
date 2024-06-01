@@ -24,7 +24,7 @@ const SettingsWindow = () => {
           {isClicked ? (
             <>
               <Button onClick={() => setIsClicked(false)}>Close</Button>
-              <SetProfilePic />
+              <SetProfilePic setIsClicked={setIsClicked} />
             </>
           ) : (
             <Button onClick={() => setIsClicked(true)}>Choose</Button>

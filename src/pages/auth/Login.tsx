@@ -40,7 +40,7 @@ const Login = () => {
       notifications.show({
         title: "Welcome Back to Capitan's Chat App",
         message: "Navigating to Home page",
-        autoClose: 3000,
+        autoClose: 1500,
       });
     } catch (error) {
       notifications.show({
